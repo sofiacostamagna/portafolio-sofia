@@ -15,7 +15,7 @@ export function Introduction() {
             exit="hidden"
           >
             <Image
-              src="/assets/sofi1.jpg"
+              src="/assets/sofi1.JPG"
               priority
               width="900"
               height="700"

@@ -17,7 +17,7 @@ export function Contact() {
   const phoneNumber = "+54 387 4545 109";
   const email = "sofiacostamagna@gmail.com";
   const linkedinLink = "https://www.linkedin.com/in/sofia-costamagna/";
-  const imageUrl = "/assets/sofi2.jpg";
+  const imageUrl = "/assets/sofi2.JPG";
 
   return (
     <div className="flex flex-col items-center">
@@ -52,7 +52,7 @@ export function Contact() {
             alt="Sofia"
             width={400}
             height={400}
-            className="rounded-full md:w-200 md:h-200 object-cover"
+            className="rounded-full md:h-[200] md:w-[200] object-cover"
           />
         </div>
       </div>
