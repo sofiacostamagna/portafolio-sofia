@@ -9,6 +9,10 @@ import { AiOutlineLinkedin } from "react-icons/ai";
 import Image from "next/image";
 
 // Define la función del componente Contact
+// ... (importaciones)
+
+// ... (importaciones)
+
 export function Contact() {
   const phoneNumber = "+54 387 4545 109";
   const email = "sofiacostamagna@gmail.com";
@@ -16,44 +20,41 @@ export function Contact() {
   const imageUrl = "/assets/sofi2.jpg";
 
   return (
-    <div className="h-screen flex flex-col-reverse md:flex-row items-center justify-center container mx-auto">
-      {/* Sección de información de contacto a la izquierda */}
-      <div className="flex flex-col items-center md:items-start md:mr-8 text-center md:text-left">
-        {/* Título animado */}
-        <motion.h1
-          variants={fadeIn("up", 0.5)}
-          initial="hidden"
-          animate="show"
-          exit="hidden"
-          className="my-5 text-4xl md:text-2xl lg:text-4xl"
-        >
-          Contact
-          <span className="text-secondary"> Me </span>
-        </motion.h1>
-        {/* Número de teléfono */}
-        <div className="flex items-center text-lg md:text-lg lg:text-xl space-x-2 mb-4">
-          <FiPhone size={20} />
-          <p>{phoneNumber}</p>
+    <div className="flex flex-col items-center">
+      {/* Contenido principal */}
+      <div className="items-center min-h-screen px-6 mx-auto align-middle mt-36 md:mt-0 md:flex md:max-w-4xl pb-36 md:pb-0">
+        <div className="flex flex-col items-center md:items-start md:mr-8 text-center md:text-left">
+          <motion.h1
+            variants={fadeIn("up", 0.5)}
+            initial="hidden"
+            animate="show"
+            exit="hidden"
+            className="my-5 text-4xl md:text-2xl lg:text-4xl text-center md:text-left "
+          >
+            Contact
+            <span className="text-secondary"> Me </span>
+          </motion.h1>
+          <div className="flex items-center text-lg md:text-lg lg:text-xl space-x-2 mb-4">
+            <FiPhone size={20} />
+            <p>{phoneNumber}</p>
+          </div>
+          <div className="flex items-center text-lg md:text-lg lg:text-xl space-x-2 mb-4">
+            <MdOutlineEmail size={20} />
+            <p>{email}</p>
+          </div>
+          <div className="mb-4">
+            <QRCode value={linkedinLink} size={200} />
+          </div>
         </div>
-        {/* Dirección de correo electrónico */}
-        <div className="flex items-center text-lg md:text-lg lg:text-xl space-x-2 mb-4">
-          <MdOutlineEmail size={20} />
-          <p>{email}</p>
+        <div className="mb-4 md:mb-0 md:ml-8 flex-shrink-0">
+          <Image
+            src={imageUrl}
+            alt="Sofia"
+            width={400}
+            height={400}
+            className="rounded-full md:w-200 md:h-200 object-cover"
+          />
         </div>
-        {/* Código QR para LinkedIn */}
-        <div className="mb-4">
-          <QRCode value={linkedinLink} size={200} />
-        </div>
-      </div>
-      {/* Sección de la imagen a la derecha */}
-      <div className="mb-4 md:mb-0 md:ml-8">
-        <Image
-          src={imageUrl}
-          alt="Sofia"
-          width={400}
-          height={400}
-          className="rounded-full  md:w-200 md:h-200"
-        />
       </div>
     </div>
   );
