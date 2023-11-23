@@ -4,24 +4,24 @@ export const optionsParticles = {
     events: {
       onClick: {
         enable: true,
-        mode: "push",
+        mode: "bubble", // Puedes probar con "grab" u otros modos
       },
       onHover: {
         enable: true,
-        mode: "repulse",
+        mode: "bubble", // Puedes probar con "repulse" u otros modos
       },
       resize: true,
     },
     modes: {
-      push: {
-        quantity: 4,
-      },
-      repulse: {
-        distance: 200,
-        duration: 0.4,
+      bubble: {
+        distance: 100,
+        size: 10,
+        duration: 2,
+        opacity: 0.8,
       },
     },
   },
+
   particles: {
     color: {
       value: "#fff",
@@ -29,12 +29,9 @@ export const optionsParticles = {
     links: {
       color: "#fff",
       distance: 150,
-      enable: true,
+      enable: false,
       opacity: 0.5,
       width: 1,
-    },
-    collisions: {
-      enable: true,
     },
     move: {
       direction: undefined,
@@ -54,7 +51,7 @@ export const optionsParticles = {
       value: 0.5,
     },
     shape: {
-      type: "circle",
+      type: "edge",
     },
     size: {
       value: { min: 1, max: 5 },

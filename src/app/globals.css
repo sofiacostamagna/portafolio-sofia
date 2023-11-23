@@ -14,8 +14,8 @@ body {
 #cover {
   background: linear-gradient(
     90.21deg,
-    rgba(170, 54, 124, 0.5) -5.91%,
-    rgba(74, 47, 189, 0.5) 111.58%
+    rgba(240, 171, 252) -5.91%,
+    rgba(217 70 239) 111.58%
   );
   display: flex;
   min-height: 100vh;
@@ -24,12 +24,12 @@ body {
 }
 
 .currentIconPage svg {
-  stroke: #f5741c;
-  fill: #f5741c;
+  stroke: #d946ef;
+  fill: #d946ef;
 }
 
 .swiper-horizontal > .swiper-pagination-bullets .swiper-pagination-bullet,
 .swiper-pagination-horizontal.swiper-pagination-bullets
   .swiper-pagination-bullet {
-  background-color: #f5741c;
+  background-color: #d946ef;
 }

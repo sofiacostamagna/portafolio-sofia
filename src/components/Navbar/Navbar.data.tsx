@@ -1,4 +1,10 @@
-import { RiHome4Line, RiAccountPinCircleLine, RiServerLine, RiBriefcase2Line, RiChatPollLine } from "react-icons/ri";
+import {
+  RiHome4Line,
+  RiAccountPinCircleLine,
+  RiBriefcase2Line,
+  RiContactsBook2Line,
+} from "react-icons/ri";
+import { IoVideocamOutline } from "react-icons/io5";
 
 export const dataNavbar = [
   {
@@ -11,19 +17,20 @@ export const dataNavbar = [
     path: "/about",
     icon: <RiAccountPinCircleLine size="30" />,
   },
+
   {
-    name: "services",
-    path: "/services",
-    icon: <RiServerLine size="30" />,
-  },
-  {
-    name: "work",
-    path: "/works",
+    name: "projects",
+    path: "/project",
     icon: <RiBriefcase2Line size="30" />,
   },
   {
-    name: "testimonials",
-    path: "/testimonials",
-    icon: <RiChatPollLine size="30" />,
+    name: "video",
+    path: "/video",
+    icon: <IoVideocamOutline size="30" />,
+  },
+  {
+    name: "contac me",
+    path: "/contact",
+    icon: <RiContactsBook2Line size="30" />,
   },
 ];

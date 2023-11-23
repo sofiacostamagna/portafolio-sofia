@@ -10,7 +10,7 @@ const config: Config = {
     extend: {
       colors: {
         // secondary: "#F13024",
-        secondary: "#f5741c",
+        secondary: "#D946EF",
       },
       backgroundImage: {
         explosion: "url('/assets/bg-explosion.png')",
