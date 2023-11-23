@@ -27,7 +27,7 @@ export function Contact() {
           exit="hidden"
           className="my-5 text-4xl md:text-2xl lg:text-4xl"
         >
-          Contáct
+          Contact
           <span className="text-secondary"> Me </span>
         </motion.h1>
         {/* Número de teléfono */}
