@@ -13,7 +13,7 @@ export function Projects() {
 
   const cardVariants = {
     expanded: {
-      width: "500px",
+      width: "400px",
       opacity: 1,
     },
     collapsed: {
@@ -23,14 +23,14 @@ export function Projects() {
   };
 
   return (
-    <div className="grid pb-32 md:min-h-screen mt-28 md:mt-0 place-items-center">
+    <div className="grid pb-32 md:min-h-screen mt-40 md:mt-0 place-items-center">
       <div>
         <motion.h1
           variants={fadeIn("left", 0.5)}
           initial="hidden"
           animate="show"
           exit="hidden"
-          className="my-5 text-2xl text-center md:text-4-xl"
+          className="my-5 text-3xl text-center md:text-4-xl"
         >
           My <span className="text-secondary">fulfilled projects.</span>
         </motion.h1>

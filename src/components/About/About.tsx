@@ -28,7 +28,7 @@ export function About() {
         animate={motionTransitionsAbout.animate}
         transition={motionTransitionsAbout.transition}
       >
-        <h1 className="mb-6 md:text-4xl">
+        <h1 className="mb-6 text-3xl">
           Transforming ideas
           <br /> <span className="text-secondary">great designs</span>
         </h1>

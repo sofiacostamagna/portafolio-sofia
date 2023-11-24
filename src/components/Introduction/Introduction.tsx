@@ -11,7 +11,7 @@ export function Introduction() {
         <div className="container grid items-center h-full px-5 mx-auto md:grid-cols-2 md:text-left">
           {/* A motion-controlled div that displays an image of Sofia Costamagna */}
           <motion.div
-            className="hidden w-auto h-auto mx-auto md:block"
+            className="w-full h-auto mx-auto md:block overflow-hidden rounded-md mt-28"
             variants={fadeIn("right", 0.5)}
             initial="hidden"
             animate="show"
@@ -23,7 +23,7 @@ export function Introduction() {
               width="900"
               height="700"
               alt="Sofia Costamagna"
-              className="p-10"
+              className="w-full h-auto object-cover p-10"
             />
           </motion.div>
 
@@ -34,7 +34,7 @@ export function Introduction() {
             animate="show"
             exit="hidden"
           >
-            <h1 className="mb-5 text-3xl leading-tight md:mb-10">
+            <h1 className="mb-5 text-3xl leading-tight md:mb-10 text-center md:text-left">
               Sofía Costamagna
               <br />
               <span className="text-secondary text-2xl ">
@@ -42,8 +42,8 @@ export function Introduction() {
                 Frontend Developer & UX/UI Designer
               </span>
             </h1>
-            <p className="max-w-sm mb-10 text-lg md:max-w-lg md-0 md-16 md:text">
-              I am a passionate Frontend Developer and UUI who is ed in the
+            <p className="max-w-sm mb-10 text-lg md:max-w-lg md-0 md-16 md:text text-center md:text-left">
+              I am a passionate Frontend Developer and UX/UI who is ed in the
               exciting world of technology. My focus is on continuous learning
               and improvement, which drives me to embrace challenges and seek
               creative solutions. My goal is to bring your ideas to life and
@@ -54,7 +54,7 @@ export function Introduction() {
             <div className="flex flex-col items-center gap-3 md:gap-10 md:flex-row">
               <a
                 href="/project"
-                className="px-6 py-3 my-2 transition-all border-2 cursor-pointer w-fit rounded-xl hover:shadow-xl hover:shadow-white/80"
+                className="px-6 py-3 my-2 transition-all border-2 cursor-pointer w-fit rounded-xl hover:shadow-xl hover:shadow-secondary/80"
               >
                 View projects
               </a>
