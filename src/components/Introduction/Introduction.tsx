@@ -4,9 +4,9 @@ import Image from "next/image";
 
 export function Introduction() {
   return (
-    <div className="bg-[#131424]/60 w-full z-10">
+    <div className="bg-[#131424]/60 w-full z-10 overflow-y-auto">
       {/* A semi-transparent background layer */}
-      <div className="w-full h-full bg-gradient-to-r from-[#131424]/10 via-black/30 to-black/10">
+      <div className="w-full h-full bg-gradient-to-r from-[#131424]/10 via-black/30 to-black/10 mb-10 mt-10">
         {/* A container with a grid layout for the introduction section */}
         <div className="container grid items-center h-full px-5 mx-auto md:grid-cols-2 md:text-left">
           {/* A motion-controlled div that displays an image of Sofia Costamagna */}
@@ -60,7 +60,7 @@ export function Introduction() {
               </a>
               <a
                 href="/contact"
-                className="px-6 py-3 my-2 transition-all border-2 cursor-pointer w-fit rounded-xl hover:shadow-xl hover:shadow-white/80"
+                className="px-6 py-3 my-2 transition-all border-2 cursor-pointer w-fit rounded-xl hover:shadow-xl hover:shadow-white/80 z-20"
               >
                 Contact me
               </a>
