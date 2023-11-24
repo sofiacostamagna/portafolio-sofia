@@ -13,7 +13,7 @@ export function Video() {
           initial="hidden"
           animate="show"
           exit="hidden"
-          className="my-5 text-3xl md:text-3xwxl text-center md:my-10 mt-20"
+          className="my-2 text-3xl md:text-3xl text-center md:my-5"
         >
           Find out more <br />
           <span className="text-secondary">about me.</span>
