@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export function Introduction() {
   return (
-    <div className="bg-[#131424]/60 w-full z-10 overflow-y-auto">
+    <div className="bg-[#131424]/60 w-full z-10 overflow-y-scroll">
       {/* A semi-transparent background layer */}
       <div className="w-full h-full bg-gradient-to-r from-[#131424]/10 via-black/30 to-black/10 mb-10 mt-10">
         {/* A container with a grid layout for the introduction section */}

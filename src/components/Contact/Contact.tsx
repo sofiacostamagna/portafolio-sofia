@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { fadeIn } from "@/utils/motionTransitions";
 import { FiPhone } from "react-icons/fi";
 import { MdOutlineEmail } from "react-icons/md";
+import Link from "next/link";
 
 import Image from "next/image";
 
@@ -50,6 +51,11 @@ export function Contact() {
           >
             <QRCode value={linkedinLink} size={200} />
           </motion.div>
+          <Link legacyBehavior href="/resume">
+            <a className="px-6 py-6  my-6 transition-all border-2 cursor-pointer w-fit rounded-xl hover:shadow-xl hover:shadow-white/80 z-20">
+              See Resume
+            </a>
+          </Link>
         </div>
         <motion.div
           className="mb-4 md:mb-0 md:ml-8 flex-shrink-0"
