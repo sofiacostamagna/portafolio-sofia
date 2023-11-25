@@ -29,11 +29,7 @@ export const dataNavbar = [
     path: "/video",
     icon: <IoVideocamOutline size="30" />,
   },
-  {
-    name: "resume",
-    path: "/resume",
-    icon: <RiSdCardLine size="30" />,
-  },
+
   {
     name: "contac me",
     path: "/contact",
