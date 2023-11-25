@@ -3,6 +3,7 @@ import {
   RiAccountPinCircleLine,
   RiBriefcase2Line,
   RiContactsBook2Line,
+  RiSdCardLine,
 } from "react-icons/ri";
 import { IoVideocamOutline } from "react-icons/io5";
 
@@ -27,6 +28,11 @@ export const dataNavbar = [
     name: "video",
     path: "/video",
     icon: <IoVideocamOutline size="30" />,
+  },
+  {
+    name: "resume",
+    path: "/resume",
+    icon: <RiSdCardLine size="30" />,
   },
   {
     name: "contac me",

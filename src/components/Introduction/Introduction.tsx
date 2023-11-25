@@ -11,7 +11,7 @@ export function Introduction() {
         <div className="container grid items-center h-full px-5 mx-auto md:grid-cols-2 md:text-left">
           {/* A motion-controlled div that displays an image of Sofia Costamagna */}
           <motion.div
-            className="w-full h-auto mx-auto md:block overflow-hidden rounded-md mt-28"
+            className="w-full h-auto mx-auto md:block overflow-hidden mt-28 "
             variants={fadeIn("right", 0.5)}
             initial="hidden"
             animate="show"
@@ -20,10 +20,10 @@ export function Introduction() {
             <Image
               src="/assets/image_6487327.JPG"
               priority
-              width="900"
-              height="700"
+              width="600"
+              height="400"
               alt="Sofia Costamagna"
-              className="w-full h-auto object-cover p-10"
+              className="object-cover "
             />
           </motion.div>
 
