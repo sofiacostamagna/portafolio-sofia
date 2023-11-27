@@ -11,14 +11,14 @@ export const dataAboutCertificate = [
         imageSrc: "/assets/certificado.png",
         company: "",
         description: "",
-        certificateLink: "https://www.efset.org/cert/LaRDbS",
+        certificateLink:
+          "https://certificates.soyhenry.com/new-cert?id=becafe6bf2aa6c3854259fad8c50ab799929b8111611ce6bc6e507efee78a5fd",
       },
       {
         title: "English C1",
         date: "",
         imageSrc: "/assets/testEnglish.png",
-        certificateLink:
-          "https://certificates.soyhenry.com/new-cert?id=becafe6bf2aa6c3854259fad8c50ab799929b8111611ce6bc6e507efee78a5fd",
+        certificateLink: "https://www.efset.org/cert/LaRDbS",
       },
     ],
   },

@@ -17,8 +17,8 @@ import Image from "next/image";
 // ... (import statements)
 
 export function Contact() {
-  const phoneNumber = "+54 387 4545 109";
-  const email = "sofiacostamagna@gmail.com";
+  // const phoneNumber = "+54 387 4545 109";
+  const email = "sofiacostamagna45@gmail.com";
   const linkedinLink = "https://www.linkedin.com/in/sofia-costamagna/";
   const imageUrl = "/assets/sofi2.JPG";
 
@@ -37,10 +37,10 @@ export function Contact() {
             Contact
             <span className="text-secondary"> Me </span>
           </motion.h1>
-          <motion.div className="flex items-center text-lg md:text-lg lg:text-xl space-x-2 mb-4">
+          {/*<motion.div className="flex items-center text-lg md:text-lg lg:text-xl space-x-2 mb-4">
             <FiPhone size={20} />
             <p>{phoneNumber}</p>
-          </motion.div>
+  </motion.div>*/}
           <motion.div className="flex items-center text-lg md:text-lg lg:text-xl space-x-2 mb-4">
             <MdOutlineEmail size={20} />
             <p>{email}</p>
