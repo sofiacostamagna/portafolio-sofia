@@ -6,62 +6,64 @@ import { motion } from "framer-motion";
 
 const DescargarPDF: React.FC = () => {
   return (
-    <div className="flex flex-col md:w-auto justify-center items-center md:flex-row space-x-6 md:space-x-6 mt-40 md:mt-0  overflow-y-auto min-h-screen">
-      <motion.div
-        className="flex flex-col items-center flex-1"
-        variants={fadeIn("right", 0.5)}
-        initial="hidden"
-        animate="show"
-        exit="hidden"
-      >
-        <Image
-          src="/assets/imageCvEnglish.png"
-          priority
-          alt="CV en inglés"
-          width={300}
-          height={300}
-          className="rounded mb-2"
-        />
-        <div className="items-center">
-          <p className="bg-secondary mb-5 text-white px-4 py-2 rounded transition-transform transform hover:scale-110 flex items-center ">
-            <Link legacyBehavior href="/assets/Sofia_Costamagna.pdf" download>
-              <a target="_blank" rel="noopener noreferrer">
-                Download English
-              </a>
-            </Link>
-          </p>
-        </div>
-      </motion.div>
+    <div className="overflow-y-auto min-h-screen mb-16">
+      <div className="flex flex-col md:w-auto justify-center items-center md:flex-row mt-40 md:mt-0 ">
+        <motion.div
+          className="flex flex-col items-center flex-1"
+          variants={fadeIn("right", 0.5)}
+          initial="hidden"
+          animate="show"
+          exit="hidden"
+        >
+          <Image
+            src="/assets/imageCvEnglish.png"
+            priority
+            alt="CV en inglés"
+            width={300}
+            height={300}
+            className="rounded mb-2 md:mb-4"
+          />
+          <div className="items-center">
+            <p className="bg-secondary mb-5 text-white px-4 py-2 rounded transition-transform transform hover:scale-110 flex items-center ">
+              <Link legacyBehavior href="/assets/Sofia_Costamagna.pdf" download>
+                <a target="_blank" rel="noopener noreferrer">
+                  Download English
+                </a>
+              </Link>
+            </p>
+          </div>
+        </motion.div>
 
-      <motion.div
-        className="flex flex-col items-center flex-1"
-        variants={fadeIn("right", 0.5)}
-        initial="hidden"
-        animate="show"
-        exit="hidden"
-      >
-        <Image
-          src="/assets/imageCVSpan.png"
-          priority
-          alt="CV en español"
-          width={300}
-          height={300}
-          className="rounded mb-2"
-        />
-        <div className="flex items-center">
-          <p className="relative  bg-secondary text-white px-4 py-2 rounded transition-transform transform hover:scale-110 flex items-center">
-            <Link
-              legacyBehavior
-              href="/assets/Sofia_Laura_Costamagna.pdf"
-              download
-            >
-              <a target="_blank" rel="noopener noreferrer">
-                Download Spanish
-              </a>
-            </Link>
-          </p>
-        </div>
-      </motion.div>
+        <motion.div
+          className="flex flex-col items-center flex-1"
+          variants={fadeIn("right", 0.5)}
+          initial="hidden"
+          animate="show"
+          exit="hidden"
+        >
+          <Image
+            src="/assets/imageCVSpan.png"
+            priority
+            alt="CV en español"
+            width={300}
+            height={300}
+            className="rounded mb-2 md:mb-4"
+          />
+          <div className="flex items-center">
+            <p className="relative  bg-secondary text-white px-4 py-2 rounded transition-transform transform hover:scale-110 flex items-center">
+              <Link
+                legacyBehavior
+                href="/assets/Sofia_Laura_Costamagna.pdf"
+                download
+              >
+                <a target="_blank" rel="noopener noreferrer">
+                  Download Spanish
+                </a>
+              </Link>
+            </p>
+          </div>
+        </motion.div>
+      </div>
     </div>
   );
 };
