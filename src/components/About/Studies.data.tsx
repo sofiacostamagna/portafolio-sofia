@@ -20,6 +20,12 @@ export const dataAboutCertificate = [
         imageSrc: "/assets/testEnglish.png",
         certificateLink: "https://www.efset.org/cert/LaRDbS",
       },
+      {
+        title: "No Country",
+        date: "",
+        imageSrc: "/assets/NoCountry.png",
+        certificateLink: "/assets/NoCountryLink.jpg",
+      },
     ],
   },
 ];
@@ -30,9 +36,9 @@ const StudiesSection = () => {
   const renderSkillRow = (startIdx: number, endIdx: number) => {
     return skills.slice(startIdx, endIdx).map((skill, index) => (
       <div key={index} className="flex flex-col items-center gap-2">
-        <div className="relative w-full max-w-80 h-80 md:h-96">
+        <div className="relative w-full max-w-300 h-80 md:h-80 transition-transform transform hover:scale-110">
           {/* Para mantener el aspect ratio de 1:1 en pantallas pequeñas y 16:9 en pantallas medianas y grandes */}
-          <div className="aspect-w-1 aspect-h-1 md:aspect-w-16 md:aspect-h-9">
+          <div className="aspect-w-1 aspect-h-1 md:aspect-w-16 md:aspect-h-9 ">
             <Image
               src={skill.imageSrc}
               alt={skill.title}
@@ -59,7 +65,7 @@ const StudiesSection = () => {
 
   return (
     <div className="flex flex-col md:flex-row gap-10">
-      {[0, 1].map((startIdx) => (
+      {[0, 1, 2].map((startIdx) => (
         <div key={startIdx} className="w-full md:w-1/2">
           {renderSkillRow(startIdx, startIdx + 1)}
         </div>
