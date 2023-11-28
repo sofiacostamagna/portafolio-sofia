@@ -6,8 +6,8 @@ import { motion } from "framer-motion";
 
 const DescargarPDF: React.FC = () => {
   return (
-    <div className="overflow-y-auto min-h-screen mb-16">
-      <div className="flex flex-col md:w-auto justify-center items-center md:flex-row mt-40 md:mt-0 ">
+    <div className="overflow-y-auto min-h-screen mb-16 mt-40 md:mt-40 ">
+      <div className="flex flex-col md:w-auto justify-center items-center md:flex-row ">
         <motion.div
           className="flex flex-col items-center flex-1"
           variants={fadeIn("right", 0.5)}
