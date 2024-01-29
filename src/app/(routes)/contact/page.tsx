@@ -1,5 +1,5 @@
 import { Contact } from "@/components/Contact/Contact";
-import { Cover } from "@/components/Cover";
+
 import { Transition } from "@/components/Transition/Transition";
 
 export default function page() {
@@ -7,7 +7,6 @@ export default function page() {
     <div>
       <Transition />
       <Contact />
-      <Cover />
     </div>
   );
 }
