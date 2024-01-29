@@ -1,3 +1,6 @@
+/**
+ * Defines animation variants for page transitions.
+ */
 export const transitionVariantsPage = {
   initial: {
     x: "100%",
@@ -13,6 +16,9 @@ export const transitionVariantsPage = {
   },
 };
 
+/**
+ * Defines motion transitions for an "about" section.
+ */
 export const motionTransitionsAbout = {
   initial: {
     opacity: 0,
@@ -30,6 +36,12 @@ export const motionTransitionsAbout = {
   },
 };
 
+/**
+ * Generates motion variants for a fade-in animation.
+ * @param direction - The direction of the fade animation ("up", "down", "left", "right").
+ * @param delay - The delay before the animation starts.
+ * @returns Object with "hidden" and "show" states for the fade-in animation.
+ */
 export const fadeIn = (direction: string, delay: number) => {
   return {
     hidden: {

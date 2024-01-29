@@ -15,9 +15,6 @@ const config: Config = {
       backgroundImage: {
         explosion: "url('/assets/bg-explosion.png')",
       },
-      // animation: {
-      //   "bounce-slow": "bounce 3s infinite ",
-      // },
     },
   },
   plugins: [],
