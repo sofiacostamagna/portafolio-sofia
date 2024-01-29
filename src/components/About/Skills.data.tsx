@@ -1,5 +1,11 @@
 import Image from "next/image";
 
+/**
+ * Component representing a section displaying skills with associated images.
+ * @component
+ * @returns {JSX.Element} The JSX element representing the SkillsSection component.
+ * */
+
 export const dataAboutSkills = [
   {
     id: 0,
@@ -10,11 +16,7 @@ export const dataAboutSkills = [
         imageSrc: "/assets/JS.png",
         date: "",
       },
-      {
-        title: "Java",
-        imageSrc: "/assets/JAVA.png",
-        date: "",
-      },
+
       {
         title: "React",
         imageSrc: "/assets/REACT.png",
@@ -73,9 +75,16 @@ export const dataAboutSkills = [
     ],
   },
 ];
-
 const SkillsSection = () => {
+  // Data containing information about skills and their images
   const skills = dataAboutSkills[0].skills;
+
+  /**
+   * Renders a row of skills.
+   * @param {number} startIdx - The starting index of the skills to render.
+   * @param {number} endIdx - The ending index of the skills to render.
+   * @returns {JSX.Element[]} An array of JSX elements representing the skills in the specified range.
+   * */
 
   const renderSkillRow = (startIdx: number, endIdx: number) => {
     return skills.slice(startIdx, endIdx).map((skill, index) => (

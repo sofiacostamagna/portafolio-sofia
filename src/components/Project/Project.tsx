@@ -1,16 +1,26 @@
+// Importa el módulo "client" de la librería "use"
 "use client";
+// Importa la función "fadeIn" del archivo "motionTransitions" en el directorio "@/utils"
 import { fadeIn } from "@/utils/motionTransitions";
+// Importa el componente "motion" de la librería "framer-motion"
 import { motion } from "framer-motion";
+// Importa el array "cardContent" del archivo "Project.data" en el mismo directorio
 import { cardContent } from "./Project.data";
+// Importa el hook "useState" de React
 import { useState } from "react";
 
+// Define el componente funcional "Projects"
 export function Projects() {
+  // Utiliza el hook "useState" para gestionar el estado del índice expandido
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
+  // Función que maneja el clic en una tarjeta
   const handleClick = (index: number) => {
+    // Establece el índice expandido o lo colapsa si ya estaba expandido
     setExpandedIndex(index === expandedIndex ? -1 : index);
   };
 
+  // Variantes de animación para las tarjetas
   const cardVariants = {
     expanded: {
       width: "400px",

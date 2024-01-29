@@ -1,9 +1,13 @@
 import Image from "next/image";
 
+/**
+ * Data for the studies section.
+ * @type {Array}
+ */
 export const dataAboutCertificate = [
   {
     id: 2,
-    text: "Estudios",
+    text: "Education",
     skills: [
       {
         title: "FullStack Developer",
@@ -30,15 +34,26 @@ export const dataAboutCertificate = [
   },
 ];
 
+/**
+ * StudiesSection Component.
+ * Renders the studies section based on the provided data.
+ * @returns {JSX.Element} The JSX element representing the StudiesSection component.
+ */
 const StudiesSection = () => {
   const skills = dataAboutCertificate[0].skills;
 
+  /**
+   * Renders a row of skills based on the start and end index.
+   * @param {number} startIdx - The start index.
+   * @param {number} endIdx - The end index.
+   * @returns {Array} An array of JSX elements representing the skill rows.
+   */
   const renderSkillRow = (startIdx: number, endIdx: number) => {
     return skills.slice(startIdx, endIdx).map((skill, index) => (
       <div key={index} className="flex flex-col items-center gap-2">
         <div className="relative w-full max-w-300 h-80 md:h-80 transition-transform transform hover:scale-110">
-          {/* Para mantener el aspect ratio de 1:1 en pantallas pequeñas y 16:9 en pantallas medianas y grandes */}
-          <div className="aspect-w-1 aspect-h-1 md:aspect-w-16 md:aspect-h-9 ">
+          {/* To maintain the aspect ratio of 1:1 on small screens and 16:9 on medium and large screens */}
+          <div className="aspect-w-1 aspect-h-1 md:aspect-w-16 md:aspect-h-9">
             <Image
               src={skill.imageSrc}
               alt={skill.title}
