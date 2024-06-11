@@ -16,7 +16,7 @@
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
     "framer-motion": "^10.16.1",
-    "next": "^13.4.19",
+    "next": "^14.1.1",
     "nodemailer": "^6.9.8",
     "postcss": "8.4.31",
     "qrcode.react": "^3.1.0",
