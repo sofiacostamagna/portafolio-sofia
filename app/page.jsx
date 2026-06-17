@@ -34,8 +34,8 @@ export default function Home() {
           HERO
       ═══════════════════════════ */}
       <section
-        className="flex items-center"
-        style={{ minHeight: "calc(100vh - 73px)" }}
+        className="flex items-center pt-24"
+        style={{ minHeight: "100vh" }}
       >
         <div className="w-full px-8 xl:px-[10vw] 2xl:px-[12vw]">
           <div className="flex flex-col xl:flex-row gap-10 xl:gap-16 items-center">
