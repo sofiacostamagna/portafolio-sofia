@@ -9,6 +9,7 @@ import { IoCloseOutline } from "react-icons/io5";
 
 const navLinks = [
   { en: "Home",     es: "Inicio",     path: "/" },
+  { en: "About",    es: "Sobre mí",   path: "/about" },
   { en: "Work",     es: "Proyectos",  path: "/work" },
   { en: "Services", es: "Servicios",  path: "/services" },
   { en: "Resume",   es: "Currículum", path: "/resume" },
