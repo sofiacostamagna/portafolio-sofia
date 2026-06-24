@@ -3,6 +3,7 @@ import "./globals.css";
 
 //components
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 import PageTransition from "../components/PageTransition";
 import StairTransition from "../components/StairTransition";
 import { LanguageProvider } from "../components/LanguageContext";
@@ -35,11 +36,12 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${jetbrainsMono.variable} ${inter.variable} ${playfair.variable} antialiased`}>
+      <body suppressHydrationWarning className={`${jetbrainsMono.variable} ${inter.variable} ${playfair.variable} antialiased`}>
         <LanguageProvider>
           <Header />
           <StairTransition />
           <PageTransition>{children}</PageTransition>
+          <Footer />
         </LanguageProvider>
       </body>
     </html>
