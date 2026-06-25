@@ -33,8 +33,8 @@ export default function Footer() {
             </Link>
             <p className="text-[14px] text-white/70 leading-relaxed max-w-[220px]">
               {lang === "en"
-                ? "Frontend Developer with a deep focus on UX/UI — based in Buenos Aires."
-                : "Desarrolladora Frontend con foco en UX/UI — desde Buenos Aires."}
+                ? "Frontend Developer with a deep focus on UX/UI — based in Argentina."
+                : "Desarrolladora Frontend con foco en UX/UI — desde Argentina."}
             </p>
             {/* Available badge */}
             <div className="flex items-center gap-2 mt-1">
