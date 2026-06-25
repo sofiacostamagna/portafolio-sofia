@@ -30,7 +30,7 @@ const playfair = Playfair_Display({
 export const metadata = {
   title: "Sofía Costamagna | Frontend Developer & UX/UI Designer",
   description:
-    "Portfolio of Sofía Costamagna — Frontend Developer and UX/UI Designer based in Buenos Aires.",
+    "Portfolio of Sofía Costamagna — Frontend Developer and UX/UI Designer based in Argentina.",
 };
 
 export default function RootLayout({ children }) {

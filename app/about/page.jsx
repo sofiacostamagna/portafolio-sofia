@@ -357,7 +357,7 @@ export default function About() {
               {
                 institution: "Codo a Codo · Agencia de Habilidades para el Futuro",
                 program: { en: "Full Stack PHP (Codo a Codo 4.0)", es: "Full Stack PHP (Codo a Codo 4.0)" },
-                detail: { en: "198 hours · 20 weeks · Buenos Aires Ciudad", es: "198 horas · 20 semanas · Buenos Aires Ciudad" },
+                detail: { en: "198 hours · 20 weeks · Argentina", es: "198 horas · 20 semanas · Argentina" },
                 year: "2024",
                 href: "/diploma-cac.pdf",
               },
