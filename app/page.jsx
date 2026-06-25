@@ -194,7 +194,7 @@ function Phone({ siteUrl, label, tags }) {
 }
 
 export default function Home() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const worksRef = useRef(null);
   const worksInView = useInView(worksRef, { once: true, margin: "-80px" });
 
@@ -235,7 +235,7 @@ export default function Home() {
                     {t.hero.cta}
                   </button>
                 </Link>
-                <a href="/SofiaCostamagna.pdf" download>
+                <a href={lang === "en" ? "/Sofia Costamagna-eng.pdf" : "/Sofia Costamagna-esp.pdf"} download>
                   <button className="border border-divider text-font-primary font-mono text-[11px] uppercase tracking-[0.14em] px-7 py-3.5 rounded-sm hover:border-accent hover:text-accent transition-all duration-300 flex items-center gap-2">
                     {t.hero.cv} <FiDownload size={11} />
                   </button>

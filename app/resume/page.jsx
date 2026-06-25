@@ -17,7 +17,7 @@ const EXPERIENCE = [
   {
     company: "Grupo Penna",
     position: { en: "Frontend Web Developer", es: "Desarrolladora Web Frontend" },
-    duration: { en: "2025 — Jun 2025 · Full-time · Remote", es: "2025 — Jun 2025 · Full-time · Remoto" },
+    duration: { en: "2025 — Jun 2026 · Full-time · Remote", es: "2025 — Jun 2026 · Full-time · Remoto" },
     description: {
       en: "Developed user interfaces and new features using React, Next.js and TypeScript. Collaborated on UX/UI design in Figma and supported backend development with Node.js and database management. Focused on scalability, performance optimization, and continuous product improvement.",
       es: "Desarrollo de interfaces y nuevas funcionalidades con React, Next.js y TypeScript. Colaboración en diseño UX/UI en Figma y soporte al desarrollo backend con Node.js y bases de datos. Foco en escalabilidad, optimización de rendimiento y mejora continua del producto.",
@@ -55,13 +55,13 @@ const EXPERIENCE = [
 const EDUCATION = [
   {
     institution: "Codo a Codo",
-    degree: { en: "Frontend Development (PHP & Frontend)", es: "Desarrollo Frontend (PHP y Frontend)" },
+    degree: { en: "Full Stack PHP (Codo a Codo 4.0)", es: "Full Stack PHP (Codo a Codo 4.0)" },
     duration: "2024",
     certificate: "certificate.png",
   },
   {
     institution: "Henry Bootcamp",
-    degree: { en: "Full Stack Developer · 800 hours", es: "Full Stack Developer · 800 horas" },
+    degree: { en: "Full Stack Web Developer · 800 hours", es: "Full Stack Web Developer · 800 horas" },
     duration: "2023",
     certificate: "certificate1.png",
   },
@@ -124,7 +124,7 @@ export default function Resume() {
           </div>
           <motion.a
             {...fadeUp(0.12)}
-            href="/CV-Sofia-Costamagna.pdf"
+            href={en ? "/Sofia Costamagna-eng.pdf" : "/Sofia Costamagna-esp.pdf"}
             download
             className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] px-5 py-3 rounded-full border border-divider hover:border-accent hover:text-accent transition-colors self-start sm:self-auto"
           >

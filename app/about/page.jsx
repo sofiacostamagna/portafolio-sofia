@@ -331,6 +331,76 @@ export default function About() {
         </div>
       </section>
 
+      {/* ════════════════════════ CERTIFICADOS ════════════════════════ */}
+      <section className="border-t border-divider py-20 xl:py-28" style={{ background: "#f8f7ff" }}>
+        <div className="px-8 xl:px-[10vw] 2xl:px-[12vw]">
+          <motion.span {...fadeUp(0)} className="label block mb-4">
+            {en ? "Education & Certificates" : "Educación y Certificados"}
+          </motion.span>
+          <motion.h2
+            {...fadeUp(0.08)}
+            className="font-serif font-bold text-font-secondary mb-12 xl:mb-16"
+            style={{ fontSize: "clamp(28px, 3.5vw, 48px)", lineHeight: 1.1 }}
+          >
+            {en ? <>Always<br /><em className="text-accent italic">learning</em></> : <>Siempre<br /><em className="text-accent italic">aprendiendo</em></>}
+          </motion.h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+            {[
+              {
+                institution: "Henry Bootcamp",
+                program: { en: "Full Stack Web Developer", es: "Full Stack Web Developer" },
+                detail: { en: "800 hours · Theoretical & practical training", es: "800 horas · Formación teórico-práctica" },
+                year: "2023",
+                href: "/certificate.png",
+              },
+              {
+                institution: "Codo a Codo · Agencia de Habilidades para el Futuro",
+                program: { en: "Full Stack PHP (Codo a Codo 4.0)", es: "Full Stack PHP (Codo a Codo 4.0)" },
+                detail: { en: "198 hours · 20 weeks · Buenos Aires Ciudad", es: "198 horas · 20 semanas · Buenos Aires Ciudad" },
+                year: "2024",
+                href: "/diploma-cac.pdf",
+              },
+              {
+                institution: "Udemy",
+                program: { en: "UX/UI Design & Figma", es: "Diseño UX/UI & Figma" },
+                detail: { en: "22 hours · Design systems & prototyping", es: "22 horas · Design systems y prototipado" },
+                year: "2024",
+                href: null,
+              },
+            ].map((cert, i) => (
+              <motion.div key={i} {...fadeUp(0.08 + i * 0.08)}>
+                <div
+                  className="h-full flex flex-col justify-between rounded-2xl p-6 xl:p-7"
+                  style={{ background: "#fff", border: "1px solid var(--color-divider)" }}
+                >
+                  <div className="flex flex-col gap-3">
+                    <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-accent">{cert.year}</span>
+                    <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-font-primary opacity-50 leading-relaxed">{cert.institution}</p>
+                    <h3 className="font-serif font-bold text-font-secondary text-[18px] xl:text-[20px] leading-tight">
+                      {cert.program[en ? "en" : "es"]}
+                    </h3>
+                    <p className="text-[13px] text-font-primary opacity-60 leading-relaxed">
+                      {cert.detail[en ? "en" : "es"]}
+                    </p>
+                  </div>
+                  {cert.href && (
+                    <a
+                      href={cert.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-6 font-mono text-[10px] uppercase tracking-[0.14em] text-accent border-b border-accent/40 pb-0.5 hover:border-accent transition-colors w-fit"
+                    >
+                      {en ? "View certificate →" : "Ver certificado →"}
+                    </a>
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
     </main>
   );
 }
