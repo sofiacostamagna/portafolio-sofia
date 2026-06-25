@@ -160,10 +160,10 @@ const projects = [
   {
     num: "04",
     title: "Anywhere",
-    category: { en: "UX/UI Design & Frontend", es: "Diseño UX/UI y Frontend" },
+    category: { en: "Design & Frontend", es: "Diseño y Frontend" },
     description: {
-      en: "UX/UI design in Figma and partial frontend development with Next.js and Tailwind for a next-gen travel platform. I also contributed to the HTML email templates for their communications.",
-      es: "Diseño UX/UI en Figma y desarrollo frontend parcial con Next.js y Tailwind para una plataforma de viajes. También contribuí en los templates HTML de emails para sus comunicaciones.",
+      en: "Contributed to UX/UI design in Figma and frontend development with Next.js and Tailwind for a next-gen travel platform, collaborating with a senior designer. I also worked on the HTML email templates for their communications.",
+      es: "Contribuí al diseño UX/UI en Figma y al desarrollo frontend con Next.js y Tailwind para una plataforma de viajes, colaborando junto a un diseñador senior. También trabajé en los templates HTML de emails.",
     },
     tags: ["Figma", "Next.js", "Tailwind", "Email HTML"],
     url: "https://www.anywhere.com/",
@@ -174,12 +174,12 @@ const projects = [
   {
     num: "05",
     title: "Ambassadoria",
-    category: { en: "UX/UI Design & Frontend", es: "Diseño UX/UI y Frontend" },
+    category: { en: "Design & Frontend", es: "Diseño y Frontend" },
     description: {
-      en: "Full UX/UI design in Figma and frontend development with Next.js for a SaaS platform that helps NGOs manage donors, volunteers, and fundraising campaigns from one dashboard.",
-      es: "Diseño UX/UI completo en Figma y desarrollo frontend con Next.js para una plataforma SaaS que ayuda a ONGs a gestionar donantes, voluntarios y campañas desde un panel.",
+      en: "Contributed to UX/UI design in Figma and frontend development with Next.js for a SaaS platform that helps NGOs manage donors, volunteers, and fundraising campaigns from one dashboard.",
+      es: "Contribuí al diseño UX/UI en Figma y al desarrollo frontend con Next.js para una plataforma SaaS que ayuda a ONGs a gestionar donantes, voluntarios y campañas desde un panel.",
     },
-    tags: ["Figma", "Next.js", "Design"],
+    tags: ["Figma", "Next.js", "TypeScript"],
     url: "https://www.ambassadoria.com/",
     blocked: false,
     type: "frontend",
