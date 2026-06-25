@@ -2,106 +2,174 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { SlArrowDown, SlArrowUp } from "react-icons/sl";
+import { useLang } from "../../components/LanguageContext";
 
-const services = [
+const fadeUp = (delay = 0) => ({
+  initial: { opacity: 0, y: 28 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-40px" },
+  transition: { duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] },
+});
+
+const SERVICES = [
   {
     num: "01",
-    title: "Web Development",
-    description:
-      "Development of responsive, accessible websites using React, Next.js, and Tailwind CSS. I specialize in translating Figma designs into clean, high-quality code — pixel-perfect and production-ready.",
+    title: { en: "Web Development", es: "Desarrollo Web" },
+    description: {
+      en: "Responsive, accessible websites with React, Next.js and Tailwind CSS. I specialize in translating Figma designs into clean, production-ready code — pixel-perfect and performant.",
+      es: "Sitios web responsivos y accesibles con React, Next.js y Tailwind CSS. Me especializo en traducir diseños de Figma a código limpio y listo para producción — pixel-perfect y optimizado.",
+    },
+    tags: ["React", "Next.js", "Tailwind CSS", "HTML/CSS"],
   },
   {
     num: "02",
-    title: "UX/UI Design",
-    description:
-      "Design of intuitive and visually cohesive user interfaces in Figma. From wireframes to interactive prototypes, I focus on user flows, hierarchy, and the details that make experiences feel right.",
+    title: { en: "UX/UI Design", es: "Diseño UX/UI" },
+    description: {
+      en: "Intuitive, visually cohesive interfaces in Figma. From wireframes to interactive prototypes — focused on user flows, hierarchy, and the details that make experiences feel right.",
+      es: "Interfaces intuitivas y visualmente cohesivas en Figma. Desde wireframes hasta prototipos interactivos — con foco en flujos de usuario, jerarquía y los detalles que hacen que la experiencia se sienta bien.",
+    },
+    tags: ["Figma", "Wireframing", "Prototyping", "Design Systems"],
   },
   {
     num: "03",
-    title: "Design-to-Code",
-    description:
-      "I bridge the gap between design and engineering — taking Figma files and building them faithfully in code, maintaining design tokens, spacing, and visual consistency throughout.",
+    title: { en: "Design to Code", es: "Diseño a Código" },
+    description: {
+      en: "I bridge the gap between design and engineering — taking Figma files and building them faithfully in code, preserving design tokens, spacing, and visual consistency throughout.",
+      es: "Conecto diseño y desarrollo — tomando archivos de Figma y construyéndolos fielmente en código, preservando tokens de diseño, espaciado y consistencia visual.",
+    },
+    tags: ["Figma", "React", "CSS", "Design Tokens"],
   },
   {
     num: "04",
-    title: "Frontend Optimization",
-    description:
-      "Performance audits and improvements for existing web interfaces. From Core Web Vitals to accessibility and responsive refinements, I help make good products better.",
+    title: { en: "WordPress & CMS", es: "WordPress y CMS" },
+    description: {
+      en: "Custom WordPress sites with tailored themes and PHP. Clean, maintainable, and easy for clients to manage — without sacrificing design quality.",
+      es: "Sitios WordPress a medida con temas propios y PHP. Limpios, mantenibles y fáciles de gestionar para el cliente — sin sacrificar calidad de diseño.",
+    },
+    tags: ["WordPress", "PHP", "CSS", "Custom Themes"],
   },
 ];
 
-const ServiceItem = ({ service, isOpen, onClick }) => {
-  return (
-    <div
-      className="border-b border-divider py-8 cursor-pointer group"
-      onClick={onClick}
-    >
-      <div className="flex justify-between items-start gap-6">
-        <div className="flex-1">
-          <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-accent mb-4 block">
-            {service.num}
-          </span>
-          <h3
-            className={`font-serif text-[26px] xl:text-[36px] font-medium transition-colors duration-300 ${
-              isOpen ? "text-accent" : "text-font-secondary group-hover:text-accent"
-            }`}
-          >
-            {service.title}
-          </h3>
-          <AnimatePresence>
-            {isOpen && (
-              <motion.p
-                className="text-font-primary text-[15px] leading-relaxed mt-5 max-w-[560px]"
-                initial={{ opacity: 0, y: -6 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
-                transition={{ duration: 0.25 }}
-              >
-                {service.description}
-              </motion.p>
-            )}
-          </AnimatePresence>
-        </div>
-        <button
-          aria-expanded={isOpen}
-          className={`mt-1 w-9 h-9 rounded-full border flex-shrink-0 flex justify-center items-center transition-all duration-300 ${
-            isOpen
-              ? "border-accent bg-accent text-white"
-              : "border-divider text-font-primary group-hover:border-accent group-hover:text-accent"
-          }`}
-        >
-          {isOpen ? <SlArrowUp size={12} /> : <SlArrowDown size={12} />}
-        </button>
-      </div>
-    </div>
-  );
-};
-
-const Services = () => {
+export default function Services() {
+  const { lang } = useLang();
+  const en = lang === "en";
   const [openIndex, setOpenIndex] = useState(null);
 
-  const toggle = (index) =>
-    setOpenIndex((prev) => (prev === index ? null : index));
+  const toggle = (i) => setOpenIndex((prev) => (prev === i ? null : i));
 
   return (
-    <section className="min-h-[80vh] py-12 xl:py-20 flex flex-col justify-center">
-      <div className="container mx-auto">
-        <div className="max-w-[720px]">
-          <span className="label mb-4 block">What I do</span>
-          <h2 className="mb-12">Services</h2>
-          {services.map((service, index) => (
-            <ServiceItem
-              key={index}
-              service={service}
-              isOpen={openIndex === index}
-              onClick={() => toggle(index)}
-            />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
+    <main className="pt-24 pb-28 min-h-screen">
+      <section className="px-8 xl:px-[10vw] 2xl:px-[12vw] pt-16 pb-20 xl:pt-24 xl:pb-28">
 
-export default Services;
+        {/* Header */}
+        <div className="max-w-xl mb-16 xl:mb-20">
+          <motion.span {...fadeUp(0)} className="label block mb-5">
+            {en ? "What I do" : "Lo que hago"}
+          </motion.span>
+          <motion.h1
+            {...fadeUp(0.08)}
+            className="font-serif font-bold text-font-secondary"
+            style={{ fontSize: "clamp(36px, 5vw, 64px)", lineHeight: 1.05 }}
+          >
+            {en
+              ? <><em className="text-accent italic">Services</em></>
+              : <><em className="text-accent italic">Servicios</em></>
+            }
+          </motion.h1>
+          <motion.p
+            {...fadeUp(0.16)}
+            className="text-[16px] xl:text-[17px] text-font-primary leading-relaxed mt-6 opacity-70"
+          >
+            {en
+              ? "A focused set of things I'm good at and genuinely enjoy doing."
+              : "Un conjunto de cosas que hago bien y que genuinamente disfruto."
+            }
+          </motion.p>
+        </div>
+
+        {/* Accordion */}
+        <div className="border-t border-divider">
+          {SERVICES.map((s, i) => {
+            const isOpen = openIndex === i;
+            return (
+              <motion.div
+                key={s.num}
+                {...fadeUp(0.08 + i * 0.06)}
+                className="border-b border-divider"
+              >
+                <button
+                  className="w-full text-left py-8 xl:py-10 cursor-pointer group"
+                  onClick={() => toggle(i)}
+                  aria-expanded={isOpen}
+                >
+                  <div className="flex justify-between items-start gap-6">
+                    <div className="flex-1">
+                      <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-accent mb-3 block">
+                        {s.num}
+                      </span>
+                      <h3
+                        className="font-serif font-medium transition-colors duration-300"
+                        style={{
+                          fontSize: "clamp(22px, 2.8vw, 36px)",
+                          color: isOpen ? "var(--color-accent)" : "var(--color-font-secondary)",
+                        }}
+                      >
+                        {s.title[en ? "en" : "es"]}
+                      </h3>
+                    </div>
+
+                    {/* Toggle icon */}
+                    <div
+                      className="flex-shrink-0 mt-1 w-9 h-9 rounded-full border flex items-center justify-center transition-all duration-300"
+                      style={{
+                        borderColor: isOpen ? "var(--color-accent)" : "var(--color-divider)",
+                        background: isOpen ? "var(--color-accent)" : "transparent",
+                        color: isOpen ? "#fff" : "var(--color-font-primary)",
+                      }}
+                    >
+                      <motion.span
+                        animate={{ rotate: isOpen ? 45 : 0 }}
+                        transition={{ duration: 0.25 }}
+                        style={{ display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, lineHeight: 1 }}
+                      >
+                        +
+                      </motion.span>
+                    </div>
+                  </div>
+
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                        style={{ overflow: "hidden" }}
+                      >
+                        <p className="text-[15px] xl:text-[16px] text-font-primary leading-relaxed mt-5 max-w-[600px]">
+                          {s.description[en ? "en" : "es"]}
+                        </p>
+                        <div className="flex gap-2 flex-wrap mt-5">
+                          {s.tags.map(tag => (
+                            <span key={tag} className="font-mono text-[11px]" style={{
+                              border: "1px solid var(--color-divider)",
+                              borderRadius: 100,
+                              padding: "4px 13px",
+                              color: "var(--color-font-primary)",
+                              opacity: 0.6,
+                            }}>{tag}</span>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </button>
+              </motion.div>
+            );
+          })}
+        </div>
+
+      </section>
+    </main>
+  );
+}
