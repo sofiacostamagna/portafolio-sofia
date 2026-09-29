@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FiDownload } from "react-icons/fi";
 import { motion } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useInView } from "framer-motion";
 import { useLang } from "../components/LanguageContext";
 import Testimonials from "../components/Testimonials";
@@ -110,13 +110,25 @@ export default function Home() {
   const { t, lang } = useLang();
   const worksRef = useRef(null);
   const worksInView = useInView(worksRef, { once: true, margin: "-80px" });
+  const carouselRef = useRef(null);
+  const [slide, setSlide] = useState(0);
+
+  const onCarouselScroll = () => {
+    const el = carouselRef.current;
+    if (el) setSlide(Math.round(el.scrollLeft / el.clientWidth));
+  };
+
+  const goToSlide = (i) => {
+    const el = carouselRef.current;
+    if (el) el.scrollTo({ left: i * el.clientWidth, behavior: "smooth" });
+  };
 
   return (
     <>
       {/* ═══════════════════════════
           HERO
       ═══════════════════════════ */}
-      <section className="flex items-center pt-28 pb-24 xl:pt-36 xl:pb-32">
+      <section className="flex items-center pt-28 pb-12 xl:pt-36 xl:pb-16">
         <div className="w-full px-8 xl:px-[10vw] 2xl:px-[12vw]">
           <div className="flex flex-col xl:flex-row gap-10 xl:gap-16 items-center">
 
@@ -144,12 +156,12 @@ export default function Home() {
 
               <motion.div variants={fadeUp} className="flex flex-wrap gap-3">
                 <Link href="/contact">
-                  <button className="bg-accent text-white font-mono text-[11px] uppercase tracking-[0.14em] px-7 py-3.5 rounded-sm hover:bg-accent-hover transition-all duration-300">
+                  <button className="bg-accent text-white font-mono text-[11px] uppercase tracking-[0.14em] px-7 py-3.5 rounded-full hover:bg-accent-hover transition-all duration-300">
                     {t.hero.cta}
                   </button>
                 </Link>
                 <a href={lang === "en" ? "/Sofia Costamagna-eng.pdf" : "/Sofia Costamagna-esp.pdf"} download>
-                  <button className="border border-divider text-font-primary font-mono text-[11px] uppercase tracking-[0.14em] px-7 py-3.5 rounded-sm hover:border-accent hover:text-accent transition-all duration-300 flex items-center gap-2">
+                  <button className="border border-divider text-font-primary font-mono text-[11px] uppercase tracking-[0.14em] px-7 py-3.5 rounded-full hover:border-accent hover:text-accent transition-all duration-300 flex items-center gap-2">
                     {t.hero.cv} <FiDownload size={11} />
                   </button>
                 </a>
@@ -212,7 +224,7 @@ export default function Home() {
       ═══════════════════════════ */}
       <section
         ref={worksRef}
-        className="py-20 xl:py-28"
+        className="pt-12 pb-20 xl:pt-16 xl:pb-28"
       >
         {/* Section header */}
         <div className="px-8 xl:px-[10vw] 2xl:px-[12vw]">
@@ -246,6 +258,8 @@ export default function Home() {
 
         {/* ── MOBILE/TABLET: carrusel 1 item a la vez ── */}
         <div
+          ref={carouselRef}
+          onScroll={onCarouselScroll}
           className="lg:hidden flex overflow-x-auto snap-x snap-mandatory"
           style={{ scrollbarWidth: "none", WebkitOverflowScrolling: "touch" }}
         >
@@ -289,7 +303,13 @@ export default function Home() {
         {/* ── Dots navegación carrusel (solo mobile) ── */}
         <div className="lg:hidden flex justify-center gap-2 pb-6">
           {[0, 1, 2].map((i) => (
-            <span key={i} style={{ width: 6, height: 6, borderRadius: "50%", background: i === 0 ? "#7f77dd" : "#d0d0d0", display: "inline-block" }} />
+            <button
+              key={i}
+              onClick={() => goToSlide(i)}
+              aria-label={`${i + 1} / 3`}
+              className="h-1.5 rounded-full transition-all duration-300"
+              style={{ width: i === slide ? 20 : 6, background: i === slide ? "#7f77dd" : "#d0d0d0" }}
+            />
           ))}
         </div>
 

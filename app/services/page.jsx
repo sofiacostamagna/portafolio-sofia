@@ -1,8 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { FiCode, FiPenTool, FiLayers, FiCheck, FiArrowUpRight, FiStar } from "react-icons/fi";
+import { SiWordpress } from "react-icons/si";
 import { useLang } from "../../components/LanguageContext";
+import { testimonials, UPWORK_PROFILE_URL } from "../../lib/testimonials";
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 28 },
@@ -14,161 +17,253 @@ const fadeUp = (delay = 0) => ({
 const SERVICES = [
   {
     num: "01",
+    icon: FiCode,
     title: { en: "Web Development", es: "Desarrollo Web" },
     description: {
-      en: "Responsive, accessible websites with React, Next.js and Tailwind CSS. I specialize in translating Figma designs into clean, production-ready code — pixel-perfect and performant.",
-      es: "Sitios web responsivos y accesibles con React, Next.js y Tailwind CSS. Me especializo en traducir diseños de Figma a código limpio y listo para producción — pixel-perfect y optimizado.",
+      en: "Responsive, accessible websites with React, Next.js and Tailwind CSS — fast, clean and ready for production.",
+      es: "Sitios web responsivos y accesibles con React, Next.js y Tailwind CSS — rápidos, prolijos y listos para producción.",
     },
-    tags: ["React", "Next.js", "Tailwind CSS", "HTML/CSS"],
+    includes: {
+      en: ["Looks great on every device", "Performance & SEO best practices", "Clean, maintainable code"],
+      es: ["Se ve bien en cualquier dispositivo", "Buenas prácticas de rendimiento y SEO", "Código limpio y fácil de mantener"],
+    },
+    tags: ["React", "Next.js", "Tailwind CSS", "JavaScript"],
   },
   {
     num: "02",
+    icon: FiPenTool,
     title: { en: "UX/UI Design", es: "Diseño UX/UI" },
     description: {
-      en: "Intuitive, visually cohesive interfaces in Figma. From wireframes to interactive prototypes — focused on user flows, hierarchy, and the details that make experiences feel right.",
-      es: "Interfaces intuitivas y visualmente cohesivas en Figma. Desde wireframes hasta prototipos interactivos — con foco en flujos de usuario, jerarquía y los detalles que hacen que la experiencia se sienta bien.",
+      en: "Intuitive, visually cohesive interfaces in Figma — focused on user flows, hierarchy and the details that make an experience feel right.",
+      es: "Interfaces intuitivas y cohesivas en Figma — con foco en flujos de usuario, jerarquía y los detalles que hacen que la experiencia se sienta bien.",
+    },
+    includes: {
+      en: ["Wireframes & user flows", "Interactive prototypes", "Consistent visual system"],
+      es: ["Wireframes y flujos de usuario", "Prototipos interactivos", "Sistema visual consistente"],
     },
     tags: ["Figma", "Wireframing", "Prototyping", "Design Systems"],
   },
   {
     num: "03",
+    icon: FiLayers,
     title: { en: "Design to Code", es: "Diseño a Código" },
     description: {
-      en: "I bridge the gap between design and engineering — taking Figma files and building them faithfully in code, preserving design tokens, spacing, and visual consistency throughout.",
-      es: "Conecto diseño y desarrollo — tomando archivos de Figma y construyéndolos fielmente en código, preservando tokens de diseño, espaciado y consistencia visual.",
+      en: "Already have a design? I build Figma files faithfully in code, preserving spacing, tokens and visual consistency.",
+      es: "¿Ya tenés el diseño? Construyo tus archivos de Figma fielmente en código, respetando espaciados, tokens y consistencia visual.",
+    },
+    includes: {
+      en: ["Faithful to the original design", "Reusable components", "Design tokens preserved"],
+      es: ["Fiel al diseño original", "Componentes reutilizables", "Tokens de diseño respetados"],
     },
     tags: ["Figma", "React", "CSS", "Design Tokens"],
   },
   {
     num: "04",
+    icon: SiWordpress,
     title: { en: "WordPress & CMS", es: "WordPress y CMS" },
     description: {
-      en: "Custom WordPress sites with tailored themes and PHP. Clean, maintainable, and easy for clients to manage — without sacrificing design quality.",
-      es: "Sitios WordPress a medida con temas propios y PHP. Limpios, mantenibles y fáciles de gestionar para el cliente — sin sacrificar calidad de diseño.",
+      en: "Custom WordPress sites with tailored themes and PHP — easy for you to manage, without sacrificing design quality.",
+      es: "Sitios WordPress a medida con temas propios y PHP — fáciles de gestionar para vos, sin sacrificar calidad de diseño.",
+    },
+    includes: {
+      en: ["Custom theme, no generic templates", "Easy content editing", "Mobile-first design"],
+      es: ["Tema a medida, sin plantillas genéricas", "Edición de contenido simple", "Diseño mobile-first"],
     },
     tags: ["WordPress", "PHP", "CSS", "Custom Themes"],
   },
 ];
 
+const PROCESS = [
+  {
+    title: { en: "Discovery", es: "Descubrimiento" },
+    text: {
+      en: "We talk about your goals, your audience and what you need. I come back with a clear scope and timeline.",
+      es: "Hablamos de tus objetivos, tu público y lo que necesitás. Te devuelvo un alcance y tiempos claros.",
+    },
+  },
+  {
+    title: { en: "Design", es: "Diseño" },
+    text: {
+      en: "I shape the experience in Figma — or work from your existing design — and we refine it together with your feedback.",
+      es: "Diseño la experiencia en Figma — o parto de tu diseño — y lo ajustamos juntos con tu feedback.",
+    },
+  },
+  {
+    title: { en: "Build", es: "Desarrollo" },
+    text: {
+      en: "I turn it into fast, responsive code and share progress along the way, so there are no surprises.",
+      es: "Lo convierto en código rápido y responsivo, y te muestro avances en el camino para que no haya sorpresas.",
+    },
+  },
+  {
+    title: { en: "Launch & support", es: "Lanzamiento y soporte" },
+    text: {
+      en: "We test on real devices, go live, and I stay around for adjustments after launch.",
+      es: "Probamos en dispositivos reales, publicamos, y sigo disponible para ajustes después del lanzamiento.",
+    },
+  },
+];
+
+// Reseña destacada (completa, sin truncar)
+const featured = testimonials[0];
+
 export default function Services() {
   const { lang } = useLang();
   const en = lang === "en";
-  const [openIndex, setOpenIndex] = useState(null);
-
-  const toggle = (i) => setOpenIndex((prev) => (prev === i ? null : i));
+  const l = en ? "en" : "es";
 
   return (
-    <main className="pt-24 pb-28 min-h-screen">
-      <section className="px-8 xl:px-[10vw] 2xl:px-[12vw] pt-16 pb-20 xl:pt-24 xl:pb-28">
+    <main className="pt-24 pb-16 min-h-screen">
 
-        {/* Header */}
-        <div className="max-w-xl mb-16 xl:mb-20">
-          <motion.span {...fadeUp(0)} className="label block mb-5">
-            {en ? "What I do" : "Lo que hago"}
-          </motion.span>
-          <motion.h1
-            {...fadeUp(0.08)}
-            className="font-serif font-bold text-font-secondary"
-            style={{ fontSize: "clamp(36px, 5vw, 64px)", lineHeight: 1.05 }}
-          >
-            {en
-              ? <><em className="text-accent italic">Services</em></>
-              : <><em className="text-accent italic">Servicios</em></>
-            }
-          </motion.h1>
-          <motion.p
-            {...fadeUp(0.16)}
-            className="text-[16px] xl:text-[17px] text-font-primary leading-relaxed mt-6 opacity-70"
-          >
-            {en
-              ? "A focused set of things I'm good at and genuinely enjoy doing."
-              : "Un conjunto de cosas que hago bien y que genuinamente disfruto."
-            }
-          </motion.p>
+      {/* ── Header ── */}
+      <section className="px-8 xl:px-[10vw] 2xl:px-[12vw] pt-16 xl:pt-24">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
+          <div className="max-w-2xl">
+            <motion.span {...fadeUp(0)} className="label block mb-5">
+              {en ? "Services" : "Servicios"}
+            </motion.span>
+            <motion.h1
+              {...fadeUp(0.08)}
+              className="font-serif font-bold text-font-secondary"
+              style={{ fontSize: "clamp(38px, 5.4vw, 72px)", lineHeight: 1.04 }}
+            >
+              {en
+                ? <>How I can <em className="text-accent italic">help</em></>
+                : <>Cómo puedo <em className="text-accent italic">ayudarte</em></>}
+            </motion.h1>
+            <motion.p
+              {...fadeUp(0.16)}
+              className="text-[16px] xl:text-[18px] text-font-primary leading-relaxed mt-6"
+            >
+              {en
+                ? "From the first sketch to the live site — design, development, or both. You work directly with me the whole way."
+                : "Desde el primer boceto hasta el sitio publicado — diseño, desarrollo o ambos. Trabajás directamente conmigo en todo el proceso."}
+            </motion.p>
+          </div>
+          <motion.div {...fadeUp(0.2)}>
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-2 bg-accent text-white font-mono text-[11px] uppercase tracking-[0.14em] px-7 py-3.5 rounded-full hover:bg-accent-hover transition-colors duration-300"
+            >
+              {en ? "Tell me about your project" : "Contame tu proyecto"} <FiArrowUpRight size={13} />
+            </Link>
+          </motion.div>
         </div>
+      </section>
 
-        {/* Accordion */}
-        <div className="border-t border-divider">
+      {/* ── Service cards ── */}
+      <section className="px-8 xl:px-[10vw] 2xl:px-[12vw] pt-14 xl:pt-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {SERVICES.map((s, i) => {
-            const isOpen = openIndex === i;
+            const Icon = s.icon;
             return (
-              <motion.div
+              <motion.article
                 key={s.num}
-                {...fadeUp(0.08 + i * 0.06)}
-                className="border-b border-divider"
+                {...fadeUp(0.05 + (i % 2) * 0.08)}
+                className="group bg-white border border-divider rounded-3xl p-8 xl:p-10 flex flex-col gap-6 hover:border-accent/50 hover:shadow-[0_20px_50px_-20px_rgba(127,119,221,0.35)] transition-all duration-300"
               >
-                <button
-                  className="w-full text-left py-8 xl:py-10 cursor-pointer group"
-                  onClick={() => toggle(i)}
-                  aria-expanded={isOpen}
-                >
-                  <div className="flex justify-between items-start gap-6">
-                    <div className="flex-1">
-                      <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-accent mb-3 block">
-                        {s.num}
-                      </span>
-                      <h3
-                        className="font-serif font-medium transition-colors duration-300"
-                        style={{
-                          fontSize: "clamp(22px, 2.8vw, 36px)",
-                          color: isOpen ? "var(--color-accent)" : "var(--color-font-secondary)",
-                        }}
-                      >
-                        {s.title[en ? "en" : "es"]}
-                      </h3>
-                    </div>
-
-                    {/* Toggle icon */}
-                    <div
-                      className="flex-shrink-0 mt-1 w-9 h-9 rounded-full border flex items-center justify-center transition-all duration-300"
-                      style={{
-                        borderColor: isOpen ? "var(--color-accent)" : "var(--color-divider)",
-                        background: isOpen ? "var(--color-accent)" : "transparent",
-                        color: isOpen ? "#fff" : "var(--color-font-primary)",
-                      }}
-                    >
-                      <motion.span
-                        animate={{ rotate: isOpen ? 45 : 0 }}
-                        transition={{ duration: 0.25 }}
-                        style={{ display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, lineHeight: 1 }}
-                      >
-                        +
-                      </motion.span>
-                    </div>
+                <div className="flex items-start justify-between">
+                  <div className="w-14 h-14 rounded-2xl bg-accent-light text-accent flex items-center justify-center group-hover:bg-accent group-hover:text-white transition-colors duration-300">
+                    <Icon size={24} />
                   </div>
+                  <span className="font-mono text-[11px] tracking-[0.15em] text-font-primary opacity-50">{s.num}</span>
+                </div>
 
-                  <AnimatePresence>
-                    {isOpen && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                        style={{ overflow: "hidden" }}
-                      >
-                        <p className="text-[15px] xl:text-[16px] text-font-primary leading-relaxed mt-5 max-w-[600px]">
-                          {s.description[en ? "en" : "es"]}
-                        </p>
-                        <div className="flex gap-2 flex-wrap mt-5">
-                          {s.tags.map(tag => (
-                            <span key={tag} className="font-mono text-[11px]" style={{
-                              border: "1px solid var(--color-divider)",
-                              borderRadius: 100,
-                              padding: "4px 13px",
-                              color: "var(--color-font-primary)",
-                              opacity: 0.6,
-                            }}>{tag}</span>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </button>
-              </motion.div>
+                <div>
+                  <h2 className="font-serif font-bold text-font-secondary" style={{ fontSize: "clamp(24px, 2.4vw, 32px)", lineHeight: 1.1 }}>
+                    {s.title[l]}
+                  </h2>
+                  <p className="text-[15px] xl:text-[16px] text-font-primary leading-relaxed mt-3">
+                    {s.description[l]}
+                  </p>
+                </div>
+
+                <ul className="flex flex-col gap-2.5">
+                  {s.includes[l].map((item) => (
+                    <li key={item} className="flex items-center gap-3 text-[15px] text-font-secondary">
+                      <span className="w-5 h-5 rounded-full bg-accent-light text-accent flex items-center justify-center flex-shrink-0">
+                        <FiCheck size={12} strokeWidth={3} />
+                      </span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="flex gap-2 flex-wrap mt-auto pt-5 border-t border-divider">
+                  {s.tags.map((tag) => (
+                    <span key={tag} className="font-mono text-[10px] text-accent border border-accent/25 px-3 py-1 rounded-full">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </motion.article>
             );
           })}
         </div>
+      </section>
 
+      {/* ── Process ── */}
+      <section className="px-8 xl:px-[10vw] 2xl:px-[12vw] pt-24 xl:pt-32">
+        <motion.span {...fadeUp(0)} className="label block mb-4">
+          {en ? "How I work" : "Cómo trabajo"}
+        </motion.span>
+        <motion.h2
+          {...fadeUp(0.06)}
+          className="font-serif font-bold text-font-secondary mb-12 xl:mb-16"
+          style={{ fontSize: "clamp(32px, 4vw, 52px)", lineHeight: 1.05 }}
+        >
+          {en
+            ? <>A simple, <em className="text-accent italic">transparent</em> process</>
+            : <>Un proceso simple y <em className="text-accent italic">transparente</em></>}
+        </motion.h2>
+
+        <ol className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-10 xl:gap-8">
+          {PROCESS.map((step, i) => (
+            <motion.li key={i} {...fadeUp(0.08 + i * 0.08)} className="relative flex flex-col gap-3">
+              <div className="flex items-center gap-4 mb-2">
+                <span className="w-11 h-11 rounded-full border border-accent/40 text-accent font-serif italic text-[20px] flex items-center justify-center flex-shrink-0">
+                  {i + 1}
+                </span>
+                {i < PROCESS.length - 1 && (
+                  <span className="hidden xl:block h-px flex-1 bg-gradient-to-r from-accent/40 to-transparent" />
+                )}
+              </div>
+              <h3 className="font-serif font-bold text-font-secondary text-[22px]">{step.title[l]}</h3>
+              <p className="text-[15px] text-font-primary leading-relaxed">{step.text[l]}</p>
+            </motion.li>
+          ))}
+        </ol>
+      </section>
+
+      {/* ── Featured review ── */}
+      <section className="px-8 xl:px-[10vw] 2xl:px-[12vw] pt-24 xl:pt-32">
+        <motion.figure
+          {...fadeUp(0)}
+          className="rounded-3xl bg-accent-light px-8 py-12 xl:px-16 xl:py-16 flex flex-col items-center text-center gap-6"
+        >
+          <div className="flex gap-1 text-accent">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <FiStar key={i} size={16} style={{ fill: "currentColor" }} />
+            ))}
+          </div>
+          <blockquote
+            className="font-serif italic text-font-secondary max-w-3xl"
+            style={{ fontSize: "clamp(22px, 2.6vw, 34px)", lineHeight: 1.3 }}
+          >
+            “{featured.quote}”
+          </blockquote>
+          <figcaption className="flex flex-col items-center gap-2">
+            <span className="text-[14px] text-font-primary">{featured.project}</span>
+            <a
+              href={UPWORK_PROFILE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono text-[10px] uppercase tracking-[0.14em] text-accent border-b border-accent/40 hover:border-accent pb-0.5 inline-flex items-center gap-1"
+            >
+              {en ? "Verified client on Upwork" : "Cliente verificado en Upwork"} <FiArrowUpRight size={11} />
+            </a>
+          </figcaption>
+        </motion.figure>
       </section>
     </main>
   );

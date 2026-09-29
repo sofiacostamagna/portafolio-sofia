@@ -348,7 +348,7 @@ export default function Work() {
             </p>
           </div>
           <Link href="/contact">
-            <button className="bg-accent text-white font-mono text-[11px] uppercase tracking-[0.14em] px-6 py-3 rounded-sm hover:bg-accent-hover transition-all duration-300 flex-shrink-0 whitespace-nowrap">
+            <button className="bg-accent text-white font-mono text-[11px] uppercase tracking-[0.14em] px-6 py-3 rounded-full hover:bg-accent-hover transition-all duration-300 flex-shrink-0 whitespace-nowrap">
               {lang === "en" ? "Get in touch" : "Hablemos"}
             </button>
           </Link>

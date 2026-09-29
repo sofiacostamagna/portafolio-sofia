@@ -189,7 +189,7 @@ export default function Contact() {
                   <button
                     type="submit"
                     disabled={status === "sending"}
-                    className="w-full py-4 rounded-xl font-mono text-[12px] uppercase tracking-[0.16em] transition-all duration-300 mt-2"
+                    className="w-full py-4 rounded-full font-mono text-[12px] uppercase tracking-[0.16em] transition-all duration-300 mt-2"
                     style={{
                       background: status === "sending" ? "transparent" : "#7f77dd",
                       color: status === "sending" ? "#7f77dd" : "#fff",

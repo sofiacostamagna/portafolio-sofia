@@ -77,7 +77,7 @@ const Header = () => {
               {lang === "en" ? "🇦🇷" : "🇺🇸"}
             </button>
             <Link href="/contact">
-              <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-white bg-accent px-5 py-2 rounded-lg hover:bg-accent-hover transition-all duration-300 cursor-pointer">
+              <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-white bg-accent px-5 py-2.5 rounded-full hover:bg-accent-hover transition-all duration-300 cursor-pointer">
                 {t.nav.contact}
               </span>
             </Link>
@@ -125,7 +125,7 @@ const Header = () => {
               );
             })}
             <Link href="/contact" className="mt-2">
-              <span className="block font-mono text-[11px] uppercase tracking-[0.15em] text-white bg-accent px-4 py-3 rounded-lg text-center hover:bg-accent-hover transition-all duration-300">
+              <span className="block font-mono text-[11px] uppercase tracking-[0.15em] text-white bg-accent px-4 py-3 rounded-full text-center hover:bg-accent-hover transition-all duration-300">
                 {t.nav.contact}
               </span>
             </Link>
