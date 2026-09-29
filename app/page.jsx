@@ -4,9 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { FiDownload } from "react-icons/fi";
 import { motion } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { useRef } from "react";
 import { useInView } from "framer-motion";
 import { useLang } from "../components/LanguageContext";
+import Testimonials from "../components/Testimonials";
+import ScrollableScreenshot from "../components/ScrollableScreenshot";
+import { previewSrc } from "../lib/previews";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -24,30 +27,9 @@ const photoCard = (rotate, delay) => ({
 });
 
 /* ─────────────────────────────────────
-   MacBook mockup — iframe live preview
-   screenWidth: visible px width of the screen area
+   MacBook mockup — captura de página completa scrolleable
 ───────────────────────────────────── */
-function MacBook({ screenHeight, siteUrl, label, tags, large, viewW: viewWProp }) {
-  const viewW = viewWProp ?? (large ? 436 : 296);
-  const renderW = 1200;
-  const scale = viewW / renderW;
-  const iframeH = 5000;
-  const maxScroll = iframeH * scale - screenHeight;
-  const [scrollY, setScrollY] = useState(0);
-  const screenRef = useRef(null);
-  const touchY = useRef(0);
-
-  useEffect(() => {
-    const el = screenRef.current;
-    if (!el) return;
-    const onWheel = (e) => {
-      e.preventDefault();
-      setScrollY(prev => Math.max(0, Math.min(maxScroll, prev + e.deltaY)));
-    };
-    el.addEventListener("wheel", onWheel, { passive: false });
-    return () => el.removeEventListener("wheel", onWheel);
-  }, [maxScroll]);
-
+function MacBook({ screenHeight, siteUrl, label, tags, large }) {
   return (
     <div>
       {/* Lid */}
@@ -67,33 +49,8 @@ function MacBook({ screenHeight, siteUrl, label, tags, large, viewW: viewWProp }
               {siteUrl?.replace("https://", "").replace("http://", "")}
             </div>
           </div>
-          {/* Screen — scale miniaturiza, wheel event mueve el iframe */}
-          <div
-            ref={screenRef}
-            style={{ height: screenHeight, overflow: "hidden", position: "relative", background: "#f5f5f5", cursor: "ns-resize" }}
-            onTouchStart={(e) => { touchY.current = e.touches[0].clientY; }}
-            onTouchMove={(e) => {
-              const dy = touchY.current - e.touches[0].clientY;
-              touchY.current = e.touches[0].clientY;
-              setScrollY(prev => Math.max(0, Math.min(maxScroll, prev + dy)));
-            }}
-          >
-            <iframe
-              src={siteUrl}
-              title={label}
-              style={{
-                position: "absolute",
-                top: -scrollY,
-                left: 0,
-                width: renderW,
-                height: iframeH,
-                border: "none",
-                transform: `scale(${scale})`,
-                transformOrigin: "top left",
-                pointerEvents: "none",
-              }}
-            />
-          </div>
+          {/* Screen — captura scrolleable */}
+          <ScrollableScreenshot src={previewSrc(siteUrl)} alt={label} height={screenHeight} />
         </div>
       </div>
       {/* Hinge */}
@@ -117,29 +74,10 @@ function MacBook({ screenHeight, siteUrl, label, tags, large, viewW: viewWProp }
 }
 
 /* ─────────────────────────────────────
-   iPhone mockup — iframe live preview
+   iPhone mockup — captura mobile scrolleable
 ───────────────────────────────────── */
 function Phone({ siteUrl, label, tags }) {
-  const viewW = 200; // 216px outer - 8px padding x2
-  const renderW = 375;
-  const scale = viewW / renderW;
   const screenH = 290;
-  const iframeH = 5000;
-  const maxScroll = iframeH * scale - screenH;
-  const [scrollY, setScrollY] = useState(0);
-  const screenRef = useRef(null);
-  const touchY = useRef(0);
-
-  useEffect(() => {
-    const el = screenRef.current;
-    if (!el) return;
-    const onWheel = (e) => {
-      e.preventDefault();
-      setScrollY(prev => Math.max(0, Math.min(maxScroll, prev + e.deltaY)));
-    };
-    el.addEventListener("wheel", onWheel, { passive: false });
-    return () => el.removeEventListener("wheel", onWheel);
-  }, [maxScroll]);
 
   return (
     <div>
@@ -148,33 +86,8 @@ function Phone({ siteUrl, label, tags }) {
         <div style={{ display: "flex", justifyContent: "center", marginBottom: 6 }}>
           <div style={{ width: 56, height: 16, background: "#000", borderRadius: 10 }} />
         </div>
-        {/* Screen — scale + wheel scroll */}
-        <div
-          ref={screenRef}
-          style={{ borderRadius: 22, overflow: "hidden", height: screenH, position: "relative", background: "#f5f5f5", cursor: "ns-resize" }}
-          onTouchStart={(e) => { touchY.current = e.touches[0].clientY; }}
-          onTouchMove={(e) => {
-            const dy = touchY.current - e.touches[0].clientY;
-            touchY.current = e.touches[0].clientY;
-            setScrollY(prev => Math.max(0, Math.min(maxScroll, prev + dy)));
-          }}
-        >
-          <iframe
-            src={siteUrl}
-            title={label}
-            style={{
-              position: "absolute",
-              top: -scrollY,
-              left: 0,
-              width: renderW,
-              height: iframeH,
-              border: "none",
-              transform: `scale(${scale})`,
-              transformOrigin: "top left",
-              pointerEvents: "none",
-            }}
-          />
-        </div>
+        {/* Screen — captura mobile scrolleable */}
+        <ScrollableScreenshot src={previewSrc(siteUrl, "mobile")} alt={label} height={screenH} radius={22} />
         {/* Home indicator */}
         <div style={{ display: "flex", justifyContent: "center", marginTop: 8 }}>
           <div style={{ width: 48, height: 4, background: "rgba(255,255,255,0.25)", borderRadius: 2 }} />
@@ -343,19 +256,19 @@ export default function Home() {
           >
             <div className="group cursor-pointer" style={{ width: 280 }}>
               <a href={t.work.projects[0].url} target="_blank" rel="noopener noreferrer" className="block">
-                <MacBook screenHeight={160} siteUrl={t.work.projects[0].url} label={t.work.projects[0].title} tags={t.work.projects[0].tags} viewW={250} />
+                <MacBook screenHeight={160} siteUrl={t.work.projects[0].url} label={t.work.projects[0].title} tags={t.work.projects[0].tags} />
               </a>
             </div>
           </div>
 
-          {/* Buildeezy — laptop slide */}
+          {/* Aruma Clinic — laptop slide */}
           <div
             className="snap-start flex-shrink-0 flex justify-center pb-6 pt-2"
             style={{ width: "100vw" }}
           >
             <div className="group cursor-pointer" style={{ width: 280 }}>
               <a href={t.work.projects[1].url} target="_blank" rel="noopener noreferrer" className="block">
-                <MacBook screenHeight={160} siteUrl={t.work.projects[1].url} label={t.work.projects[1].title} tags={t.work.projects[1].tags} viewW={250} />
+                <MacBook screenHeight={160} siteUrl={t.work.projects[1].url} label={t.work.projects[1].title} tags={t.work.projects[1].tags} />
               </a>
             </div>
           </div>
@@ -451,6 +364,11 @@ export default function Home() {
           </Link>
         </div>
       </section>
+
+      {/* ═══════════════════════════
+          TESTIMONIALS — reseñas de Upwork
+      ═══════════════════════════ */}
+      <Testimonials />
     </>
   );
 }

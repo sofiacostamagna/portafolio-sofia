@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import { useLang } from "./LanguageContext";
+import Logo from "./Logo";
 import { CiMenuFries } from "react-icons/ci";
 import { IoCloseOutline } from "react-icons/io5";
 
@@ -43,11 +44,7 @@ const Header = () => {
         <div className="flex items-center justify-between gap-4 px-5 py-3">
 
           {/* Logo */}
-          <Link href="/" className="flex-shrink-0">
-            <span className="font-mono text-lg font-bold text-font-secondary tracking-tight">
-              SC<span className="text-accent">.</span>
-            </span>
-          </Link>
+          <Logo size={26} className="flex-shrink-0 text-font-secondary" />
 
           {/* Desktop nav */}
           <nav className="hidden xl:flex items-center gap-1">

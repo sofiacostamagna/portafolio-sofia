@@ -5,32 +5,13 @@ import { useState, useRef, useEffect } from "react";
 import { BsArrowUpRight } from "react-icons/bs";
 import Link from "next/link";
 import { useLang } from "../../components/LanguageContext";
+import ScrollableScreenshot from "../../components/ScrollableScreenshot";
+import { previewSrc } from "../../lib/previews";
 
 /* ─────────────────────────────────────────────────────────
-   MacBook mockup — iframe live preview
-   placeholder: true → muestra fondo degradado (para sitios que bloquean iframes)
+   MacBook mockup — captura de página completa scrolleable
 ───────────────────────────────────────────────────────── */
-function MacBook({ screenHeight = 240, siteUrl, viewW = 420, placeholder = false }) {
-  const renderW = 1200;
-  const scale = viewW / renderW;
-  const iframeH = 5000;
-  const maxScroll = iframeH * scale - screenHeight;
-  const [scrollY, setScrollY] = useState(0);
-  const screenRef = useRef(null);
-  const touchY = useRef(0);
-
-  useEffect(() => {
-    if (placeholder) return;
-    const el = screenRef.current;
-    if (!el) return;
-    const onWheel = (e) => {
-      e.preventDefault();
-      setScrollY((prev) => Math.max(0, Math.min(maxScroll, prev + e.deltaY)));
-    };
-    el.addEventListener("wheel", onWheel, { passive: false });
-    return () => el.removeEventListener("wheel", onWheel);
-  }, [maxScroll, placeholder]);
-
+function MacBook({ screenHeight = 240, siteUrl, title }) {
   return (
     <div>
       {/* Lid */}
@@ -50,58 +31,7 @@ function MacBook({ screenHeight = 240, siteUrl, viewW = 420, placeholder = false
             </div>
           </div>
           {/* Screen */}
-          <div
-            ref={screenRef}
-            style={{ height: screenHeight, overflow: "hidden", position: "relative", background: "#f5f5f5", cursor: placeholder ? "default" : "ns-resize" }}
-            onTouchStart={(e) => { if (!placeholder) touchY.current = e.touches[0].clientY; }}
-            onTouchMove={(e) => {
-              if (placeholder) return;
-              const dy = touchY.current - e.touches[0].clientY;
-              touchY.current = e.touches[0].clientY;
-              setScrollY((prev) => Math.max(0, Math.min(maxScroll, prev + dy)));
-            }}
-          >
-            {placeholder ? (
-              <div style={{ width: "100%", height: "100%", background: "#f9f7ff", display: "flex", flexDirection: "column" }}>
-                {/* Fake nav bar */}
-                <div style={{ background: "#fff", borderBottom: "1px solid #eee", padding: "10px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                  <span style={{ fontFamily: "serif", fontSize: 13, color: "#333", fontWeight: 600 }}>Dr. Javier Ruiz Romero</span>
-                  <div style={{ display: "flex", gap: 10 }}>
-                    {["Inicio","Sobre mí","Servicios","Contacto"].map(l => (
-                      <span key={l} style={{ fontFamily: "sans-serif", fontSize: 9, color: "#888" }}>{l}</span>
-                    ))}
-                  </div>
-                </div>
-                {/* Hero area */}
-                <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 10, padding: "0 24px" }}>
-                  <div style={{ width: 48, height: 48, borderRadius: "50%", background: "#eeedfe", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7f77dd" strokeWidth="1.5"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M12 6v6l4 2"/></svg>
-                  </div>
-                  <p style={{ fontFamily: "serif", fontSize: 15, color: "#333", fontWeight: 600, textAlign: "center", margin: 0 }}>Médico Especialista</p>
-                  <p style={{ fontFamily: "sans-serif", fontSize: 10, color: "#999", textAlign: "center", margin: 0, lineHeight: 1.5 }}>WordPress · PHP · Diseño a medida</p>
-                  <a href={siteUrl} target="_blank" rel="noopener noreferrer" style={{ marginTop: 6, fontFamily: "sans-serif", fontSize: 10, color: "#7f77dd", border: "1px solid #c5c2f5", padding: "6px 16px", borderRadius: 20, textDecoration: "none", pointerEvents: "all" }}>
-                    Ver sitio →
-                  </a>
-                </div>
-              </div>
-            ) : (
-              <iframe
-                src={siteUrl}
-                title="preview"
-                style={{
-                  position: "absolute",
-                  top: -scrollY,
-                  left: 0,
-                  width: renderW,
-                  height: iframeH,
-                  border: "none",
-                  transform: `scale(${scale})`,
-                  transformOrigin: "top left",
-                  pointerEvents: "none",
-                }}
-              />
-            )}
-          </div>
+          <ScrollableScreenshot src={previewSrc(siteUrl)} alt={title} height={screenHeight} />
         </div>
       </div>
       {/* Base */}
@@ -128,7 +58,6 @@ const projects = [
     },
     tags: ["HTML/CSS", "PHP", "Design"],
     url: "https://www.wiplex.net/",
-    blocked: false,
     type: "frontend",
   },
   {
@@ -141,7 +70,6 @@ const projects = [
     },
     tags: ["HTML/CSS", "PHP", "Design"],
     url: "https://www.offidocs.com/",
-    blocked: false,
     type: "frontend",
   },
   {
@@ -154,7 +82,6 @@ const projects = [
     },
     tags: ["HTML/CSS", "PHP", "Design"],
     url: "https://www.uptoplay.net/",
-    blocked: false,
     type: "frontend",
   },
   {
@@ -167,7 +94,6 @@ const projects = [
     },
     tags: ["Figma", "Next.js", "Tailwind", "Email HTML"],
     url: "https://www.anywhere.com/",
-    blocked: false,
     type: "design",
     note: { en: "Design contribution", es: "Contribución de diseño" },
   },
@@ -181,7 +107,6 @@ const projects = [
     },
     tags: ["Figma", "Next.js", "TypeScript"],
     url: "https://www.ambassadoria.com/",
-    blocked: false,
     type: "frontend",
   },
   {
@@ -194,7 +119,6 @@ const projects = [
     },
     tags: ["React", "Vite", "Design"],
     url: "https://www.buildeezy.com/",
-    blocked: false,
     type: "frontend",
   },
   {
@@ -207,7 +131,6 @@ const projects = [
     },
     tags: ["WordPress", "PHP", "CSS"],
     url: "https://drjavierruizromero.com/",
-    blocked: true,
     type: "wordpress",
   },
   {
@@ -220,7 +143,6 @@ const projects = [
     },
     tags: ["WordPress", "PHP", "CSS"],
     url: "https://arumaclinic.com/",
-    blocked: false,
     type: "wordpress",
   },
 ];
@@ -326,7 +248,7 @@ function ProjectCard({ project, lang }) {
               siteUrl={project.url}
               viewW={viewW}
               screenHeight={Math.round(viewW / 1.62)}
-              placeholder={project.blocked}
+              title={project.title}
             />
           </div>
         </div>

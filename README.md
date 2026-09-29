@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Sofía Costamagna — Portfolio
 
-## Getting Started
+Personal portfolio of **Sofía Costamagna**, Frontend Developer & UX/UI Designer based in Argentina.
 
-First, run the development server:
+Built with **Next.js (App Router)**, **React**, **Tailwind CSS** and **Framer Motion**. Bilingual (English / Spanish).
+
+## Features
+
+- Scrollable device mockups (laptop & phone) showing full-page screenshots of real client projects
+- Client reviews carousel, sourced from Upwork
+- English / Spanish with browser-language detection and a remembered choice
+- Contact form powered by EmailJS
+- Auto-generated Open Graph image for link previews
+
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Project screenshots
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The mockups use static screenshots in `public/previews/` instead of live iframes, so pages stay fast.
+To refresh them after a project site changes:
 
-## Learn More
+```bash
+npx playwright install chromium   # first time only
+npm run screenshots               # all sites
+npm run screenshots aruma         # only sites matching "aruma"
+```
 
-To learn more about Next.js, take a look at the following resources:
+The list of sites lives in `lib/previews.js`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Content
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| What | Where |
+| --- | --- |
+| Home texts & featured projects | `lib/translations.js` |
+| All projects | `app/work/page.jsx` |
+| Client reviews | `lib/testimonials.js` |
 
-## Deploy on Vercel
+## Environment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `NEXT_PUBLIC_SITE_URL` — public URL of the site, used for link previews. Not needed on Vercel.

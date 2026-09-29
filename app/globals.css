@@ -8,6 +8,11 @@
     @apply font-primary bg-primary text-font-secondary leading-relaxed;
   }
 
+  /* Fraunces: terminaciones suaves en todos los títulos */
+  .font-serif {
+    font-variation-settings: "SOFT" 50;
+  }
+
   h1 {
     @apply font-serif text-[52px] xl:text-[80px] leading-[1.05] font-medium tracking-tight;
   }

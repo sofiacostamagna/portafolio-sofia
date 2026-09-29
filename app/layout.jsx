@@ -1,4 +1,4 @@
-import { JetBrains_Mono, Inter, Playfair_Display } from "next/font/google";
+import { JetBrains_Mono, Figtree, Fraunces } from "next/font/google";
 import "./globals.css";
 
 //components
@@ -14,29 +14,54 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
 });
 
-const inter = Inter({
-  variable: "--font-inter",
+// Textos
+const figtree = Figtree({
+  variable: "--font-body",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
 });
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+// Títulos — serif variable; SOFT redondea las terminaciones
+const fraunces = Fraunces({
+  variable: "--font-heading",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
+  axes: ["SOFT", "opsz"],
 });
 
+const description =
+  "Frontend Developer and UX/UI Designer based in Argentina. React, Next.js, WordPress and Figma to code.";
+
+// URL pública para los links absolutos de la vista previa (Open Graph).
+// En Vercel se completa sola; en otro hosting, definir NEXT_PUBLIC_SITE_URL.
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : "http://localhost:3000");
+
 export const metadata = {
-  title: "Sofía Costamagna | Frontend Developer & UX/UI Designer",
-  description:
-    "Portfolio of Sofía Costamagna — Frontend Developer and UX/UI Designer based in Argentina.",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Sofía Costamagna | Frontend Developer & UX/UI Designer",
+    template: "%s | Sofía Costamagna",
+  },
+  description,
+  openGraph: {
+    type: "website",
+    siteName: "Sofía Costamagna",
+    title: "Sofía Costamagna | Frontend Developer & UX/UI Designer",
+    description,
+    locale: "en_US",
+    alternateLocale: ["es_AR"],
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body suppressHydrationWarning className={`${jetbrainsMono.variable} ${inter.variable} ${playfair.variable} antialiased`}>
+    <html lang="en" suppressHydrationWarning>
+      <body suppressHydrationWarning className={`${jetbrainsMono.variable} ${figtree.variable} ${fraunces.variable} antialiased`}>
         <LanguageProvider>
           <Header />
           <StairTransition />

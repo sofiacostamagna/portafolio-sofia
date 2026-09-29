@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import emailjs from "@emailjs/browser";
 import { useLang } from "../../components/LanguageContext";
+import { UPWORK_PROFILE_URL } from "../../lib/testimonials";
 
 const EJS_SERVICE  = "service_wlqgku1";
 const EJS_TEMPLATE = "template_woz24nl";
@@ -20,6 +21,7 @@ const LINKS = [
   { label: "sofiacostamagna45@gmail.com", href: "mailto:sofiacostamagna45@gmail.com" },
   { label: "LinkedIn", href: "https://linkedin.com/in/sofia-costamagna", target: "_blank" },
   { label: "GitHub",   href: "https://github.com/sofiacostamagna",       target: "_blank" },
+  { label: "Upwork",   href: UPWORK_PROFILE_URL,                          target: "_blank" },
 ];
 
 const inputClass = `

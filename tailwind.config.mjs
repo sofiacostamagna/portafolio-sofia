@@ -18,9 +18,9 @@ export default {
       "2xl": "1536px",
     },
     fontFamily: {
-      primary: "var(--font-inter)",
+      primary: "var(--font-body)",
       mono: "var(--font-jetbrainsMono)",
-      serif: "var(--font-playfair)",
+      serif: "var(--font-heading)",
     },
     extend: {
       colors: {
