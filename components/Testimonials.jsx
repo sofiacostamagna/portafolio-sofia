@@ -5,6 +5,7 @@ import { motion, useInView } from "framer-motion";
 import { FiStar, FiCheckCircle, FiArrowUpRight, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { useLang } from "./LanguageContext";
 import { testimonials, UPWORK_PROFILE_URL } from "../lib/testimonials";
+import { RevealTitle } from "./motion";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -90,13 +91,12 @@ export default function Testimonials() {
             <motion.span variants={fadeUp} className="label block mb-3">
               {t.testimonials.label}
             </motion.span>
-            <motion.h2
-              variants={fadeUp}
+            <RevealTitle as="h2"
               className="font-serif font-bold text-font-secondary"
               style={{ fontSize: "clamp(32px, 4vw, 52px)", lineHeight: 1.05 }}
             >
               {t.testimonials.heading}
-            </motion.h2>
+            </RevealTitle>
             <motion.div variants={fadeUp} className="flex items-center gap-3 mt-4">
               <Stars rating={5} />
               <span className="text-[14px] text-font-primary">{t.testimonials.rating}</span>

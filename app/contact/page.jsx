@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import emailjs from "@emailjs/browser";
 import { useLang } from "../../components/LanguageContext";
 import { UPWORK_PROFILE_URL } from "../../lib/testimonials";
+import { RevealTitle } from "../../components/motion";
 
 const EJS_SERVICE  = "service_wlqgku1";
 const EJS_TEMPLATE = "template_woz24nl";
@@ -68,8 +69,7 @@ export default function Contact() {
             <motion.span {...fadeUp(0)} className="label block mb-5">
               {en ? "Get in touch" : "Contacto"}
             </motion.span>
-            <motion.h1
-              {...fadeUp(0.08)}
+            <RevealTitle as="h1"
               className="font-serif font-bold text-font-secondary mb-6"
               style={{ fontSize: "clamp(36px, 5vw, 64px)", lineHeight: 1.05 }}
             >
@@ -77,7 +77,7 @@ export default function Contact() {
                 ? <>Let's work<br /><em className="text-accent italic">together</em></>
                 : <>Trabajemos<br /><em className="text-accent italic">juntos</em></>
               }
-            </motion.h1>
+            </RevealTitle>
             <motion.p
               {...fadeUp(0.16)}
               className="text-[15px] xl:text-[16px] text-font-primary leading-relaxed mb-10 opacity-70 max-w-sm"

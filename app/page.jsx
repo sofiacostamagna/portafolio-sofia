@@ -10,6 +10,7 @@ import { useLang } from "../components/LanguageContext";
 import Testimonials from "../components/Testimonials";
 import ScrollableScreenshot from "../components/ScrollableScreenshot";
 import { previewSrc } from "../lib/previews";
+import { RevealTitle, Parallax } from "../components/motion";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -139,13 +140,12 @@ export default function Home() {
               animate="show"
               className="flex flex-col gap-6 xl:basis-[65%]"
             >
-              <motion.h1
-                variants={fadeUp}
+              <RevealTitle as="h1"
                 className="font-serif font-bold text-font-secondary"
                 style={{ fontSize: "clamp(42px, 5.8vw, 86px)", lineHeight: 1.05 }}
               >
                 {t.hero.greeting} <span className="text-accent">{t.hero.name}</span>
-              </motion.h1>
+              </RevealTitle>
 
               <motion.p
                 variants={fadeUp}
@@ -192,12 +192,13 @@ export default function Home() {
                 />
 
                 {/* Photo — overflows above the card */}
-                <div
+                <Parallax
+                  speed={28}
                   className="absolute overflow-hidden"
                   style={{
                     top: 0,
                     left: "50%",
-                    transform: "translateX(-50%)",
+                    x: "-50%",
                     width: "72%",
                     height: "calc(100% - 24px)",
                     borderRadius: "36px",
@@ -211,7 +212,7 @@ export default function Home() {
                     alt="Sofía Costamagna"
                     className="object-cover object-top"
                   />
-                </div>
+                </Parallax>
               </motion.div>
             </motion.div>
 
@@ -238,13 +239,12 @@ export default function Home() {
               <motion.span variants={fadeUp} className="label block mb-3">
                 {t.work.label}
               </motion.span>
-              <motion.h2
-                variants={fadeUp}
+              <RevealTitle as="h2"
                 className="font-serif font-bold text-font-secondary"
                 style={{ fontSize: "clamp(32px, 4vw, 52px)", lineHeight: 1.05 }}
               >
                 {t.work.heading}
-              </motion.h2>
+              </RevealTitle>
             </div>
             <motion.div variants={fadeUp} className="hidden lg:block">
               <Link href="/work">
@@ -325,6 +325,7 @@ export default function Home() {
             className="group cursor-pointer flex-shrink-0"
             style={{ width: 320 }}
           >
+            <Parallax speed={40}>
             <motion.div
               animate={worksInView ? { y: [0, -8, 0] } : {}}
               transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut", delay: 1.8 }}
@@ -333,6 +334,7 @@ export default function Home() {
                 <MacBook screenHeight={190} siteUrl={t.work.projects[0].url} label={t.work.projects[0].title} tags={t.work.projects[0].tags} />
               </a>
             </motion.div>
+            </Parallax>
           </motion.div>
 
           {/* CENTER LAPTOP */}
@@ -363,6 +365,7 @@ export default function Home() {
             className="group cursor-pointer flex-shrink-0"
             style={{ width: 216 }}
           >
+            <Parallax speed={70}>
             <motion.div
               animate={worksInView ? { y: [0, -7, 0] } : {}}
               transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut", delay: 2.4 }}
@@ -371,6 +374,7 @@ export default function Home() {
                 <Phone siteUrl={t.work.projects[2].url} label={t.work.projects[2].title} tags={t.work.projects[2].tags} />
               </a>
             </motion.div>
+            </Parallax>
           </motion.div>
 
         </div>

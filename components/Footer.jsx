@@ -8,6 +8,7 @@ import { SiUpwork } from "react-icons/si";
 import { useLang } from "./LanguageContext";
 import Logo from "./Logo";
 import { UPWORK_PROFILE_URL } from "../lib/testimonials";
+import { RevealTitle } from "./motion";
 
 const EMAIL = "sofiacostamagna45@gmail.com";
 
@@ -84,8 +85,7 @@ export default function Footer() {
               </span>
             </motion.div>
 
-            <motion.h2
-              variants={fadeUp}
+            <RevealTitle as="h2"
               className="font-serif font-bold max-w-4xl"
               style={{ fontSize: "clamp(40px, 6.4vw, 92px)", lineHeight: 1.02 }}
             >
@@ -94,7 +94,7 @@ export default function Footer() {
               ) : (
                 <>¿Tenés una idea?<br />Hagámosla <em className="italic" style={{ color: "#a9a3f0" }}>realidad.</em></>
               )}
-            </motion.h2>
+            </RevealTitle>
 
             <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-3">
               <Link

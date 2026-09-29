@@ -6,6 +6,7 @@ import { FiCode, FiPenTool, FiLayers, FiCheck, FiArrowUpRight, FiStar } from "re
 import { SiWordpress } from "react-icons/si";
 import { useLang } from "../../components/LanguageContext";
 import { testimonials, UPWORK_PROFILE_URL } from "../../lib/testimonials";
+import { RevealTitle } from "../../components/motion";
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 28 },
@@ -122,15 +123,14 @@ export default function Services() {
             <motion.span {...fadeUp(0)} className="label block mb-5">
               {en ? "Services" : "Servicios"}
             </motion.span>
-            <motion.h1
-              {...fadeUp(0.08)}
+            <RevealTitle as="h1"
               className="font-serif font-bold text-font-secondary"
               style={{ fontSize: "clamp(38px, 5.4vw, 72px)", lineHeight: 1.04 }}
             >
               {en
                 ? <>How I can <em className="text-accent italic">help</em></>
                 : <>Cómo puedo <em className="text-accent italic">ayudarte</em></>}
-            </motion.h1>
+            </RevealTitle>
             <motion.p
               {...fadeUp(0.16)}
               className="text-[16px] xl:text-[18px] text-font-primary leading-relaxed mt-6"
@@ -207,15 +207,14 @@ export default function Services() {
         <motion.span {...fadeUp(0)} className="label block mb-4">
           {en ? "How I work" : "Cómo trabajo"}
         </motion.span>
-        <motion.h2
-          {...fadeUp(0.06)}
+        <RevealTitle as="h2"
           className="font-serif font-bold text-font-secondary mb-12 xl:mb-16"
           style={{ fontSize: "clamp(32px, 4vw, 52px)", lineHeight: 1.05 }}
         >
           {en
             ? <>A simple, <em className="text-accent italic">transparent</em> process</>
             : <>Un proceso simple y <em className="text-accent italic">transparente</em></>}
-        </motion.h2>
+        </RevealTitle>
 
         <ol className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-10 xl:gap-8">
           {PROCESS.map((step, i) => (

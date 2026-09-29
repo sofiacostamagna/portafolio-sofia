@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaHtml5, FaCss3, FaJs, FaReact, FaFigma, FaNodeJs, FaWordpress, FaPhp } from "react-icons/fa";
 import { SiTailwindcss, SiNextdotjs, SiTypescript, SiMysql } from "react-icons/si";
 import { useLang } from "../../components/LanguageContext";
+import { RevealTitle } from "../../components/motion";
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 28 },
@@ -98,6 +99,12 @@ export default function Resume() {
   const [tab, setTab] = useState("experience");
   const [modal, setModal] = useState(null);
 
+  // Permite abrir una pestaña directo desde un link (ej. /resume?tab=education)
+  useEffect(() => {
+    const requested = new URLSearchParams(window.location.search).get("tab");
+    if (["experience", "education", "skills"].includes(requested)) setTab(requested);
+  }, []);
+
   const TABS = [
     { key: "experience", label: { en: "Experience", es: "Experiencia" } },
     { key: "education",  label: { en: "Education",  es: "Educación"  } },
@@ -114,13 +121,12 @@ export default function Resume() {
             <motion.span {...fadeUp(0)} className="label block mb-5">
               {en ? "My background" : "Mi trayectoria"}
             </motion.span>
-            <motion.h1
-              {...fadeUp(0.08)}
+            <RevealTitle as="h1"
               className="font-serif font-bold text-font-secondary"
               style={{ fontSize: "clamp(36px, 5vw, 64px)", lineHeight: 1.05 }}
             >
               {en ? "Résumé" : "Currículum"}
-            </motion.h1>
+            </RevealTitle>
           </div>
           <motion.a
             {...fadeUp(0.12)}

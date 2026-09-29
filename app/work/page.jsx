@@ -6,6 +6,7 @@ import { BsArrowUpRight } from "react-icons/bs";
 import Link from "next/link";
 import { useLang } from "../../components/LanguageContext";
 import ScrollableScreenshot from "../../components/ScrollableScreenshot";
+import { RevealTitle } from "../../components/motion";
 import { previewSrc } from "../../lib/previews";
 
 /* ─────────────────────────────────────────────────────────
@@ -288,12 +289,12 @@ export default function Work() {
           {lang === "en" ? "Portfolio" : "Portafolio"}
         </span>
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
-          <h1
+          <RevealTitle as="h1"
             className="font-serif font-bold text-font-secondary"
             style={{ fontSize: "clamp(38px, 5vw, 68px)", lineHeight: 1.05 }}
           >
             {lang === "en" ? "All Projects" : "Todos los proyectos"}
-          </h1>
+          </RevealTitle>
 
           {/* Filter pills */}
           <div className="flex flex-wrap gap-2">

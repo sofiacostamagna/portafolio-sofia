@@ -2,9 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { motion, useScroll, useSpring, useMotionValueEvent, useReducedMotion } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
+import { FiMessageCircle, FiUsers, FiLayers, FiChevronLeft, FiChevronRight, FiArrowRight } from "react-icons/fi";
 import { useLang } from "../../components/LanguageContext";
+import { RevealTitle, Parallax } from "../../components/motion";
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 28 },
@@ -13,118 +15,314 @@ const fadeUp = (delay = 0) => ({
   transition: { duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] },
 });
 
-const TRAVEL = [
+/* ─────────────────────────────────────
+   Historia — línea de tiempo
+───────────────────────────────────── */
+const STORY = [
   {
-    src: "/Paris.jpeg",
-    city: { en: "Paris", es: "París" },
-    country: { en: "France", es: "Francia" },
-    year: "2022",
-    fact: { en: "Croissants for breakfast every single day", es: "Croissants para desayunar todos los días" },
+    when: { en: "Before code", es: "Antes del código" },
+    title: { en: "Human Resources", es: "Recursos Humanos" },
+    text: {
+      en: "I was building teams. I worked in HR at a clinic in Argentina, helping people find their place.",
+      es: "Construía equipos. Trabajé en Recursos Humanos en un sanatorio en Argentina, ayudando a personas a encontrar su lugar.",
+    },
   },
   {
-    src: "/roma.jpeg",
-    city: { en: "Rome", es: "Roma" },
-    country: { en: "Italy", es: "Italia" },
-    year: "2022",
-    fact: { en: "Threw a coin in the Trevi Fountain — had to come back", es: "Tiré una moneda en la Fontana di Trevi — tenía que volver" },
+    when: { en: "2020", es: "2020" },
+    title: { en: "The pandemic", es: "La pandemia" },
+    text: {
+      en: "It turned everything upside down. The way we work changed, the world changed — and I wanted to be part of that change.",
+      es: "Puso todo patas para arriba. Las formas de trabajar cambiaron, el mundo cambió — y yo quería ser parte de ese cambio.",
+    },
   },
   {
-    src: "/Niagara Falls.jpeg",
-    city: { en: "Niagara Falls", es: "Cataratas del Niágara" },
-    country: { en: "Canada", es: "Canadá" },
-    year: "2021",
-    fact: { en: "The place that changed everything for me", es: "El lugar que cambió todo para mí" },
+    when: { en: "2021", es: "2021" },
+    title: { en: "Four months in Canada", es: "Cuatro meses en Canadá" },
+    text: {
+      en: "People crossed my path who shifted my perspective and made me believe in myself.",
+      es: "Se cruzaron personas en mi camino que cambiaron mi visión y me inspiraron a creer en mí misma.",
+    },
   },
   {
-    src: "/Portugal.jpeg",
-    city: { en: "Lisbon", es: "Lisboa" },
-    country: { en: "Portugal", es: "Portugal" },
-    year: "2023",
-    fact: { en: "Pastel de nata and ocean views — perfect combo", es: "Pastel de nata y vistas al océano — combo perfecto" },
+    when: { en: "2023", es: "2023" },
+    title: { en: "Diving into code", es: "De lleno en el código" },
+    text: {
+      en: "Long nights, imposter syndrome, a lot of “this isn't for me”. But the hockey player in me doesn't give up easily.",
+      es: "Noches largas, síndrome del impostor, muchos “esto no es para mí”. Pero la jugadora de hockey que hay en mí no se rinde fácil.",
+    },
   },
   {
-    src: "/espana.jpeg",
-    city: { en: "Madrid", es: "Madrid" },
-    country: { en: "Spain", es: "España" },
-    year: "2023",
-    fact: { en: "Tapas at midnight hits different", es: "Las tapas a medianoche son otra cosa" },
-  },
-  {
-    src: "/mexico.jpeg",
-    city: { en: "Cancún", es: "Cancún" },
-    country: { en: "Mexico", es: "México" },
-    year: "2024",
-    fact: { en: "Caribbean water so blue it doesn't look real", es: "El agua del Caribe tan azul que parece irreal" },
+    when: { en: "Today", es: "Hoy" },
+    title: { en: "Designing & building", es: "Diseñando y construyendo" },
+    text: {
+      en: "Websites and platforms for clients, working from anywhere — and turning what once felt like a dream into something real.",
+      es: "Sitios y plataformas para clientes, trabajando desde cualquier lugar — y convirtiendo lo que parecía un sueño en algo posible.",
+    },
   },
 ];
 
-function TravelPolaroids({ lang }) {
-  const l = lang === "en" ? "en" : "es";
+/* ─────────────────────────────────────
+   Línea de tiempo: la línea se dibuja con el scroll y cada hito
+   se enciende cuando la línea lo alcanza
+───────────────────────────────────── */
+function Timeline({ l }) {
+  const ref = useRef(null);
+  const reduce = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 80%", "end 55%"] });
+  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.4 });
+  const [reached, setReached] = useState(reduce ? STORY.length : 0);
+
+  useMotionValueEvent(scrollYProgress, "change", (v) => {
+    if (reduce) return;
+    setReached(Math.min(STORY.length, Math.floor(v * (STORY.length - 1) + 1.05)));
+  });
+
+  const lineScale = reduce ? 1 : progress;
 
   return (
-    <div
-      className="flex gap-3 overflow-x-auto pb-3"
-      style={{ scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch", scrollbarWidth: "none", msOverflowStyle: "none" }}
-    >
-      {TRAVEL.map((p, i) => (
-        <motion.div
-          key={p.src}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.55, delay: i * 0.07, ease: [0.22, 1, 0.36, 1] }}
-          className="group flex-shrink-0"
-          style={{ width: "clamp(180px, 22vw, 240px)", scrollSnapAlign: "start" }}
-        >
-          <div className="relative overflow-hidden rounded-xl"
-            style={{ aspectRatio: "3/4" }}>
-            <Image
-              src={p.src}
-              fill
-              sizes="200px"
-              alt={p.city[l]}
-              className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
+    <ol ref={ref} className="relative grid grid-cols-1 xl:grid-cols-5 gap-10 xl:gap-6">
+      {/* Riel gris + trazo violeta que se dibuja (vertical en mobile, horizontal en desktop) */}
+      <span aria-hidden className="absolute left-[7px] top-2 bottom-2 w-px bg-divider xl:hidden" />
+      <motion.span
+        aria-hidden
+        className="absolute left-[7px] top-2 bottom-2 w-[2px] -ml-[0.5px] bg-accent xl:hidden origin-top"
+        style={{ scaleY: lineScale }}
+      />
+      <span aria-hidden className="hidden xl:block absolute left-0 right-0 top-[7px] h-px bg-divider" />
+      <motion.span
+        aria-hidden
+        className="hidden xl:block absolute left-0 right-0 top-[7px] h-[2px] -mt-[0.5px] bg-accent origin-left"
+        style={{ scaleX: lineScale }}
+      />
+
+      {STORY.map((step, i) => {
+        const on = i < reached;
+        return (
+          <li key={i} className="relative pl-10 xl:pl-0 xl:pt-10">
+            <motion.span
+              aria-hidden
+              className="absolute left-0 top-0.5 xl:top-0 w-[15px] h-[15px] rounded-full border-2"
+              animate={{
+                scale: on ? [1, 1.45, 1] : 1,
+                backgroundColor: on ? "#7f77dd" : "#fafafa",
+                borderColor: on ? "#7f77dd" : "#d6d3f3",
+                boxShadow: on ? "0 0 0 6px rgba(127,119,221,0.15)" : "0 0 0 0px rgba(127,119,221,0)",
+              }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             />
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-              style={{ background: "linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 55%)" }} />
-            <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-              <p className="font-mono text-[8px] uppercase tracking-[0.14em] text-white/70 mb-0.5">{p.country[l]}</p>
-              <p className="font-serif text-white text-[13px] font-medium leading-tight">{p.city[l]}</p>
-              <p className="font-sans text-white/70 text-[10px] leading-relaxed mt-1">{p.fact[l]}</p>
+            <motion.div
+              animate={{ opacity: on ? 1 : 0.35, y: on ? 0 : 12 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-accent block mb-2">
+                {step.when[l]}
+              </span>
+              <h3 className="font-serif font-bold text-font-secondary text-[21px] leading-tight mb-2">
+                {step.title[l]}
+              </h3>
+              <p className="text-[15px] text-font-primary leading-relaxed">{step.text[l]}</p>
+            </motion.div>
+          </li>
+        );
+      })}
+    </ol>
+  );
+}
+
+/* ─────────────────────────────────────
+   Lo que traigo — cada punto respaldado por un endorsement de Upwork
+───────────────────────────────────── */
+const STRENGTHS = [
+  {
+    icon: FiMessageCircle,
+    title: { en: "Communication & empathy", es: "Comunicación y empatía" },
+    text: {
+      en: "My time in HR taught me to listen, ask the right questions and keep everyone on the same page.",
+      es: "Mi paso por RRHH me enseñó a escuchar, hacer las preguntas correctas y mantener a todos alineados.",
+    },
+    endorsement: "Clear Communicator",
+  },
+  {
+    icon: FiUsers,
+    title: { en: "Teamwork & perseverance", es: "Trabajo en equipo y constancia" },
+    text: {
+      en: "25 years of hockey: I show up, I commit, and I don't give up on a hard problem.",
+      es: "25 años de hockey: me comprometo, estoy presente y no abandono un problema difícil.",
+    },
+    endorsement: "Collaborative",
+  },
+  {
+    icon: FiLayers,
+    title: { en: "Design + code", es: "Diseño + código" },
+    text: {
+      en: "I design in Figma and build it myself, so nothing gets lost between the design and the final site.",
+      es: "Diseño en Figma y lo construyo yo misma, así nada se pierde entre el diseño y el sitio final.",
+    },
+    endorsement: "Detail Oriented",
+  },
+];
+
+/* ─────────────────────────────────────
+   Más allá de la pantalla — deporte + viajes
+───────────────────────────────────── */
+const MOMENTS = [
+  {
+    src: "/hockey.jpeg",
+    objPos: "center 20%",
+    label: { en: "Field hockey · 25 years", es: "Hockey · 25 años" },
+    caption: { en: "The sport gave me more than goals — friends, discipline, commitment and teamwork 🏑", es: "El deporte me dio más que goles — amigos, disciplina, compromiso y trabajo en equipo 🏑" },
+  },
+  {
+    src: "/Niagara Falls.jpeg",
+    label: { en: "Niagara Falls · Canada · 2021", es: "Cataratas del Niágara · Canadá · 2021" },
+    caption: { en: "The place that changed everything for me", es: "El lugar que cambió todo para mí" },
+  },
+  {
+    src: "/carrera.jpeg",
+    label: { en: "Trail running", es: "Carrera de montaña" },
+    caption: { en: "Running clears my head like nothing else. Race day is my favorite day 🏃‍♀️", es: "Correr despeja mi cabeza como nada. El día de carrera es mi favorito 🏃‍♀️" },
+  },
+  {
+    src: "/roma.jpeg",
+    label: { en: "Rome · Italy · 2022", es: "Roma · Italia · 2022" },
+    caption: { en: "Threw a coin in the Trevi Fountain — had to come back", es: "Tiré una moneda en la Fontana di Trevi — tenía que volver" },
+  },
+  {
+    src: "/Paris.jpeg",
+    label: { en: "Paris · France · 2022", es: "París · Francia · 2022" },
+    caption: { en: "Croissants for breakfast every single day", es: "Croissants para desayunar todos los días" },
+  },
+  {
+    src: "/foto-2.jpeg",
+    label: { en: "Trekking", es: "Trekking" },
+    caption: { en: "Mountains, waterfalls, fresh air — my reset button 🌿", es: "Montañas, cascadas, aire puro — mi botón de reset 🌿" },
+  },
+  {
+    src: "/Portugal.jpeg",
+    label: { en: "Lisbon · Portugal · 2023", es: "Lisboa · Portugal · 2023" },
+    caption: { en: "Pastel de nata and ocean views — perfect combo", es: "Pastel de nata y vistas al océano — combo perfecto" },
+  },
+  {
+    src: "/espana.jpeg",
+    label: { en: "Madrid · Spain · 2023", es: "Madrid · España · 2023" },
+    caption: { en: "Tapas at midnight hits different", es: "Las tapas a medianoche son otra cosa" },
+  },
+  {
+    src: "/mexico.jpeg",
+    label: { en: "Cancún · Mexico · 2024", es: "Cancún · México · 2024" },
+    caption: { en: "Caribbean water so blue it doesn't look real", es: "El agua del Caribe tan azul que parece irreal" },
+  },
+];
+
+const ROTATIONS = [-2, 1.5, -1, 2, -1.5, 1];
+
+function Moments({ l }) {
+  const trackRef = useRef(null);
+  const [atStart, setAtStart] = useState(true);
+  const [atEnd, setAtEnd] = useState(false);
+
+  const update = () => {
+    const el = trackRef.current;
+    if (!el) return;
+    setAtStart(el.scrollLeft <= 4);
+    setAtEnd(el.scrollLeft + el.clientWidth >= el.scrollWidth - 4);
+  };
+
+  useEffect(() => {
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  const scrollByCard = (dir) => {
+    const el = trackRef.current;
+    if (!el) return;
+    el.scrollBy({ left: dir * (el.children[0].offsetWidth + 24), behavior: "smooth" });
+  };
+
+  const arrowClass =
+    "w-10 h-10 rounded-full border border-divider bg-white flex items-center justify-center text-font-secondary hover:border-accent hover:text-accent transition-colors disabled:opacity-30 disabled:pointer-events-none";
+
+  return (
+    <>
+      <div
+        ref={trackRef}
+        onScroll={update}
+        className="flex gap-6 overflow-x-auto snap-x snap-mandatory px-8 xl:px-[10vw] 2xl:px-[12vw] pt-4 pb-10"
+        style={{ scrollbarWidth: "none", WebkitOverflowScrolling: "touch", scrollPaddingLeft: "2rem" }}
+      >
+        {MOMENTS.map((m, i) => (
+          <motion.figure
+            key={m.src}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.55, delay: Math.min(i, 4) * 0.07, ease: [0.22, 1, 0.36, 1] }}
+            whileHover={{ rotate: 0, scale: 1.02 }}
+            className="snap-start flex-shrink-0 bg-white p-2.5 pb-5 rounded-[4px]"
+            style={{
+              width: "clamp(230px, 24vw, 290px)",
+              rotate: ROTATIONS[i % ROTATIONS.length],
+              boxShadow: "0 8px 40px rgba(0,0,0,0.12)",
+            }}
+          >
+            <div className="relative overflow-hidden rounded-[2px]" style={{ aspectRatio: "1/1" }}>
+              <Image
+                src={m.src}
+                fill
+                sizes="290px"
+                alt={m.label[l]}
+                className="object-cover"
+                style={{ objectPosition: m.objPos ?? "center" }}
+              />
             </div>
-          </div>
-        </motion.div>
-      ))}
-    </div>
+            <figcaption className="pt-3.5 px-1">
+              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.08em] text-font-secondary mb-1">
+                {m.label[l]}
+              </p>
+              <p className="text-[13px] text-font-primary leading-snug">{m.caption[l]}</p>
+            </figcaption>
+          </motion.figure>
+        ))}
+      </div>
+      <div className="px-8 xl:px-[10vw] 2xl:px-[12vw] flex justify-end gap-2">
+        <button onClick={() => scrollByCard(-1)} disabled={atStart} aria-label="Previous" className={arrowClass}>
+          <FiChevronLeft size={18} />
+        </button>
+        <button onClick={() => scrollByCard(1)} disabled={atEnd} aria-label="Next" className={arrowClass}>
+          <FiChevronRight size={18} />
+        </button>
+      </div>
+    </>
   );
 }
 
 export default function About() {
   const { t, lang } = useLang();
   const en = lang === "en";
+  const l = en ? "en" : "es";
 
   return (
-    <main className="pt-24 pb-28 min-h-screen">
+    <main className="pt-24 pb-16 min-h-screen">
 
       {/* ════════════════════════ HERO ════════════════════════ */}
       <section className="px-8 xl:px-[10vw] 2xl:px-[12vw] pt-16 pb-20 xl:pt-24 xl:pb-28">
-        <div className="flex flex-col lg:flex-row lg:items-start gap-14 xl:gap-20">
+        <div className="flex flex-col lg:flex-row lg:items-center gap-14 xl:gap-20">
 
           {/* Left */}
           <div className="lg:w-[54%]">
             <motion.span {...fadeUp(0)} className="label block mb-5">
               {t.about.label}
             </motion.span>
-            <motion.h1
-              {...fadeUp(0.1)}
+            <RevealTitle as="h1"
               className="font-serif font-bold text-font-secondary mb-8"
               style={{ fontSize: "clamp(40px, 5vw, 70px)", lineHeight: 1.05 }}
             >
               {t.about.heading1}{" "}
               <em className="text-accent italic">{t.about.heading2}</em>
-            </motion.h1>
+            </RevealTitle>
             <motion.div {...fadeUp(0.2)} className="flex flex-col gap-5">
-              <p className="text-[17px] xl:text-[18px] text-font-primary leading-relaxed">{t.about.p1}</p>
+              <p className="text-[19px] xl:text-[21px] text-font-secondary leading-relaxed">{t.about.p1}</p>
               <p className="text-[17px] xl:text-[18px] text-font-primary leading-relaxed">{t.about.p2}</p>
             </motion.div>
             <motion.div {...fadeUp(0.35)} className="mt-10">
@@ -152,7 +350,10 @@ export default function About() {
                 style={{ rotate: 3, transformOrigin: "bottom center", cursor: "pointer" }}
               >
                 <div className="relative overflow-hidden rounded-2xl shadow-2xl" style={{ aspectRatio: "3/4" }}>
-                  <Image src="/norte.jpeg" fill sizes="360px" alt="Sofía en el norte argentino" className="object-cover object-center" />
+                  {/* La foto se mueve dentro del marco → sensación de profundidad */}
+                  <Parallax speed={-30} className="absolute -inset-y-10 inset-x-0">
+                    <Image src="/norte.jpeg" fill sizes="360px" alt="Sofía en el norte argentino" className="object-cover object-center" />
+                  </Parallax>
                 </div>
                 <span className="block text-center font-mono text-[9px] uppercase tracking-[0.16em] text-font-primary mt-3 opacity-40">
                   Salta, Argentina
@@ -163,242 +364,108 @@ export default function About() {
         </div>
       </section>
 
-      {/* ════════════════════════ STORY ════════════════════════ */}
+      {/* ════════════════════════ STORY — timeline ════════════════════════ */}
       <section className="px-8 xl:px-[10vw] 2xl:px-[12vw] py-20 xl:py-28 border-t border-divider">
-        <div className="w-full max-w-3xl mx-auto flex flex-col gap-6">
-          <motion.span {...fadeUp(0)} className="label block">
-            {en ? "How I got here" : "Cómo llegué hasta acá"}
-          </motion.span>
-          <motion.h2
-            {...fadeUp(0.08)}
-            className="font-serif font-bold text-font-secondary"
-            style={{ fontSize: "clamp(28px, 3.5vw, 46px)", lineHeight: 1.1 }}
-          >
-            {en
-              ? <>From HR to<br /><em className="text-accent italic">building things</em></>
-              : <>De RRHH a<br /><em className="text-accent italic">construir cosas</em></>
-            }
-          </motion.h2>
-          <motion.div {...fadeUp(0.16)} className="flex flex-col gap-5">
-            <p className="text-[16px] xl:text-[17px] text-font-primary leading-relaxed">
-              {en
-                ? "Before I wrote a single line of code, I was building teams. I worked in Human Resources at a clinic in Argentina, helping people find their place. Then the pandemic arrived — and turned everything upside down."
-                : "Antes de escribir una línea de código, construía equipos. Trabajé en Recursos Humanos en un Sanatorio en Argentina, ayudando a personas a encontrar su lugar. Después llegó la pandemia — y puso todo patas para arriba."
-              }
-            </p>
-            <p className="text-[16px] xl:text-[17px] text-font-primary leading-relaxed">
-              {en
-                ? "I spent 4 months living in Canada. That changed something in me. People crossed my path who shifted my perspective and made me believe in myself. The way we work had changed, the world had changed — and I wanted to be part of that change: building websites, creating platforms, making things."
-                : "Viví cuatro meses en Canadá. Eso cambió algo en mí. Se cruzaron personas en mi camino que cambiaron mi visión y me inspiraron a creer en mí misma. Las formas de trabajar habían cambiado, el mundo había cambiado — y yo quería ser parte de ese cambio: construir páginas, crear plataformas, hacer cosas."
-              }
-            </p>
-            <p className="text-[16px] xl:text-[17px] text-font-primary leading-relaxed">
-              {en
-                ? "I dove into programming. It was hard — long nights, imposter syndrome, a lot of 'this isn't for me.' But it was also the first time in a long time I felt genuinely challenged in a way that excited me. The hockey player in me doesn't give up easily. And I haven't looked back."
-                : "Me metí de lleno en la programación. Fue duro — noches largas, síndrome del impostor, muchos 'esto no es para mí'. Pero también fue la primera vez en mucho tiempo que me sentí desafiada de una manera que de verdad me entusiasmaba. La jugadora de hockey que hay en mí no se rinde fácil. Y no volví atrás."
-              }
-            </p>
-            <p className="text-[16px] xl:text-[17px] text-font-primary leading-relaxed">
-              {en
-                ? "But programming didn't just teach me — it opened doors. It gave me the freedom and the tools to keep exploring the world, to work from anywhere, and to turn what once felt like a dream into something real."
-                : "Pero la programación no solo me enseñó — me abrió puertas. Me dio la libertad y las herramientas para seguir conociendo el mundo, para poder trabajar desde cualquier lugar, y para convertir lo que antes parecía un sueño en algo posible."
-              }
-            </p>
-          </motion.div>
-        </div>
+        <motion.span {...fadeUp(0)} className="label block mb-4">
+          {en ? "How I got here" : "Cómo llegué hasta acá"}
+        </motion.span>
+        <RevealTitle as="h2"
+          className="font-serif font-bold text-font-secondary mb-14 xl:mb-20"
+          style={{ fontSize: "clamp(32px, 4vw, 52px)", lineHeight: 1.05 }}
+        >
+          {en
+            ? <>From HR to <em className="text-accent italic">building things</em></>
+            : <>De RRHH a <em className="text-accent italic">construir cosas</em></>}
+        </RevealTitle>
+
+        <Timeline l={l} />
       </section>
 
-      {/* ════════════════════════ DEPORTE ════════════════════════ */}
-      <section className="border-t border-divider py-20 xl:py-28" style={{ background: "#f8f7ff" }}>
-        <div className="px-8 xl:px-[10vw] 2xl:px-[12vw]">
+      {/* ════════════════════════ WHAT I BRING ════════════════════════ */}
+      <section className="px-8 xl:px-[10vw] 2xl:px-[12vw] py-20 xl:py-28 border-t border-divider" style={{ background: "#f8f7ff" }}>
+        <motion.span {...fadeUp(0)} className="label block mb-4">
+          {en ? "What I bring" : "Lo que traigo"}
+        </motion.span>
+        <RevealTitle as="h2"
+          className="font-serif font-bold text-font-secondary mb-12 xl:mb-16 max-w-3xl"
+          style={{ fontSize: "clamp(32px, 4vw, 52px)", lineHeight: 1.05 }}
+        >
+          {en
+            ? <>More than code — <em className="text-accent italic">a teammate</em></>
+            : <>Más que código — <em className="text-accent italic">una compañera de equipo</em></>}
+        </RevealTitle>
 
-          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12 xl:mb-16">
-            <div>
-              <motion.span {...fadeUp(0)} className="label block mb-2">
-                {en ? "Sport & outdoor" : "Deporte y aire libre"}
-              </motion.span>
-              <motion.h2
-                {...fadeUp(0.08)}
-                className="font-serif font-bold text-font-secondary"
-                style={{ fontSize: "clamp(28px, 3.5vw, 48px)", lineHeight: 1.1 }}
-              >
-                {en ? <>Always <em className="text-accent italic">moving</em></> : <>Siempre en <em className="text-accent italic">movimiento</em></>}
-              </motion.h2>
-            </div>
-          </div>
-
-          {/* Polaroid grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 xl:gap-8">
-            {[
-              {
-                src: "/hockey.jpeg",
-                objPos: "center 20%",
-                rotate: -2,
-                label: { en: "Field Hockey · 25 years", es: "Hockey · 25 años" },
-                caption: { en: "I played hockey for 25 years of my life. The sport gave me more than goals — it gave me friends, discipline, commitment and teamwork 🏑", es: "Jugué al hockey durante 25 años de mi vida. El deporte no solo me entregó amigos, sino disciplina, compromiso y trabajo en equipo 🏑" },
-              },
-              {
-                src: "/carrera.jpeg",
-                objPos: "center",
-                rotate: 1.5,
-                label: { en: "Trail Running", es: "Carrera de montaña" },
-                caption: { en: "Running clears my head like nothing else. Race day is my favorite day 🏃‍♀️", es: "Correr despeja mi cabeza como nada. El día de carrera es mi favorito 🏃‍♀️" },
-              },
-              {
-                src: "/foto-2.jpeg",
-                objPos: "center",
-                rotate: -1,
-                label: { en: "Trekking", es: "Trekking" },
-                caption: { en: "Mountains, waterfalls, fresh air — my reset button 🌿", es: "Montañas, cascadas, aire puro — mi botón de reset 🌿" },
-              },
-            ].map((p, i) => (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {STRENGTHS.map((s, i) => {
+            const Icon = s.icon;
+            return (
               <motion.div
-                key={p.src}
+                key={s.endorsement}
                 {...fadeUp(0.08 + i * 0.08)}
-                whileHover={{ rotate: 0, scale: 1.02, zIndex: 10 }}
-                transition={{ duration: 0.35 }}
-                style={{ rotate: p.rotate, transformOrigin: "bottom center" }}
+                className="bg-white border border-divider rounded-3xl p-8 flex flex-col gap-4"
               >
-                <div style={{
-                  background: "#fff",
-                  borderRadius: 4,
-                  padding: "10px 10px 20px",
-                  boxShadow: "0 8px 40px rgba(0,0,0,0.12)",
-                }}>
-                  <div style={{ aspectRatio: "1/1", position: "relative", overflow: "hidden", borderRadius: 2 }}>
-                    <Image
-                      src={p.src}
-                      fill
-                      sizes="(max-width:640px) 90vw, 30vw"
-                      alt={p.label[lang]}
-                      className="object-cover"
-                      style={{ objectPosition: p.objPos }}
-                    />
-                  </div>
-                  <div style={{ paddingTop: 14, paddingLeft: 4, paddingRight: 4 }}>
-                    <p style={{ fontFamily: "'Courier New', monospace", fontSize: 11, fontWeight: 700, color: "#222", margin: "0 0 4px", textTransform: "uppercase", letterSpacing: "0.08em" }}>
-                      {p.label[en ? "en" : "es"]}
-                    </p>
-                    <p style={{ fontFamily: "sans-serif", fontSize: 12, color: "#555", margin: 0, lineHeight: 1.5 }}>
-                      {p.caption[en ? "en" : "es"]}
-                    </p>
-                  </div>
+                <div className="w-12 h-12 rounded-2xl bg-accent-light text-accent flex items-center justify-center">
+                  <Icon size={22} />
                 </div>
+                <h3 className="font-serif font-bold text-font-secondary text-[24px] leading-tight">{s.title[l]}</h3>
+                <p className="text-[15px] text-font-primary leading-relaxed flex-1">{s.text[l]}</p>
+                <p className="pt-4 border-t border-divider font-mono text-[10px] uppercase tracking-[0.12em] text-font-primary">
+                  {en ? "Endorsed on Upwork: " : "Destacado en Upwork: "}
+                  <span className="text-accent">“{s.endorsement}”</span>
+                </p>
               </motion.div>
-            ))}
-          </div>
+            );
+          })}
         </div>
       </section>
 
-      {/* ════════════════════════ VIAJES ════════════════════════ */}
-      <section className="border-t border-divider py-20 xl:py-28">
-        <div className="px-8 xl:px-[10vw] 2xl:px-[12vw]">
-          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12 xl:mb-16">
-            <div>
-              <motion.span {...fadeUp(0)} className="label block mb-2">
-                {en ? "Around the world" : "Por el mundo"}
-              </motion.span>
-              <motion.h2
-                {...fadeUp(0.08)}
-                className="font-serif font-bold text-font-secondary"
-                style={{ fontSize: "clamp(28px, 3.5vw, 48px)", lineHeight: 1.1 }}
-              >
-                {en ? (
-                  <>Always with<br /><em className="text-accent italic">bags packed</em></>
-                ) : (
-                  <>Siempre con<br /><em className="text-accent italic">las valijas listas</em></>
-                )}
-              </motion.h2>
-            </div>
-            <motion.p {...fadeUp(0.12)} className="text-[14px] text-font-primary opacity-60 max-w-xs leading-relaxed">
-              {en ? "Italy · France · Canada · Spain · Portugal · Mexico" : "Italia · Francia · Canadá · España · Portugal · México"}
-            </motion.p>
+      {/* ════════════════════════ BEYOND THE SCREEN ════════════════════════ */}
+      <section className="py-20 xl:py-28 border-t border-divider">
+        <div className="px-8 xl:px-[10vw] 2xl:px-[12vw] flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-8">
+          <div>
+            <motion.span {...fadeUp(0)} className="label block mb-4">
+              {en ? "Beyond the screen" : "Más allá de la pantalla"}
+            </motion.span>
+            <RevealTitle as="h2"
+              className="font-serif font-bold text-font-secondary"
+              style={{ fontSize: "clamp(32px, 4vw, 52px)", lineHeight: 1.05 }}
+            >
+              {en ? <>Always <em className="text-accent italic">moving</em></> : <>Siempre en <em className="text-accent italic">movimiento</em></>}
+            </RevealTitle>
           </div>
-
-          <motion.p
-            {...fadeUp(0.1)}
-            className="text-[16px] xl:text-[17px] text-font-primary leading-relaxed max-w-2xl mb-10 xl:mb-12"
-          >
+          <motion.p {...fadeUp(0.12)} className="text-[16px] text-font-primary leading-relaxed max-w-md">
             {en
-              ? "Programming didn't just give me knowledge — it opened doors I hadn't imagined. Being able to work from anywhere in the world made it possible to fulfill a dream I'd always carried: knowing it. Each trip is also a reminder of why I do what I do."
-              : "La programación no solo me dio conocimiento — me abrió puertas que no imaginaba. Poder trabajar desde cualquier lugar del mundo fue lo que me permitió cumplir un sueño que siempre tuve: conocerlo. Cada viaje también es un recordatorio de por qué hago lo que hago."
-            }
+              ? "Sport taught me discipline; code gave me the freedom to work from anywhere and fulfill a dream I always had: getting to know the world."
+              : "El deporte me enseñó disciplina; el código me dio la libertad de trabajar desde cualquier lugar y cumplir un sueño que siempre tuve: conocer el mundo."}
           </motion.p>
-
-          <motion.div {...fadeUp(0.15)}>
-            <TravelPolaroids lang={lang} />
-          </motion.div>
         </div>
+
+        <Moments l={l} />
       </section>
 
-      {/* ════════════════════════ CERTIFICADOS ════════════════════════ */}
-      <section className="border-t border-divider py-20 xl:py-28" style={{ background: "#f8f7ff" }}>
-        <div className="px-8 xl:px-[10vw] 2xl:px-[12vw]">
-          <motion.span {...fadeUp(0)} className="label block mb-4">
-            {en ? "Education & Certificates" : "Educación y Certificados"}
-          </motion.span>
-          <motion.h2
-            {...fadeUp(0.08)}
-            className="font-serif font-bold text-font-secondary mb-12 xl:mb-16"
-            style={{ fontSize: "clamp(28px, 3.5vw, 48px)", lineHeight: 1.1 }}
-          >
-            {en ? <>Always<br /><em className="text-accent italic">learning</em></> : <>Siempre<br /><em className="text-accent italic">aprendiendo</em></>}
-          </motion.h2>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-            {[
-              {
-                institution: "Henry Bootcamp",
-                program: { en: "Full Stack Web Developer", es: "Full Stack Web Developer" },
-                detail: { en: "800 hours · Theoretical & practical training", es: "800 horas · Formación teórico-práctica" },
-                year: "2023",
-                href: "/certificate.png",
-              },
-              {
-                institution: "Codo a Codo · Agencia de Habilidades para el Futuro",
-                program: { en: "Full Stack PHP (Codo a Codo 4.0)", es: "Full Stack PHP (Codo a Codo 4.0)" },
-                detail: { en: "198 hours · 20 weeks · Argentina", es: "198 horas · 20 semanas · Argentina" },
-                year: "2024",
-                href: "/diploma-cac.pdf",
-              },
-              {
-                institution: "Udemy",
-                program: { en: "UX/UI Design & Figma", es: "Diseño UX/UI & Figma" },
-                detail: { en: "22 hours · Design systems & prototyping", es: "22 horas · Design systems y prototipado" },
-                year: "2024",
-                href: null,
-              },
-            ].map((cert, i) => (
-              <motion.div key={i} {...fadeUp(0.08 + i * 0.08)}>
-                <div
-                  className="h-full flex flex-col justify-between rounded-2xl p-6 xl:p-7"
-                  style={{ background: "#fff", border: "1px solid var(--color-divider)" }}
-                >
-                  <div className="flex flex-col gap-3">
-                    <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-accent">{cert.year}</span>
-                    <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-font-primary opacity-50 leading-relaxed">{cert.institution}</p>
-                    <h3 className="font-serif font-bold text-font-secondary text-[18px] xl:text-[20px] leading-tight">
-                      {cert.program[en ? "en" : "es"]}
-                    </h3>
-                    <p className="text-[13px] text-font-primary opacity-60 leading-relaxed">
-                      {cert.detail[en ? "en" : "es"]}
-                    </p>
-                  </div>
-                  {cert.href && (
-                    <a
-                      href={cert.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-6 font-mono text-[10px] uppercase tracking-[0.14em] text-accent border-b border-accent/40 pb-0.5 hover:border-accent transition-colors w-fit"
-                    >
-                      {en ? "View certificate →" : "Ver certificado →"}
-                    </a>
-                  )}
-                </div>
-              </motion.div>
-            ))}
+      {/* ════════════════════════ LEARNING → résumé ════════════════════════ */}
+      <section className="px-8 xl:px-[10vw] 2xl:px-[12vw] pt-4">
+        <motion.div
+          {...fadeUp(0)}
+          className="rounded-3xl border border-divider bg-white px-8 py-10 xl:px-12 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6"
+        >
+          <div>
+            <RevealTitle as="h2" className="font-serif font-bold text-font-secondary text-[28px] xl:text-[34px] leading-tight mb-3">
+              {en ? <>Always <em className="text-accent italic">learning</em></> : <>Siempre <em className="text-accent italic">aprendiendo</em></>}
+            </RevealTitle>
+            <div className="flex flex-wrap gap-2">
+              {["Henry · Full Stack Web Developer", "Codo a Codo · Full Stack PHP", "Udemy · UX/UI & Figma"].map((c) => (
+                <span key={c} className="font-mono text-[10px] text-accent border border-accent/25 px-3 py-1 rounded-full">{c}</span>
+              ))}
+            </div>
           </div>
-        </div>
+          <Link
+            href="/resume?tab=education"
+            className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-font-secondary border border-divider hover:border-accent hover:text-accent px-6 py-3.5 rounded-full transition-colors w-fit flex-shrink-0"
+          >
+            {en ? "See education & certificates" : "Ver educación y certificados"} <FiArrowRight size={13} />
+          </Link>
+        </motion.div>
       </section>
 
     </main>
