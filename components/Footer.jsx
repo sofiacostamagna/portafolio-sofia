@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { FiGithub, FiLinkedin, FiMail, FiCopy, FiCheck, FiArrowUp, FiArrowUpRight } from "react-icons/fi";
@@ -35,6 +36,7 @@ const fadeUp = {
 export default function Footer() {
   const { lang } = useLang();
   const en = lang === "en";
+  const onContact = usePathname() === "/contact";
   const [copied, setCopied] = useState(false);
 
   const copyEmail = async () => {
@@ -65,9 +67,11 @@ export default function Footer() {
           style={{ background: "radial-gradient(circle, rgba(167,139,250,0.18) 0%, rgba(167,139,250,0) 70%)" }}
         />
 
-        <div className="relative px-7 sm:px-12 xl:px-[8vw] pt-16 xl:pt-24 pb-8">
+        <div className={`relative px-7 sm:px-12 xl:px-[8vw] ${onContact ? "pt-12" : "pt-16 xl:pt-24"} pb-8`}>
 
-          {/* ── CTA ── */}
+          {/* ── CTA (en /contact sobra: la página entera ya es el CTA) ── */}
+          {!onContact && (
+            <>
           <motion.div
             initial="hidden"
             whileInView="show"
@@ -124,8 +128,11 @@ export default function Footer() {
             </motion.div>
           </motion.div>
 
+            </>
+          )}
+
           {/* ── Links ── */}
-          <div className="mt-16 xl:mt-24 pt-10 border-t border-white/10 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-[1.4fr_1fr_1fr] gap-10">
+          <div className={`${onContact ? "" : "mt-16 xl:mt-24 pt-10 border-t border-white/10"} grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-[1.4fr_1fr_1fr] gap-10`}>
             {/* Marca */}
             <div className="flex flex-col gap-4">
               <Logo size={34} className="text-white" />
