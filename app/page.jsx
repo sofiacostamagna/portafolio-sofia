@@ -30,7 +30,7 @@ const photoCard = (rotate, delay) => ({
 /* ─────────────────────────────────────
    MacBook mockup — captura de página completa scrolleable
 ───────────────────────────────────── */
-function MacBook({ screenHeight, siteUrl, label, tags, large }) {
+function MacBook({ screenHeight, siteUrl, label, tags, large, badge }) {
   return (
     <div>
       {/* Lid */}
@@ -69,6 +69,11 @@ function MacBook({ screenHeight, siteUrl, label, tags, large }) {
             <span key={tag} className="font-mono text-[9px] uppercase tracking-widest text-font-primary opacity-50">{tag}</span>
           ))}
         </div>
+        {badge && (
+          <span className="inline-flex items-center gap-1 mt-2.5 font-mono text-[9px] uppercase tracking-[0.14em] text-accent border border-accent/30 group-hover:bg-accent group-hover:text-white group-hover:border-accent px-2.5 py-1 rounded-full transition-colors">
+            {badge} →
+          </span>
+        )}
       </div>
     </div>
   );
@@ -77,7 +82,7 @@ function MacBook({ screenHeight, siteUrl, label, tags, large }) {
 /* ─────────────────────────────────────
    iPhone mockup — captura mobile scrolleable
 ───────────────────────────────────── */
-function Phone({ siteUrl, label, tags }) {
+function Phone({ siteUrl, label, tags, badge }) {
   const screenH = 290;
 
   return (
@@ -102,8 +107,25 @@ function Phone({ siteUrl, label, tags }) {
             <span key={tag} className="font-mono text-[8px] uppercase tracking-widest text-font-primary opacity-50">{tag}</span>
           ))}
         </div>
+        {badge && (
+          <span className="inline-flex items-center gap-1 mt-2.5 font-mono text-[9px] uppercase tracking-[0.14em] text-accent border border-accent/30 group-hover:bg-accent group-hover:text-white group-hover:border-accent px-2.5 py-1 rounded-full transition-colors">
+            {badge} →
+          </span>
+        )}
       </div>
     </div>
+  );
+}
+
+/* Abre el caso de estudio si existe; si no, el sitio en una pestaña nueva */
+function ProjectLink({ project, children }) {
+  if (project.caseStudy) {
+    return <Link href={`/work/${project.caseStudy}`} className="block">{children}</Link>;
+  }
+  return (
+    <a href={project.url} target="_blank" rel="noopener noreferrer" className="block">
+      {children}
+    </a>
   );
 }
 
@@ -269,9 +291,9 @@ export default function Home() {
             style={{ width: "100vw" }}
           >
             <div className="group cursor-pointer" style={{ width: 280 }}>
-              <a href={t.work.projects[0].url} target="_blank" rel="noopener noreferrer" className="block">
-                <MacBook screenHeight={160} siteUrl={t.work.projects[0].url} label={t.work.projects[0].title} tags={t.work.projects[0].tags} />
-              </a>
+              <ProjectLink project={t.work.projects[0]}>
+                <MacBook screenHeight={160} siteUrl={t.work.projects[0].url} label={t.work.projects[0].title} tags={t.work.projects[0].tags} badge={t.work.projects[0].caseStudy && t.work.caseStudy} />
+              </ProjectLink>
             </div>
           </div>
 
@@ -281,9 +303,9 @@ export default function Home() {
             style={{ width: "100vw" }}
           >
             <div className="group cursor-pointer" style={{ width: 280 }}>
-              <a href={t.work.projects[1].url} target="_blank" rel="noopener noreferrer" className="block">
-                <MacBook screenHeight={160} siteUrl={t.work.projects[1].url} label={t.work.projects[1].title} tags={t.work.projects[1].tags} />
-              </a>
+              <ProjectLink project={t.work.projects[1]}>
+                <MacBook screenHeight={160} siteUrl={t.work.projects[1].url} label={t.work.projects[1].title} tags={t.work.projects[1].tags} badge={t.work.projects[1].caseStudy && t.work.caseStudy} />
+              </ProjectLink>
             </div>
           </div>
 
@@ -293,9 +315,9 @@ export default function Home() {
             style={{ width: "100vw" }}
           >
             <div className="group cursor-pointer" style={{ width: 200 }}>
-              <a href={t.work.projects[2].url} target="_blank" rel="noopener noreferrer" className="block">
-                <Phone siteUrl={t.work.projects[2].url} label={t.work.projects[2].title} tags={t.work.projects[2].tags} />
-              </a>
+              <ProjectLink project={t.work.projects[2]}>
+                <Phone siteUrl={t.work.projects[2].url} label={t.work.projects[2].title} tags={t.work.projects[2].tags} badge={t.work.projects[2].caseStudy && t.work.caseStudy} />
+              </ProjectLink>
             </div>
           </div>
         </div>
@@ -330,9 +352,9 @@ export default function Home() {
               animate={worksInView ? { y: [0, -8, 0] } : {}}
               transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut", delay: 1.8 }}
             >
-              <a href={t.work.projects[0].url} target="_blank" rel="noopener noreferrer" className="block">
-                <MacBook screenHeight={190} siteUrl={t.work.projects[0].url} label={t.work.projects[0].title} tags={t.work.projects[0].tags} />
-              </a>
+              <ProjectLink project={t.work.projects[0]}>
+                <MacBook screenHeight={190} siteUrl={t.work.projects[0].url} label={t.work.projects[0].title} tags={t.work.projects[0].tags} badge={t.work.projects[0].caseStudy && t.work.caseStudy} />
+              </ProjectLink>
             </motion.div>
             </Parallax>
           </motion.div>
@@ -350,9 +372,9 @@ export default function Home() {
               animate={worksInView ? { y: [0, -12, 0] } : {}}
               transition={{ duration: 5.0, repeat: Infinity, ease: "easeInOut", delay: 1.0 }}
             >
-              <a href={t.work.projects[1].url} target="_blank" rel="noopener noreferrer" className="block">
-                <MacBook screenHeight={270} siteUrl={t.work.projects[1].url} label={t.work.projects[1].title} tags={t.work.projects[1].tags} large />
-              </a>
+              <ProjectLink project={t.work.projects[1]}>
+                <MacBook screenHeight={270} siteUrl={t.work.projects[1].url} label={t.work.projects[1].title} tags={t.work.projects[1].tags} large badge={t.work.projects[1].caseStudy && t.work.caseStudy} />
+              </ProjectLink>
             </motion.div>
           </motion.div>
 
@@ -370,9 +392,9 @@ export default function Home() {
               animate={worksInView ? { y: [0, -7, 0] } : {}}
               transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut", delay: 2.4 }}
             >
-              <a href={t.work.projects[2].url} target="_blank" rel="noopener noreferrer" className="block">
-                <Phone siteUrl={t.work.projects[2].url} label={t.work.projects[2].title} tags={t.work.projects[2].tags} />
-              </a>
+              <ProjectLink project={t.work.projects[2]}>
+                <Phone siteUrl={t.work.projects[2].url} label={t.work.projects[2].title} tags={t.work.projects[2].tags} badge={t.work.projects[2].caseStudy && t.work.caseStudy} />
+              </ProjectLink>
             </motion.div>
             </Parallax>
           </motion.div>

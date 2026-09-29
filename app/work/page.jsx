@@ -52,6 +52,7 @@ const projects = [
   {
     num: "01",
     title: "WiPlex Studios",
+    caseStudy: "wiplex-studios",
     category: { en: "Design & Frontend", es: "Diseño y Frontend" },
     description: {
       en: "I handled UI design and frontend development — building pages with HTML, PHP, and CSS for this creative agency's platform focused on AI-powered video and storytelling content.",
@@ -125,6 +126,7 @@ const projects = [
   {
     num: "07",
     title: "Dr. Javier Ruiz Romero",
+    caseStudy: "dr-javier-ruiz-romero",
     category: { en: "WordPress & PHP", es: "WordPress & PHP" },
     description: {
       en: "Full website development for a medical specialist — custom WordPress theme, PHP customization, responsive design, and SEO optimization. Built to be clear, trustworthy, and patient-focused.",
@@ -137,6 +139,7 @@ const projects = [
   {
     num: "08",
     title: "Aruma Clinic",
+    caseStudy: "aruma-clinic",
     category: { en: "WordPress & PHP", es: "WordPress & PHP" },
     description: {
       en: "Full website development for an aesthetic clinic — custom WordPress theme, PHP customization, and mobile-first design focused on generating trust and driving conversions.",
@@ -153,6 +156,7 @@ const filters = [
   { key: "frontend",  en: "Frontend",   es: "Frontend"   },
   { key: "design",    en: "Design",     es: "Diseño"     },
   { key: "wordpress", en: "WordPress",  es: "WordPress"  },
+  { key: "case",      en: "Case studies", es: "Casos de estudio" },
 ];
 
 /* ─────────────────────────────────────────────────────────
@@ -189,14 +193,24 @@ function ProjectCard({ project, lang }) {
           </span>
         ))}
       </div>
-      <a
-        href={project.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.12em] text-font-secondary hover:text-accent transition-colors w-fit border-b border-divider hover:border-accent pb-0.5"
-      >
-        {lang === "en" ? "Visit site" : "Ver sitio"} <BsArrowUpRight size={11} />
-      </a>
+      <div className="flex flex-wrap items-center gap-5">
+        {project.caseStudy && (
+          <Link
+            href={`/work/${project.caseStudy}`}
+            className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.12em] text-accent hover:text-accent-hover transition-colors w-fit border-b border-accent pb-0.5"
+          >
+            {lang === "en" ? "Read case study" : "Ver caso de estudio"} →
+          </Link>
+        )}
+        <a
+          href={project.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.12em] text-font-secondary hover:text-accent transition-colors w-fit border-b border-divider hover:border-accent pb-0.5"
+        >
+          {lang === "en" ? "Visit site" : "Ver sitio"} <BsArrowUpRight size={11} />
+        </a>
+      </div>
     </>
   );
 
@@ -213,6 +227,11 @@ function ProjectCard({ project, lang }) {
       <div className="lg:hidden mb-5">
         <div className="flex items-baseline gap-3 mb-2">
           <span className="font-mono text-[10px] text-font-primary opacity-40">{project.num}</span>
+          {project.caseStudy && (
+            <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-accent border border-accent/30 px-2 py-0.5 rounded-full">
+              {lang === "en" ? "Case study" : "Caso de estudio"}
+            </span>
+          )}
           {project.note && (
             <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-accent border border-accent/30 px-2 py-0.5 rounded-full">
               {project.note[lang]}
@@ -230,6 +249,11 @@ function ProjectCard({ project, lang }) {
         <div className="hidden lg:flex lg:basis-[42%] lg:flex-shrink-0 flex-col gap-5">
           <div className="flex items-center gap-3">
             <span className="font-mono text-[11px] text-font-primary opacity-40">{project.num}</span>
+            {project.caseStudy && (
+              <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-accent border border-accent/30 px-2 py-0.5 rounded-full">
+                {lang === "en" ? "Case study" : "Caso de estudio"}
+              </span>
+            )}
             {project.note && (
               <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-accent border border-accent/30 px-2 py-0.5 rounded-full">
                 {project.note[lang]}
@@ -274,7 +298,9 @@ export default function Work() {
   const filtered =
     activeFilter === "all"
       ? projects
-      : projects.filter((p) => p.type === activeFilter);
+      : activeFilter === "case"
+        ? projects.filter((p) => p.caseStudy)
+        : projects.filter((p) => p.type === activeFilter);
 
   return (
     <motion.section

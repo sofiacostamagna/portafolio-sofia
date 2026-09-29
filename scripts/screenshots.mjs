@@ -26,10 +26,25 @@ async function capture(browser, url, kind) {
   await page.goto(url, { waitUntil: "networkidle", timeout: 60000 }).catch(() => {});
 
   // Cerrar banners de cookies (primer botón visible que coincida)
-  const accept = page.getByRole("button", { name: /^(aceptar( todo| todas)?|accept( all)?|agree|got it|ok|allow all)$/i });
-  if (await accept.first().isVisible().catch(() => false)) {
-    await accept.first().click().catch(() => {});
-    await page.waitForTimeout(800);
+  const acceptName = /^\s*(aceptar( todo| todas| cookies)?|accept( all| cookies)?|agree|got it|ok|allow all)\s*$/i;
+  const candidates = [
+    page.getByRole("button", { name: acceptName }),
+    page.getByRole("link", { name: acceptName }),
+    page.locator("button, a, [role=button], .cmplz-accept").filter({ hasText: acceptName }),
+  ];
+  // Algunos banners aparecen con demora: reintentar durante unos segundos
+  for (let attempt = 0, done = false; attempt < 10 && !done; attempt++) {
+    for (const c of candidates) {
+      const el = c.first();
+      if (await el.isVisible().catch(() => false)) {
+        // click directo en el elemento: evita que otros botones flotantes (ej. WhatsApp) lo tapen
+        await el.evaluate((node) => node.click()).catch(() => {});
+        await page.waitForTimeout(800);
+        done = true;
+        break;
+      }
+    }
+    if (!done) await page.waitForTimeout(500);
   }
 
   // Sitios con scroll interno (body de 100vh + contenedor con overflow): los desplegamos
