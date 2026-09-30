@@ -23,48 +23,45 @@ const STORY = [
     when: { en: "Before code", es: "Antes del código" },
     title: { en: "Human Resources", es: "Recursos Humanos" },
     text: {
-      en: "I was building teams. I worked in HR at a clinic in Argentina, helping people find their place.",
-      es: "Construía equipos. Trabajé en Recursos Humanos en un sanatorio en Argentina, ayudando a personas a encontrar su lugar.",
+      en: "I worked in Human Resources at a clinic in Argentina.",
+      es: "Trabajé en Recursos Humanos en un sanatorio de Argentina.",
     },
   },
   {
     when: { en: "2020", es: "2020" },
     title: { en: "The pandemic", es: "La pandemia" },
     text: {
-      en: "It turned everything upside down. The way we work changed, the world changed — and I wanted to be part of that change.",
-      es: "Puso todo patas para arriba. Las formas de trabajar cambiaron, el mundo cambió — y yo quería ser parte de ese cambio.",
+      en: "The way we work changed, and I started thinking about changing too.",
+      es: "Cambió la forma de trabajar y empecé a pensar en cambiar yo también.",
     },
   },
   {
     when: { en: "2021", es: "2021" },
-    title: { en: "Four months in Canada", es: "Cuatro meses en Canadá" },
+    title: { en: "Canada", es: "Canadá" },
     text: {
-      en: "People crossed my path who shifted my perspective and made me believe in myself.",
-      es: "Se cruzaron personas en mi camino que cambiaron mi visión y me inspiraron a creer en mí misma.",
+      en: "I lived there for four months and met people who helped me believe in myself.",
+      es: "Viví cuatro meses allá y conocí gente que me ayudó a creer en mí.",
     },
   },
   {
     when: { en: "2023", es: "2023" },
-    title: { en: "Diving into code", es: "De lleno en el código" },
+    title: { en: "Learning to code", es: "Aprender a programar" },
     text: {
-      en: "Long nights, imposter syndrome, a lot of “this isn't for me”. But the hockey player in me doesn't give up easily.",
-      es: "Noches largas, síndrome del impostor, muchos “esto no es para mí”. Pero la jugadora de hockey que hay en mí no se rinde fácil.",
+      en: "I did Henry's 800-hour Full Stack bootcamp. It was hard, but I kept going.",
+      es: "Hice el bootcamp Full Stack de Henry, de 800 horas. Costó, pero seguí.",
     },
   },
   {
     when: { en: "Today", es: "Hoy" },
-    title: { en: "Designing & building", es: "Diseñando y construyendo" },
+    title: { en: "Frontend & UX/UI", es: "Frontend y UX/UI" },
     text: {
-      en: "Websites and platforms for clients, working from anywhere — and turning what once felt like a dream into something real.",
-      es: "Sitios y plataformas para clientes, trabajando desde cualquier lugar — y convirtiendo lo que parecía un sueño en algo posible.",
+      en: "I design and build websites for clients, working remotely.",
+      es: "Diseño y desarrollo sitios web para clientes, trabajando de forma remota.",
     },
   },
 ];
 
-/* ─────────────────────────────────────
-   Línea de tiempo: la línea se dibuja con el scroll y cada hito
-   se enciende cuando la línea lo alcanza
-───────────────────────────────────── */
+/* La línea se dibuja con el scroll y cada hito se enciende cuando la línea lo alcanza */
 function Timeline({ l }) {
   const ref = useRef(null);
   const reduce = useReducedMotion();
@@ -104,19 +101,19 @@ function Timeline({ l }) {
               className="absolute left-0 top-0.5 xl:top-0 w-[15px] h-[15px] rounded-full border-2"
               animate={{
                 scale: on ? [1, 1.45, 1] : 1,
-                backgroundColor: on ? "#7f77dd" : "#fafafa",
-                borderColor: on ? "#7f77dd" : "#d6d3f3",
-                boxShadow: on ? "0 0 0 6px rgba(127,119,221,0.15)" : "0 0 0 0px rgba(127,119,221,0)",
+                backgroundColor: on ? "#6a5fd0" : "#fafafa",
+                borderColor: on ? "#6a5fd0" : "#d6d3f3",
+                boxShadow: on ? "0 0 0 6px rgba(106,95,208,0.15)" : "0 0 0 0px rgba(106,95,208,0)",
               }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             />
+            <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-accent block mb-2">
+              {step.when[l]}
+            </span>
             <motion.div
-              animate={{ opacity: on ? 1 : 0.35, y: on ? 0 : 12 }}
+              animate={{ y: on ? 0 : 10 }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
-              <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-accent block mb-2">
-                {step.when[l]}
-              </span>
               <h3 className="font-serif font-bold text-font-secondary text-[21px] leading-tight mb-2">
                 {step.title[l]}
               </h3>
@@ -311,7 +308,7 @@ export default function About() {
 
           {/* Left */}
           <div className="lg:w-[54%]">
-            <motion.span {...fadeUp(0)} className="label block mb-5">
+            <motion.span className="animate-in label block mb-5" style={{ "--d": "0ms" }}>
               {t.about.label}
             </motion.span>
             <RevealTitle as="h1"
@@ -321,11 +318,11 @@ export default function About() {
               {t.about.heading1}{" "}
               <em className="text-accent italic">{t.about.heading2}</em>
             </RevealTitle>
-            <motion.div {...fadeUp(0.2)} className="flex flex-col gap-5">
+            <motion.div className="animate-in flex flex-col gap-5" style={{ "--d": "200ms" }}>
               <p className="text-[19px] xl:text-[21px] text-font-secondary leading-relaxed">{t.about.p1}</p>
               <p className="text-[17px] xl:text-[18px] text-font-primary leading-relaxed">{t.about.p2}</p>
             </motion.div>
-            <motion.div {...fadeUp(0.35)} className="mt-10">
+            <motion.div className="animate-in mt-10" style={{ "--d": "350ms" }}>
               <Link href="/contact">
                 <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent border-b border-accent pb-0.5 hover:text-accent-hover transition-colors">
                   {t.about.cta}
@@ -344,8 +341,6 @@ export default function About() {
               className="relative"
             >
               <motion.div
-                animate={{ y: [0, -14, 0] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                 whileHover={{ scale: 1.03 }}
                 style={{ rotate: 3, transformOrigin: "bottom center", cursor: "pointer" }}
               >
@@ -355,7 +350,7 @@ export default function About() {
                     <Image src="/norte.jpeg" fill sizes="360px" alt="Sofía en el norte argentino" className="object-cover object-center" />
                   </Parallax>
                 </div>
-                <span className="block text-center font-mono text-[9px] uppercase tracking-[0.16em] text-font-primary mt-3 opacity-40">
+                <span className="block text-center font-mono text-[9px] uppercase tracking-[0.16em] text-font-muted mt-3">
                   Salta, Argentina
                 </span>
               </motion.div>
@@ -374,8 +369,8 @@ export default function About() {
           style={{ fontSize: "clamp(32px, 4vw, 52px)", lineHeight: 1.05 }}
         >
           {en
-            ? <>From HR to <em className="text-accent italic">building things</em></>
-            : <>De RRHH a <em className="text-accent italic">construir cosas</em></>}
+            ? <>From HR to <em className="text-accent italic">frontend</em></>
+            : <>De RRHH al <em className="text-accent italic">frontend</em></>}
         </RevealTitle>
 
         <Timeline l={l} />

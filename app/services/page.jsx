@@ -120,7 +120,7 @@ export default function Services() {
       <section className="px-8 xl:px-[10vw] 2xl:px-[12vw] pt-16 xl:pt-24">
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8">
           <div className="max-w-2xl">
-            <motion.span {...fadeUp(0)} className="label block mb-5">
+            <motion.span className="animate-in label block mb-5" style={{ "--d": "0ms" }}>
               {en ? "Services" : "Servicios"}
             </motion.span>
             <RevealTitle as="h1"
@@ -132,15 +132,15 @@ export default function Services() {
                 : <>Cómo puedo <em className="text-accent italic">ayudarte</em></>}
             </RevealTitle>
             <motion.p
-              {...fadeUp(0.16)}
-              className="text-[16px] xl:text-[18px] text-font-primary leading-relaxed mt-6"
+              className="animate-in text-[16px] xl:text-[18px] text-font-primary leading-relaxed mt-6"
+              style={{ "--d": "160ms" }}
             >
               {en
                 ? "From the first sketch to the live site — design, development, or both. You work directly with me the whole way."
                 : "Desde el primer boceto hasta el sitio publicado — diseño, desarrollo o ambos. Trabajás directamente conmigo en todo el proceso."}
             </motion.p>
           </div>
-          <motion.div {...fadeUp(0.2)}>
+          <motion.div className="animate-in" style={{ "--d": "200ms" }}>
             <Link
               href="/contact"
               className="inline-flex items-center gap-2 bg-accent text-white font-mono text-[11px] uppercase tracking-[0.14em] px-7 py-3.5 rounded-full hover:bg-accent-hover transition-colors duration-300"
@@ -159,14 +159,14 @@ export default function Services() {
             return (
               <motion.article
                 key={s.num}
-                {...fadeUp(0.05 + (i % 2) * 0.08)}
-                className="group bg-white border border-divider rounded-3xl p-8 xl:p-10 flex flex-col gap-6 hover:border-accent/50 hover:shadow-[0_20px_50px_-20px_rgba(127,119,221,0.35)] transition-all duration-300"
+                style={{ "--d": `${120 + (i % 2) * 80}ms` }}
+                className="animate-in group bg-white border border-divider rounded-3xl p-8 xl:p-10 flex flex-col gap-6 hover:border-accent/50 hover:shadow-[0_20px_50px_-20px_rgba(127,119,221,0.35)] transition-all duration-300"
               >
                 <div className="flex items-start justify-between">
                   <div className="w-14 h-14 rounded-2xl bg-accent-light text-accent flex items-center justify-center group-hover:bg-accent group-hover:text-white transition-colors duration-300">
                     <Icon size={24} />
                   </div>
-                  <span className="font-mono text-[11px] tracking-[0.15em] text-font-primary opacity-50">{s.num}</span>
+                  <span className="font-mono text-[11px] tracking-[0.15em] text-font-muted">{s.num}</span>
                 </div>
 
                 <div>

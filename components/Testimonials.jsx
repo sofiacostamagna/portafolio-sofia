@@ -19,7 +19,7 @@ const stagger = {
 
 function Stars({ rating }) {
   return (
-    <div className="flex gap-0.5" aria-label={`${rating} / 5`}>
+    <div className="flex gap-0.5" role="img" aria-label={`${rating} / 5`}>
       {Array.from({ length: 5 }).map((_, i) => (
         <FiStar
           key={i}
@@ -135,7 +135,7 @@ export default function Testimonials() {
                 <figcaption className="flex flex-col gap-2 pt-4 border-t border-divider">
                   <span className="text-[13px] font-medium text-font-secondary">{item.project}</span>
                   <div className="flex items-center justify-between gap-3">
-                    <span className="font-mono text-[10px] uppercase tracking-widest text-font-primary opacity-70">
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-font-muted">
                       {formatDate(item.date)}
                     </span>
                     <span className="font-mono text-[10px] uppercase tracking-widest text-accent inline-flex items-center gap-1">
@@ -149,15 +149,20 @@ export default function Testimonials() {
 
           {/* Controles */}
           <div className="flex items-center justify-between mt-8">
-            <div className="flex gap-2">
+            <div className="flex">
               {testimonials.map((_, i) => (
                 <button
                   key={i}
                   onClick={() => scrollTo(i)}
                   aria-label={`${i + 1} / ${testimonials.length}`}
-                  className="h-1.5 rounded-full transition-all duration-300"
-                  style={{ width: i === active ? 20 : 6, background: i === active ? "#7f77dd" : "#d0d0d0" }}
-                />
+                  aria-current={i === active}
+                  className="h-6 min-w-6 flex items-center justify-center"
+                >
+                  <span
+                    className="block h-1.5 rounded-full transition-all duration-300"
+                    style={{ width: i === active ? 20 : 6, background: i === active ? "#6a5fd0" : "#d0d0d0" }}
+                  />
+                </button>
               ))}
             </div>
             <div className="flex gap-2">

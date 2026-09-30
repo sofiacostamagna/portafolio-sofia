@@ -25,11 +25,13 @@ export default {
     extend: {
       colors: {
         primary: "#fafafa",
-        accent: "#7f77dd",
+        accent: "#6a5fd0",        // violeta de marca, ajustado a contraste AA (5:1)
+        "accent-soft": "#7f77dd",   // violeta original, solo decorativo
         "accent-hover": "#534ab7",
         "accent-focus": "#a78bfa",
         "accent-light": "#eeedfe",
         "font-primary": "#666666",
+        "font-muted": "#6f6f6f",    // texto secundario chico (antes #666 con opacidad, sin contraste)
         "font-secondary": "#111111",
         "divider": "#e8e8e8",
       },

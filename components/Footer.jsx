@@ -145,7 +145,7 @@ export default function Footer() {
 
             {/* Páginas */}
             <nav className="flex flex-col gap-4" aria-label={en ? "Footer" : "Pie de página"}>
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/45">
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/60">
                 {en ? "Pages" : "Páginas"}
               </p>
               <ul className="grid grid-cols-2 gap-x-6 gap-y-3 w-fit">
@@ -164,7 +164,7 @@ export default function Footer() {
 
             {/* Redes */}
             <div className="flex flex-col gap-4">
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/45">
+              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/60">
                 {en ? "Find me on" : "Encontrame en"}
               </p>
               <div className="flex gap-3">
@@ -187,7 +187,7 @@ export default function Footer() {
 
           {/* ── Bottom bar ── */}
           <div className="mt-12 pt-6 border-t border-white/10 flex flex-col-reverse sm:flex-row items-center justify-between gap-4">
-            <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-white/50 text-center sm:text-left">
+            <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-white/65 text-center sm:text-left">
               © {new Date().getFullYear()} Sofía Costamagna · {en ? "Designed & built by me" : "Diseñado y desarrollado por mí"}
             </span>
             <button

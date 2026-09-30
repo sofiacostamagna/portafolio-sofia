@@ -73,24 +73,28 @@ const Header = () => {
               onClick={toggle}
               className="text-lg hover:scale-110 transition-transform duration-200"
               title={lang === "en" ? "Cambiar a español" : "Switch to English"}
+              aria-label={lang === "en" ? "Cambiar a español" : "Switch to English"}
             >
               {lang === "en" ? "🇦🇷" : "🇺🇸"}
             </button>
-            <Link href="/contact">
-              <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-white bg-accent px-5 py-2.5 rounded-full hover:bg-accent-hover transition-all duration-300 cursor-pointer">
-                {t.nav.contact}
-              </span>
+            <Link
+              href="/contact"
+              className="inline-flex font-mono text-[11px] uppercase tracking-[0.15em] text-white bg-accent px-5 py-2.5 rounded-full hover:bg-accent-hover transition-all duration-300"
+            >
+              {t.nav.contact}
             </Link>
           </div>
 
           {/* Mobile right: flag + hamburger */}
           <div className="xl:hidden flex items-center gap-3">
-            <button onClick={toggle} className="text-xl">
+            <button onClick={toggle} className="text-xl p-1" aria-label={lang === "en" ? "Cambiar a español" : "Switch to English"}>
               {lang === "en" ? "🇦🇷" : "🇺🇸"}
             </button>
             <button
               onClick={() => setOpen((o) => !o)}
-              className="text-font-secondary p-1"
+              className="text-font-secondary p-2 -m-1"
+              aria-label={open ? (lang === "en" ? "Close menu" : "Cerrar menú") : (lang === "en" ? "Open menu" : "Abrir menú")}
+              aria-expanded={open}
             >
               {open
                 ? <IoCloseOutline size={26} />

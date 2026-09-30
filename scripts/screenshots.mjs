@@ -4,7 +4,7 @@
 import { chromium } from "playwright";
 import sharp from "sharp";
 import { mkdir } from "node:fs/promises";
-import { SITES, previewSlug } from "../lib/previews.js";
+import { SITES, previewSlug, PREVIEW_WIDTHS } from "../lib/previews.js";
 
 const OUT_DIR = new URL("../public/previews/", import.meta.url);
 const MAX_HEIGHT = 6000; // px CSS — alcanza para mostrar bien la página sin archivos gigantes
@@ -77,6 +77,18 @@ async function capture(browser, url, kind) {
 
   const file = new URL(`${previewSlug(url)}${kind === "mobile" ? "-mobile" : ""}.webp`, OUT_DIR);
   const info = await sharp(png).resize({ width: vp.outWidth }).webp({ quality: 72 }).toFile(file.pathname);
+  // Poster: primera pantalla (16:10 escritorio, 9:16 celular) para la carga inicial
+  const posterW = kind === "desktop" ? 720 : 500;
+  const posterH = kind === "desktop" ? Math.round(posterW / 1.6) : Math.round(posterW * 16 / 9);
+  await sharp(png).resize({ width: posterW }).extract({ left: 0, top: 0, width: posterW, height: posterH })
+    .webp({ quality: 70 }).toFile(new URL(`${previewSlug(url)}${kind === "mobile" ? "-mobile" : ""}-top.webp`, OUT_DIR).pathname);
+
+  // Versiones más livianas para pantallas chicas (srcset)
+  if (kind === "desktop") {
+    for (const w of PREVIEW_WIDTHS) {
+      await sharp(png).resize({ width: w }).webp({ quality: 72 }).toFile(new URL(`${previewSlug(url)}-${w}.webp`, OUT_DIR).pathname);
+    }
+  }
   console.log(`✓ ${kind.padEnd(7)} ${url} → ${file.pathname.split("/public")[1]} (${info.width}x${info.height}, ${Math.round(info.size / 1024)} KB)`);
 }
 

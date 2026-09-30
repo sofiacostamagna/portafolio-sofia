@@ -5,28 +5,38 @@ import "./globals.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import PageTransition from "../components/PageTransition";
-import StairTransition from "../components/StairTransition";
 import { LanguageProvider } from "../components/LanguageContext";
 
+// Etiquetas en mayúsculas — fuente variable (un solo archivo, ~40 KB). Se precarga
+// porque está en casi todas las pantallas y cambiarla tarde movía el layout (CLS).
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrainsMono",
   subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
 });
 
 // Textos
 const figtree = Figtree({
   variable: "--font-body",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
 });
 
-// Títulos — serif variable; SOFT redondea las terminaciones
+// Títulos — serif variable; SOFT redondea las terminaciones, opsz da el contraste fino en tamaños grandes.
+// La itálica va en un archivo aparte sin preload: solo se usa en palabras destacadas (<em>),
+// así la carga inicial baja ~120 KB sin cambiar el diseño.
 const fraunces = Fraunces({
   variable: "--font-heading",
   subsets: ["latin"],
-  style: ["normal", "italic"],
+  style: ["normal"],
   axes: ["SOFT", "opsz"],
+});
+
+const frauncesItalic = Fraunces({
+  variable: "--font-heading-italic",
+  subsets: ["latin"],
+  style: ["italic"],
+  axes: ["SOFT", "opsz"],
+  preload: false,
+  display: "optional",
 });
 
 const description =
@@ -61,10 +71,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body suppressHydrationWarning className={`${jetbrainsMono.variable} ${figtree.variable} ${fraunces.variable} antialiased`}>
+      <body suppressHydrationWarning className={`${jetbrainsMono.variable} ${figtree.variable} ${fraunces.variable} ${frauncesItalic.variable} antialiased`}>
         <LanguageProvider>
           <Header />
-          <StairTransition />
           <PageTransition>{children}</PageTransition>
           <Footer />
         </LanguageProvider>

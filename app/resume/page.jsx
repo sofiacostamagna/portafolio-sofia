@@ -118,7 +118,7 @@ export default function Resume() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-16 xl:mb-20">
           <div>
-            <motion.span {...fadeUp(0)} className="label block mb-5">
+            <motion.span className="animate-in label block mb-5">
               {en ? "My background" : "Mi trayectoria"}
             </motion.span>
             <RevealTitle as="h1"
@@ -129,17 +129,17 @@ export default function Resume() {
             </RevealTitle>
           </div>
           <motion.a
-            {...fadeUp(0.12)}
+            style={{ "--d": "120ms" }}
             href={en ? "/Sofia Costamagna-eng.pdf" : "/Sofia Costamagna-esp.pdf"}
             download
-            className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] px-5 py-3 rounded-full border border-divider hover:border-accent hover:text-accent transition-colors self-start sm:self-auto"
+            className="animate-in inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] px-5 py-3 rounded-full border border-divider hover:border-accent hover:text-accent transition-colors self-start sm:self-auto"
           >
             {en ? "Download CV" : "Descargar CV"} ↓
           </motion.a>
         </div>
 
         {/* Tabs + Content */}
-        <motion.div {...fadeUp(0.16)} className="flex flex-col xl:flex-row gap-12 xl:gap-20">
+        <motion.div className="animate-in flex flex-col xl:flex-row gap-12 xl:gap-20" style={{ "--d": "160ms" }}>
 
           {/* Tab nav */}
           <div className="flex flex-row xl:flex-col gap-1 xl:gap-0 flex-shrink-0 border-b xl:border-b-0 xl:border-l border-divider pb-4 xl:pb-0 xl:w-44">
@@ -147,8 +147,10 @@ export default function Resume() {
               <button
                 key={t.key}
                 onClick={() => setTab(t.key)}
-                className="font-mono text-[11px] uppercase tracking-[0.14em] text-left px-4 py-2.5 xl:py-3 transition-colors relative"
-                style={{ color: tab === t.key ? "var(--color-accent)" : "var(--color-font-primary)", opacity: tab === t.key ? 1 : 0.5 }}
+                className={`font-mono text-[11px] uppercase tracking-[0.14em] text-left px-4 py-2.5 xl:py-3 transition-colors relative ${
+                  tab === t.key ? "text-accent" : "text-font-muted hover:text-font-secondary"
+                }`}
+                aria-pressed={tab === t.key}
               >
                 {tab === t.key && (
                   <motion.span
@@ -164,7 +166,7 @@ export default function Resume() {
 
           {/* Content */}
           <div className="flex-1">
-            <AnimatePresence mode="wait">
+            <AnimatePresence mode="wait" initial={false}>
 
               {/* Experience */}
               {tab === "experience" && (
@@ -183,10 +185,10 @@ export default function Resume() {
                         <span className="font-mono text-[12px] text-font-secondary font-medium mt-1 block">{item.company}</span>
                       </div>
                       <div>
-                        <h3 className="font-serif text-[20px] xl:text-[22px] font-medium text-font-secondary mb-3">
+                        <h2 className="font-serif text-[20px] xl:text-[22px] font-medium text-font-secondary mb-3">
                           {item.position[en ? "en" : "es"]}
-                        </h3>
-                        <p className="text-font-primary text-[14px] xl:text-[15px] leading-relaxed opacity-70">
+                        </h2>
+                        <p className="text-font-muted text-[14px] xl:text-[15px] leading-relaxed">
                           {item.description[en ? "en" : "es"]}
                         </p>
                       </div>
@@ -211,10 +213,10 @@ export default function Resume() {
                         <span className="font-mono text-[10px] text-accent tracking-wide block">{item.duration}</span>
                       </div>
                       <div>
-                        <h3 className="font-serif text-[20px] xl:text-[22px] font-medium text-font-secondary mb-1">
+                        <h2 className="font-serif text-[20px] xl:text-[22px] font-medium text-font-secondary mb-1">
                           {item.degree[en ? "en" : "es"]}
-                        </h3>
-                        <span className="font-mono text-[12px] text-font-primary opacity-60">{item.institution}</span>
+                        </h2>
+                        <span className="font-mono text-[12px] text-font-muted">{item.institution}</span>
                         {item.certificate && (
                           <div className="mt-4">
                             <button
@@ -247,7 +249,7 @@ export default function Resume() {
                           <div className="text-3xl text-font-primary group-hover:text-accent transition-colors duration-300">
                             {skill.icon}
                           </div>
-                          <span className="font-mono text-[10px] uppercase tracking-wide text-font-primary opacity-50 group-hover:opacity-80 transition-opacity">
+                          <span className="font-mono text-[10px] uppercase tracking-wide text-font-muted group-hover:opacity-80 transition-opacity">
                             {skill.name}
                           </span>
                         </div>

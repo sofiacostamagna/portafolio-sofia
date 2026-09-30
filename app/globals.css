@@ -13,6 +13,13 @@
     font-variation-settings: "SOFT" 50;
   }
 
+  /* Itálica de Fraunces (archivo aparte, se carga después) para las palabras destacadas */
+  .font-serif em,
+  .font-serif.italic,
+  .font-serif .italic {
+    font-family: var(--font-heading-italic), var(--font-heading), serif;
+  }
+
   h1 {
     @apply font-serif text-[52px] xl:text-[80px] leading-[1.05] font-medium tracking-tight;
   }
@@ -36,4 +43,38 @@
   .slider-image {
     transition: opacity 0.3s ease-in-out;
   }
+}
+
+/* ─────────────────────────────────────
+   Animaciones de entrada en CSS puro: arrancan apenas se pinta el HTML del
+   servidor, sin esperar a que cargue JavaScript (mejor LCP).
+   Uso: className="animate-in" style={{ "--d": "200ms" }}
+───────────────────────────────────── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes word-up {
+  from { transform: translateY(105%); }
+  to   { transform: none; }
+}
+@keyframes underline-in {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.animate-in {
+  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--d, 0ms);
+}
+.reveal-word {
+  display: inline-block;
+  animation: word-up 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--d, 0ms);
+}
+.reveal-underline {
+  animation: underline-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--d, 0ms);
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-in, .reveal-word, .reveal-underline { animation: none; }
 }

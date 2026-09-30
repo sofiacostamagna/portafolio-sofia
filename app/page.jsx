@@ -9,7 +9,7 @@ import { useInView } from "framer-motion";
 import { useLang } from "../components/LanguageContext";
 import Testimonials from "../components/Testimonials";
 import ScrollableScreenshot from "../components/ScrollableScreenshot";
-import { previewSrc } from "../lib/previews";
+import { previewSrc, previewSrcSet, previewPoster } from "../lib/previews";
 import { RevealTitle, Parallax } from "../components/motion";
 
 const fadeUp = {
@@ -30,7 +30,7 @@ const photoCard = (rotate, delay) => ({
 /* ─────────────────────────────────────
    MacBook mockup — captura de página completa scrolleable
 ───────────────────────────────────── */
-function MacBook({ screenHeight, siteUrl, label, tags, large, badge }) {
+function MacBook({ siteUrl, label, tags, large, badge }) {
   return (
     <div>
       {/* Lid */}
@@ -46,12 +46,12 @@ function MacBook({ screenHeight, siteUrl, label, tags, large, badge }) {
             <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ff5f57", flexShrink: 0 }} />
             <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#febc2e", flexShrink: 0 }} />
             <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#28c840", flexShrink: 0 }} />
-            <div style={{ flex: 1, background: "#e0e0e0", borderRadius: 4, padding: "2px 8px", fontFamily: "monospace", fontSize: 9, color: "#888", marginLeft: 6, overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>
+            <div style={{ flex: 1, background: "#e0e0e0", borderRadius: 4, padding: "2px 8px", fontFamily: "monospace", fontSize: 9, color: "#555", marginLeft: 6, overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>
               {siteUrl?.replace("https://", "").replace("http://", "")}
             </div>
           </div>
           {/* Screen — captura scrolleable */}
-          <ScrollableScreenshot src={previewSrc(siteUrl)} alt={label} height={screenHeight} />
+          <ScrollableScreenshot src={previewSrc(siteUrl)} poster={previewPoster(siteUrl)} srcSet={previewSrcSet(siteUrl)} sizes="(max-width: 1023px) 86vw, 38vw" alt={label} aspect="16 / 10" />
         </div>
       </div>
       {/* Hinge */}
@@ -63,10 +63,10 @@ function MacBook({ screenHeight, siteUrl, label, tags, large, badge }) {
       </div>
       {/* Caption */}
       <div className="mt-4 text-center">
-        <p className="font-serif font-bold text-font-secondary group-hover:text-accent transition-colors mb-1.5" style={{ fontSize: large ? 18 : 15 }}>{label}</p>
+        <p className="font-serif font-bold text-font-secondary group-hover:text-accent transition-colors mb-1.5" style={{ fontSize: large ? 21 : 17 }}>{label}</p>
         <div className="flex flex-wrap gap-2 justify-center">
           {tags.map((tag) => (
-            <span key={tag} className="font-mono text-[9px] uppercase tracking-widest text-font-primary opacity-50">{tag}</span>
+            <span key={tag} className="font-mono text-[9px] uppercase tracking-widest text-font-muted">{tag}</span>
           ))}
         </div>
         {badge && (
@@ -83,7 +83,6 @@ function MacBook({ screenHeight, siteUrl, label, tags, large, badge }) {
    iPhone mockup — captura mobile scrolleable
 ───────────────────────────────────── */
 function Phone({ siteUrl, label, tags, badge }) {
-  const screenH = 290;
 
   return (
     <div>
@@ -93,7 +92,7 @@ function Phone({ siteUrl, label, tags, badge }) {
           <div style={{ width: 56, height: 16, background: "#000", borderRadius: 10 }} />
         </div>
         {/* Screen — captura mobile scrolleable */}
-        <ScrollableScreenshot src={previewSrc(siteUrl, "mobile")} alt={label} height={screenH} radius={22} />
+        <ScrollableScreenshot src={previewSrc(siteUrl, "mobile")} poster={previewPoster(siteUrl, "mobile")} alt={label} aspect="9 / 16" radius={22} />
         {/* Home indicator */}
         <div style={{ display: "flex", justifyContent: "center", marginTop: 8 }}>
           <div style={{ width: 48, height: 4, background: "rgba(255,255,255,0.25)", borderRadius: 2 }} />
@@ -104,7 +103,7 @@ function Phone({ siteUrl, label, tags, badge }) {
         <p className="font-serif font-bold text-font-secondary group-hover:text-accent transition-colors mb-1.5" style={{ fontSize: 14 }}>{label}</p>
         <div className="flex flex-wrap gap-1.5 justify-center">
           {tags.map((tag) => (
-            <span key={tag} className="font-mono text-[8px] uppercase tracking-widest text-font-primary opacity-50">{tag}</span>
+            <span key={tag} className="font-mono text-[8px] uppercase tracking-widest text-font-muted">{tag}</span>
           ))}
         </div>
         {badge && (
@@ -156,12 +155,7 @@ export default function Home() {
           <div className="flex flex-col xl:flex-row gap-10 xl:gap-16 items-center">
 
             {/* Left: text — ~65% */}
-            <motion.div
-              variants={stagger}
-              initial="hidden"
-              animate="show"
-              className="flex flex-col gap-6 xl:basis-[65%]"
-            >
+            <div className="flex flex-col gap-6 xl:basis-[65%]">
               <RevealTitle as="h1"
                 className="font-serif font-bold text-font-secondary"
                 style={{ fontSize: "clamp(42px, 5.8vw, 86px)", lineHeight: 1.05 }}
@@ -169,40 +163,39 @@ export default function Home() {
                 {t.hero.greeting} <span className="text-accent">{t.hero.name}</span>
               </RevealTitle>
 
-              <motion.p
-                variants={fadeUp}
-                className="text-[17px] xl:text-[19px] text-font-primary leading-relaxed"
+              <p
+                className="animate-in text-[17px] xl:text-[19px] text-font-primary leading-relaxed"
+                style={{ "--d": "150ms" }}
               >
                 {t.hero.bio}
-              </motion.p>
+              </p>
 
-              <motion.div variants={fadeUp} className="flex flex-wrap gap-3">
-                <Link href="/contact">
-                  <button className="bg-accent text-white font-mono text-[11px] uppercase tracking-[0.14em] px-7 py-3.5 rounded-full hover:bg-accent-hover transition-all duration-300">
-                    {t.hero.cta}
-                  </button>
+              <div className="animate-in flex flex-wrap gap-3" style={{ "--d": "250ms" }}>
+                <Link
+                  href="/contact"
+                  className="bg-accent text-white font-mono text-[11px] uppercase tracking-[0.14em] px-7 py-3.5 rounded-full hover:bg-accent-hover transition-all duration-300"
+                >
+                  {t.hero.cta}
                 </Link>
-                <a href={lang === "en" ? "/Sofia Costamagna-eng.pdf" : "/Sofia Costamagna-esp.pdf"} download>
-                  <button className="border border-divider text-font-primary font-mono text-[11px] uppercase tracking-[0.14em] px-7 py-3.5 rounded-full hover:border-accent hover:text-accent transition-all duration-300 flex items-center gap-2">
-                    {t.hero.cv} <FiDownload size={11} />
-                  </button>
+                <a
+                  href={lang === "en" ? "/Sofia Costamagna-eng.pdf" : "/Sofia Costamagna-esp.pdf"}
+                  download
+                  className="border border-divider text-font-primary font-mono text-[11px] uppercase tracking-[0.14em] px-7 py-3.5 rounded-full hover:border-accent hover:text-accent transition-all duration-300 flex items-center gap-2"
+                >
+                  {t.hero.cv} <FiDownload size={11} />
                 </a>
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
 
             {/* Right: arch photo */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.85, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="flex justify-center xl:justify-end xl:basis-[35%] flex-shrink-0"
+            <div
+              className="animate-in flex justify-center xl:justify-end xl:basis-[35%] flex-shrink-0"
+              style={{ "--d": "300ms" }}
             >
               {/* Card + photo overflow — float loop */}
               <motion.div
                 className="relative flex-shrink-0"
                 style={{ width: "clamp(280px, 30vw, 420px)", paddingTop: "72px" }}
-                animate={{ y: [0, -14, 0] }}
-                transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 1.0 }}
               >
                 {/* Card background - full width, bottom portion */}
                 <div
@@ -236,7 +229,7 @@ export default function Home() {
                   />
                 </Parallax>
               </motion.div>
-            </motion.div>
+            </div>
 
           </div>
         </div>
@@ -290,9 +283,9 @@ export default function Home() {
             className="snap-start flex-shrink-0 flex justify-center pb-6 pt-2"
             style={{ width: "100vw" }}
           >
-            <div className="group cursor-pointer" style={{ width: 280 }}>
+            <div className="group cursor-pointer" style={{ width: "min(360px, 86vw)" }}>
               <ProjectLink project={t.work.projects[0]}>
-                <MacBook screenHeight={160} siteUrl={t.work.projects[0].url} label={t.work.projects[0].title} tags={t.work.projects[0].tags} badge={t.work.projects[0].caseStudy && t.work.caseStudy} />
+                <MacBook siteUrl={t.work.projects[0].url} label={t.work.projects[0].title} tags={t.work.projects[0].tags} badge={t.work.projects[0].caseStudy && t.work.caseStudy} />
               </ProjectLink>
             </div>
           </div>
@@ -302,9 +295,9 @@ export default function Home() {
             className="snap-start flex-shrink-0 flex justify-center pb-6 pt-2"
             style={{ width: "100vw" }}
           >
-            <div className="group cursor-pointer" style={{ width: 280 }}>
+            <div className="group cursor-pointer" style={{ width: "min(360px, 86vw)" }}>
               <ProjectLink project={t.work.projects[1]}>
-                <MacBook screenHeight={160} siteUrl={t.work.projects[1].url} label={t.work.projects[1].title} tags={t.work.projects[1].tags} badge={t.work.projects[1].caseStudy && t.work.caseStudy} />
+                <MacBook siteUrl={t.work.projects[1].url} label={t.work.projects[1].title} tags={t.work.projects[1].tags} badge={t.work.projects[1].caseStudy && t.work.caseStudy} />
               </ProjectLink>
             </div>
           </div>
@@ -314,7 +307,7 @@ export default function Home() {
             className="snap-start flex-shrink-0 flex justify-center items-end pb-6 pt-2"
             style={{ width: "100vw" }}
           >
-            <div className="group cursor-pointer" style={{ width: 200 }}>
+            <div className="group cursor-pointer" style={{ width: "min(240px, 62vw)" }}>
               <ProjectLink project={t.work.projects[2]}>
                 <Phone siteUrl={t.work.projects[2].url} label={t.work.projects[2].title} tags={t.work.projects[2].tags} badge={t.work.projects[2].caseStudy && t.work.caseStudy} />
               </ProjectLink>
@@ -329,9 +322,14 @@ export default function Home() {
               key={i}
               onClick={() => goToSlide(i)}
               aria-label={`${i + 1} / 3`}
-              className="h-1.5 rounded-full transition-all duration-300"
-              style={{ width: i === slide ? 20 : 6, background: i === slide ? "#7f77dd" : "#d0d0d0" }}
-            />
+              aria-current={i === slide}
+              className="h-6 min-w-6 flex items-center justify-center"
+            >
+              <span
+                className="block h-1.5 rounded-full transition-all duration-300"
+                style={{ width: i === slide ? 20 : 6, background: i === slide ? "#6a5fd0" : "#d0d0d0" }}
+              />
+            </button>
           ))}
         </div>
 
@@ -345,15 +343,13 @@ export default function Home() {
             transition={{ duration: 0.75, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
             whileHover={{ y: 16, transition: { duration: 0.25 } }}
             className="group cursor-pointer flex-shrink-0"
-            style={{ width: 320 }}
+            style={{ width: "clamp(260px, 25vw, 420px)" }}
           >
             <Parallax speed={40}>
             <motion.div
-              animate={worksInView ? { y: [0, -8, 0] } : {}}
-              transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut", delay: 1.8 }}
             >
               <ProjectLink project={t.work.projects[0]}>
-                <MacBook screenHeight={190} siteUrl={t.work.projects[0].url} label={t.work.projects[0].title} tags={t.work.projects[0].tags} badge={t.work.projects[0].caseStudy && t.work.caseStudy} />
+                <MacBook siteUrl={t.work.projects[0].url} label={t.work.projects[0].title} tags={t.work.projects[0].tags} badge={t.work.projects[0].caseStudy && t.work.caseStudy} />
               </ProjectLink>
             </motion.div>
             </Parallax>
@@ -366,14 +362,12 @@ export default function Home() {
             transition={{ duration: 0.75, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
             whileHover={{ y: -8, transition: { duration: 0.25 } }}
             className="group cursor-pointer flex-shrink-0"
-            style={{ width: 460 }}
+            style={{ width: "clamp(400px, 38vw, 640px)" }}
           >
             <motion.div
-              animate={worksInView ? { y: [0, -12, 0] } : {}}
-              transition={{ duration: 5.0, repeat: Infinity, ease: "easeInOut", delay: 1.0 }}
             >
               <ProjectLink project={t.work.projects[1]}>
-                <MacBook screenHeight={270} siteUrl={t.work.projects[1].url} label={t.work.projects[1].title} tags={t.work.projects[1].tags} large badge={t.work.projects[1].caseStudy && t.work.caseStudy} />
+                <MacBook siteUrl={t.work.projects[1].url} label={t.work.projects[1].title} tags={t.work.projects[1].tags} large badge={t.work.projects[1].caseStudy && t.work.caseStudy} />
               </ProjectLink>
             </motion.div>
           </motion.div>
@@ -385,12 +379,10 @@ export default function Home() {
             transition={{ duration: 0.75, delay: 0.28, ease: [0.22, 1, 0.36, 1] }}
             whileHover={{ y: 16, transition: { duration: 0.25 } }}
             className="group cursor-pointer flex-shrink-0"
-            style={{ width: 216 }}
+            style={{ width: "clamp(190px, 15vw, 260px)" }}
           >
             <Parallax speed={70}>
             <motion.div
-              animate={worksInView ? { y: [0, -7, 0] } : {}}
-              transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut", delay: 2.4 }}
             >
               <ProjectLink project={t.work.projects[2]}>
                 <Phone siteUrl={t.work.projects[2].url} label={t.work.projects[2].title} tags={t.work.projects[2].tags} badge={t.work.projects[2].caseStudy && t.work.caseStudy} />

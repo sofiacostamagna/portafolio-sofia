@@ -96,7 +96,7 @@ export default function Contact() {
 
           {/* ── Left ── */}
           <div className="flex flex-col">
-            <motion.div {...fadeUp(0)} className="flex items-center gap-2.5 mb-6">
+            <motion.div className="animate-in flex items-center gap-2.5 mb-6" style={{ "--d": "0ms" }}>
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-70" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
@@ -116,14 +116,14 @@ export default function Contact() {
                 : <>Trabajemos <em className="text-accent italic">juntos</em></>}
             </RevealTitle>
 
-            <motion.p {...fadeUp(0.16)} className="text-[17px] xl:text-[18px] text-font-primary leading-relaxed max-w-md">
+            <motion.p className="animate-in text-[17px] xl:text-[18px] text-font-primary leading-relaxed max-w-md" style={{ "--d": "160ms" }}>
               {en
                 ? "Open to frontend and UX/UI roles, freelance projects and creative collaborations. Tell me what you have in mind."
                 : "Abierta a roles frontend y UX/UI, proyectos freelance y colaboraciones creativas. Contame qué tenés en mente."}
             </motion.p>
 
             {/* Email destacado */}
-            <motion.div {...fadeUp(0.22)} className="mt-10">
+            <motion.div className="animate-in mt-10" style={{ "--d": "220ms" }}>
               <button
                 onClick={copyEmail}
                 className="group w-full sm:w-auto flex items-center gap-4 bg-white border border-divider hover:border-accent rounded-2xl pl-4 pr-5 py-4 transition-colors text-left"
@@ -144,7 +144,7 @@ export default function Contact() {
             </motion.div>
 
             {/* Perfiles */}
-            <motion.div {...fadeUp(0.28)} className="grid grid-cols-3 gap-3 mt-3 sm:max-w-[420px]">
+            <motion.div className="animate-in grid grid-cols-3 gap-3 mt-3 sm:max-w-[420px]" style={{ "--d": "280ms" }}>
               {PROFILES.map(({ label, href, icon: Icon }) => (
                 <a
                   key={label}
@@ -163,7 +163,7 @@ export default function Contact() {
             </motion.div>
 
             {/* Qué pasa después */}
-            <motion.div {...fadeUp(0.34)} className="mt-12">
+            <motion.div className="animate-in mt-12" style={{ "--d": "340ms" }}>
               <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-accent mb-5">
                 {en ? "What happens next" : "Qué pasa después"}
               </p>
@@ -181,7 +181,7 @@ export default function Contact() {
           </div>
 
           {/* ── Right: form ── */}
-          <motion.div {...fadeUp(0.12)}>
+          <motion.div className="animate-in" style={{ "--d": "120ms" }}>
             <div className="relative">
               {/* glow suave detrás de la tarjeta */}
               <div

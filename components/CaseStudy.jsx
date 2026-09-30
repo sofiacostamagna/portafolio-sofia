@@ -7,7 +7,7 @@ import { useLang } from "./LanguageContext";
 import { RevealTitle, Parallax } from "./motion";
 import ScrollableScreenshot from "./ScrollableScreenshot";
 import { caseStudies, getCaseStudy } from "../lib/caseStudies";
-import { previewSrc } from "../lib/previews";
+import { previewSrc, previewSrcSet, previewPoster } from "../lib/previews";
 
 const EASE = [0.22, 1, 0.36, 1];
 const fadeUp = (delay = 0) => ({
@@ -30,7 +30,7 @@ function BrowserFrame({ url, title }) {
           {url.replace(/^https?:\/\//, "")}
         </span>
       </div>
-      <ScrollableScreenshot src={previewSrc(url)} alt={title} height={520} />
+      <ScrollableScreenshot src={previewSrc(url)} poster={previewPoster(url)} srcSet={previewSrcSet(url)} sizes="(max-width: 1023px) 90vw, 60vw" alt={title} height={520} priority />
     </div>
   );
 }
@@ -44,7 +44,7 @@ function PhoneFrame({ url, title }) {
       <div className="flex justify-center mb-2">
         <div className="w-16 h-4 bg-black rounded-full" />
       </div>
-      <ScrollableScreenshot src={previewSrc(url, "mobile")} alt={`${title} — mobile`} height={440} radius={26} />
+      <ScrollableScreenshot src={previewSrc(url, "mobile")} poster={previewPoster(url, "mobile")} alt={`${title} — mobile`} height={440} radius={26} />
       <div className="flex justify-center mt-2.5">
         <div className="w-14 h-1 bg-white/25 rounded-full" />
       </div>
@@ -65,7 +65,7 @@ export default function CaseStudy({ slug }) {
 
       {/* ── Header ── */}
       <section className={`${PAD} pt-12 xl:pt-20`}>
-        <motion.div {...fadeUp(0)}>
+        <motion.div className="animate-in" style={{ "--d": "0ms" }}>
           <Link
             href="/work"
             className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-font-primary hover:text-accent transition-colors"
@@ -74,7 +74,7 @@ export default function CaseStudy({ slug }) {
           </Link>
         </motion.div>
 
-        <motion.span {...fadeUp(0.05)} className="label block mt-10 mb-4">
+        <motion.span className="animate-in label block mt-10 mb-4" style={{ "--d": "50ms" }}>
           {en ? "Case study" : "Caso de estudio"} · {study.category[l]}
         </motion.span>
         <RevealTitle
@@ -85,23 +85,23 @@ export default function CaseStudy({ slug }) {
           {study.title}
         </RevealTitle>
         <motion.p
-          {...fadeUp(0.2)}
-          className="text-[18px] xl:text-[22px] text-font-primary leading-relaxed mt-6 max-w-3xl"
+          className="animate-in text-[18px] xl:text-[22px] text-font-primary leading-relaxed mt-6 max-w-3xl"
+          style={{ "--d": "200ms" }}
         >
           {study.summary[l]}
         </motion.p>
 
         {/* Meta */}
         <motion.dl
-          {...fadeUp(0.28)}
-          className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-12 pt-8 border-t border-divider"
+          className="animate-in grid grid-cols-1 sm:grid-cols-3 gap-6 mt-12 pt-8 border-t border-divider"
+          style={{ "--d": "280ms" }}
         >
           <div>
-            <dt className="font-mono text-[10px] uppercase tracking-[0.16em] text-font-primary opacity-60 mb-2">{en ? "My role" : "Mi rol"}</dt>
+            <dt className="font-mono text-[10px] uppercase tracking-[0.16em] text-font-muted mb-2">{en ? "My role" : "Mi rol"}</dt>
             <dd className="text-[15px] text-font-secondary">{study.role[l]}</dd>
           </div>
           <div>
-            <dt className="font-mono text-[10px] uppercase tracking-[0.16em] text-font-primary opacity-60 mb-2">Stack</dt>
+            <dt className="font-mono text-[10px] uppercase tracking-[0.16em] text-font-muted mb-2">Stack</dt>
             <dd className="flex flex-wrap gap-2">
               {study.stack.map((s) => (
                 <span key={s} className="font-mono text-[10px] text-accent border border-accent/25 px-3 py-1 rounded-full">{s}</span>
@@ -109,7 +109,7 @@ export default function CaseStudy({ slug }) {
             </dd>
           </div>
           <div>
-            <dt className="font-mono text-[10px] uppercase tracking-[0.16em] text-font-primary opacity-60 mb-2">{en ? "Live site" : "Sitio"}</dt>
+            <dt className="font-mono text-[10px] uppercase tracking-[0.16em] text-font-muted mb-2">{en ? "Live site" : "Sitio"}</dt>
             <dd>
               <a
                 href={study.url}
@@ -137,7 +137,7 @@ export default function CaseStudy({ slug }) {
               </motion.div>
             </Parallax>
           </div>
-          <p className="mt-8 lg:mt-14 text-center font-mono text-[10px] uppercase tracking-[0.16em] text-font-primary opacity-60">
+          <p className="mt-8 lg:mt-14 text-center font-mono text-[10px] uppercase tracking-[0.16em] text-font-muted">
             {en ? "Scroll inside the screens to explore the site" : "Scrolleá dentro de las pantallas para recorrer el sitio"}
           </p>
         </div>
@@ -228,7 +228,7 @@ export default function CaseStudy({ slug }) {
             className="rounded-3xl border border-divider bg-white px-8 py-10 xl:px-12 xl:py-12 flex items-center justify-between gap-6 hover:border-accent transition-colors duration-300"
           >
             <div>
-              <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-font-primary opacity-60">
+              <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-font-muted">
                 {en ? "Next case study" : "Siguiente caso"}
               </span>
               <p className="font-serif font-bold text-font-secondary group-hover:text-accent transition-colors mt-2" style={{ fontSize: "clamp(28px, 3.4vw, 44px)", lineHeight: 1.05 }}>

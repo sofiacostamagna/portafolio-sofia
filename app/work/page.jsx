@@ -7,12 +7,12 @@ import Link from "next/link";
 import { useLang } from "../../components/LanguageContext";
 import ScrollableScreenshot from "../../components/ScrollableScreenshot";
 import { RevealTitle } from "../../components/motion";
-import { previewSrc } from "../../lib/previews";
+import { previewSrc, previewSrcSet, previewPoster } from "../../lib/previews";
 
 /* ─────────────────────────────────────────────────────────
    MacBook mockup — captura de página completa scrolleable
 ───────────────────────────────────────────────────────── */
-function MacBook({ screenHeight = 240, siteUrl, title }) {
+function MacBook({ screenHeight = 240, siteUrl, title, priority = false }) {
   return (
     <div>
       {/* Lid */}
@@ -27,12 +27,12 @@ function MacBook({ screenHeight = 240, siteUrl, title }) {
             <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ff5f57", flexShrink: 0 }} />
             <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#febc2e", flexShrink: 0 }} />
             <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#28c840", flexShrink: 0 }} />
-            <div style={{ flex: 1, background: "#e0e0e0", borderRadius: 4, padding: "2px 8px", fontFamily: "monospace", fontSize: 9, color: "#888", marginLeft: 6, overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>
+            <div style={{ flex: 1, background: "#e0e0e0", borderRadius: 4, padding: "2px 8px", fontFamily: "monospace", fontSize: 9, color: "#555", marginLeft: 6, overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>
               {siteUrl?.replace("https://", "").replace("http://", "")}
             </div>
           </div>
           {/* Screen */}
-          <ScrollableScreenshot src={previewSrc(siteUrl)} alt={title} height={screenHeight} />
+          <ScrollableScreenshot src={previewSrc(siteUrl)} poster={previewPoster(siteUrl)} srcSet={previewSrcSet(siteUrl)} sizes="(max-width: 1023px) 90vw, 36vw" alt={title} height={screenHeight} priority={priority} />
         </div>
       </div>
       {/* Base */}
@@ -162,7 +162,7 @@ const filters = [
 /* ─────────────────────────────────────────────────────────
    Project card
 ───────────────────────────────────────────────────────── */
-function ProjectCard({ project, lang }) {
+function ProjectCard({ project, lang, first = false }) {
   const cardRef = useRef(null);
   const inView = useInView(cardRef, { once: true, margin: "-60px" });
 
@@ -217,8 +217,8 @@ function ProjectCard({ project, lang }) {
   return (
     <motion.div
       ref={cardRef}
-      initial={{ opacity: 0, y: 48 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
+      initial={first ? false : { opacity: 0, y: 48 }}
+      animate={inView || first ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
       className="py-10 xl:py-14 border-t border-divider"
     >
@@ -226,7 +226,7 @@ function ProjectCard({ project, lang }) {
       {/* ── MOBILE: número + título compacto arriba del mockup ── */}
       <div className="lg:hidden mb-5">
         <div className="flex items-baseline gap-3 mb-2">
-          <span className="font-mono text-[10px] text-font-primary opacity-40">{project.num}</span>
+          <span className="font-mono text-[10px] text-font-muted">{project.num}</span>
           {project.caseStudy && (
             <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-accent border border-accent/30 px-2 py-0.5 rounded-full">
               {lang === "en" ? "Case study" : "Caso de estudio"}
@@ -238,9 +238,9 @@ function ProjectCard({ project, lang }) {
             </span>
           )}
         </div>
-        <h3 className="font-serif font-bold text-font-secondary" style={{ fontSize: "clamp(22px, 6vw, 30px)", lineHeight: 1.1 }}>
+        <h2 className="font-serif font-bold text-font-secondary" style={{ fontSize: "clamp(22px, 6vw, 30px)", lineHeight: 1.1 }}>
           {project.title}
-        </h3>
+        </h2>
       </div>
 
       <div className="flex flex-col lg:flex-row lg:items-start gap-8 xl:gap-14">
@@ -248,7 +248,7 @@ function ProjectCard({ project, lang }) {
         {/* ── DESKTOP: info completa izquierda ── */}
         <div className="hidden lg:flex lg:basis-[42%] lg:flex-shrink-0 flex-col gap-5">
           <div className="flex items-center gap-3">
-            <span className="font-mono text-[11px] text-font-primary opacity-40">{project.num}</span>
+            <span className="font-mono text-[11px] text-font-muted">{project.num}</span>
             {project.caseStudy && (
               <span className="font-mono text-[9px] uppercase tracking-[0.14em] text-accent border border-accent/30 px-2 py-0.5 rounded-full">
                 {lang === "en" ? "Case study" : "Caso de estudio"}
@@ -260,9 +260,9 @@ function ProjectCard({ project, lang }) {
               </span>
             )}
           </div>
-          <h3 className="font-serif font-bold text-font-secondary" style={{ fontSize: "clamp(26px, 3vw, 38px)", lineHeight: 1.1 }}>
+          <h2 className="font-serif font-bold text-font-secondary" style={{ fontSize: "clamp(26px, 3vw, 38px)", lineHeight: 1.1 }}>
             {project.title}
-          </h3>
+          </h2>
           {infoBlock}
         </div>
 
@@ -274,6 +274,7 @@ function ProjectCard({ project, lang }) {
               viewW={viewW}
               screenHeight={Math.round(viewW / 1.62)}
               title={project.title}
+              priority={first}
             />
           </div>
         </div>
@@ -303,10 +304,7 @@ export default function Work() {
         : projects.filter((p) => p.type === activeFilter);
 
   return (
-    <motion.section
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
+    <section
       className="pt-32 pb-24 px-8 xl:px-[10vw] 2xl:px-[12vw]"
     >
       {/* ── Header ── */}
@@ -330,9 +328,9 @@ export default function Work() {
                 onClick={() => setActiveFilter(f.key)}
                 className="font-mono text-[10px] uppercase tracking-[0.14em] px-4 py-2 rounded-full border transition-all duration-200"
                 style={{
-                  background: activeFilter === f.key ? "#7f77dd" : "transparent",
+                  background: activeFilter === f.key ? "#6a5fd0" : "transparent",
                   color: activeFilter === f.key ? "#fff" : "#666",
-                  borderColor: activeFilter === f.key ? "#7f77dd" : "#e8e8e8",
+                  borderColor: activeFilter === f.key ? "#6a5fd0" : "#e8e8e8",
                 }}
               >
                 {f[lang]}
@@ -344,8 +342,8 @@ export default function Work() {
 
       {/* ── Project list ── */}
       <div>
-        {filtered.map((project) => (
-          <ProjectCard key={project.num} project={project} lang={lang} />
+        {filtered.map((project, i) => (
+          <ProjectCard key={project.num} project={project} lang={lang} first={i === 0} />
         ))}
       </div>
 
@@ -382,6 +380,6 @@ export default function Work() {
         </div>
       </motion.div>
 
-    </motion.section>
+    </section>
   );
 }
