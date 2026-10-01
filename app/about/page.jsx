@@ -143,8 +143,8 @@ const STRENGTHS = [
     icon: FiUsers,
     title: { en: "Teamwork & perseverance", es: "Trabajo en equipo y constancia" },
     text: {
-      en: "25 years of hockey: I show up, I commit, and I don't give up on a hard problem.",
-      es: "25 años de hockey: me comprometo, estoy presente y no abandono un problema difícil.",
+      en: "27+ years of hockey: I show up, I commit, and I don't give up on a hard problem.",
+      es: "Más de 27 años de hockey: me comprometo, estoy presente y no abandono un problema difícil.",
     },
     endorsement: "Collaborative",
   },
@@ -166,12 +166,12 @@ const MOMENTS = [
   {
     src: "/hockey.jpeg",
     objPos: "center 20%",
-    label: { en: "Field hockey · 25 years", es: "Hockey · 25 años" },
-    caption: { en: "The sport gave me more than goals — friends, discipline, commitment and teamwork 🏑", es: "El deporte me dio más que goles — amigos, disciplina, compromiso y trabajo en equipo 🏑" },
+    label: { en: "Field hockey", es: "Hockey" },
+    caption: { en: "I've played hockey for over 27 years, since I was 5 🏑", es: "Juego al hockey hace más de 27 años, desde los 5 🏑" },
   },
   {
     src: "/Niagara Falls.jpeg",
-    label: { en: "Niagara Falls · Canada · 2021", es: "Cataratas del Niágara · Canadá · 2021" },
+    label: { en: "Niagara Falls · Canada · 2022", es: "Cataratas del Niágara · Canadá · 2022" },
     caption: { en: "The place that changed everything for me", es: "El lugar que cambió todo para mí" },
   },
   {
@@ -181,12 +181,12 @@ const MOMENTS = [
   },
   {
     src: "/roma.jpeg",
-    label: { en: "Rome · Italy · 2022", es: "Roma · Italia · 2022" },
+    label: { en: "Rome · Italy · 2026", es: "Roma · Italia · 2026" },
     caption: { en: "Threw a coin in the Trevi Fountain — had to come back", es: "Tiré una moneda en la Fontana di Trevi — tenía que volver" },
   },
   {
     src: "/Paris.jpeg",
-    label: { en: "Paris · France · 2022", es: "París · Francia · 2022" },
+    label: { en: "Paris · France · 2026", es: "París · Francia · 2026" },
     caption: { en: "Croissants for breakfast every single day", es: "Croissants para desayunar todos los días" },
   },
   {
@@ -196,17 +196,17 @@ const MOMENTS = [
   },
   {
     src: "/Portugal.jpeg",
-    label: { en: "Lisbon · Portugal · 2023", es: "Lisboa · Portugal · 2023" },
+    label: { en: "Lisbon · Portugal · 2026", es: "Lisboa · Portugal · 2026" },
     caption: { en: "Pastel de nata and ocean views — perfect combo", es: "Pastel de nata y vistas al océano — combo perfecto" },
   },
   {
     src: "/espana.jpeg",
-    label: { en: "Madrid · Spain · 2023", es: "Madrid · España · 2023" },
+    label: { en: "Madrid · Spain · 2026", es: "Madrid · España · 2026" },
     caption: { en: "Tapas at midnight hits different", es: "Las tapas a medianoche son otra cosa" },
   },
   {
     src: "/mexico.jpeg",
-    label: { en: "Cancún · Mexico · 2024", es: "Cancún · México · 2024" },
+    label: { en: "Cancún · Mexico · 2022", es: "Cancún · México · 2022" },
     caption: { en: "Caribbean water so blue it doesn't look real", es: "El agua del Caribe tan azul que parece irreal" },
   },
 ];
